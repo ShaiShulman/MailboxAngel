@@ -182,6 +182,32 @@ namespace FilingHelper.Controls
                 }
             }
         }
+
+        private void showHideItems(bool fHide)
+        {
+            foreach (Control ctrl in pnlItemsList.Controls)
+            {
+                if (ctrl is ResearchItemSingleCtrl)
+                {
+                    if (((ResearchItemSingleCtrl)ctrl).MailInfo.Persist || !btnShowPinned.Checked)
+                    {
+                        if (fHide)
+                            ((ResearchItemSingleCtrl)ctrl).MailInfo.Item.Close(OlInspectorClose.olPromptForSave);
+                        else
+                            ((ResearchItemSingleCtrl)ctrl).MailInfo.Item.Display();
+                    }
+                }
+            }
+        }
+        private void btnHideAll_Click(object sender, EventArgs e)
+        {
+            showHideItems(true);
+        }
+
+        private void btnShowAll_Click(object sender, EventArgs e)
+        {
+            showHideItems(false);
+        }
     }
     #region EventArgs
     public class DropMailEventArgs:EventArgs

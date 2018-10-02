@@ -24,6 +24,12 @@ namespace FilingHelper
         //{
         //    return _list.First(predicate);
         //}
+        protected override string BaseNodeName { get { return "MailItems"; } }
+        protected override string GetFileName()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), FILE_NAME);
+        }
+
         public bool isFolderPersistent(string entryID)
         {
             FolderInfo item = _list.FirstOrDefault(x => x.EntryID == entryID);

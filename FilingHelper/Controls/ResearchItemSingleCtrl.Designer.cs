@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ResearchItemSingleCtrl));
             this.pnlContainer = new System.Windows.Forms.Panel();
             this.txtComment = new System.Windows.Forms.TextBox();
@@ -37,8 +38,9 @@
             this.btnNote = new System.Windows.Forms.ToolStripButton();
             this.btnDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblContent = new System.Windows.Forms.Label();
             this.lblSubject = new System.Windows.Forms.Label();
+            this.txtBody = new System.Windows.Forms.RichTextBox();
+            this.ctlToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.pnlContainer.SuspendLayout();
             this.ctlToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -48,10 +50,10 @@
             // 
             this.pnlContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlContainer.Controls.Add(this.txtComment);
-            this.pnlContainer.Controls.Add(this.ctlToolStrip);
             this.pnlContainer.Controls.Add(this.pictureBox1);
-            this.pnlContainer.Controls.Add(this.lblContent);
             this.pnlContainer.Controls.Add(this.lblSubject);
+            this.pnlContainer.Controls.Add(this.txtBody);
+            this.pnlContainer.Controls.Add(this.ctlToolStrip);
             this.pnlContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContainer.Location = new System.Drawing.Point(0, 0);
             this.pnlContainer.Name = "pnlContainer";
@@ -67,10 +69,10 @@
             // txtComment
             // 
             this.txtComment.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.txtComment.Location = new System.Drawing.Point(0, 24);
+            this.txtComment.Location = new System.Drawing.Point(-1, 21);
             this.txtComment.Multiline = true;
             this.txtComment.Name = "txtComment";
-            this.txtComment.Size = new System.Drawing.Size(277, 71);
+            this.txtComment.Size = new System.Drawing.Size(277, 78);
             this.txtComment.TabIndex = 5;
             this.txtComment.Visible = false;
             this.txtComment.Enter += new System.EventHandler(this.txtComment_Enter);
@@ -143,19 +145,6 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // lblContent
-            // 
-            this.lblContent.AutoSize = true;
-            this.lblContent.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblContent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lblContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblContent.Location = new System.Drawing.Point(3, 25);
-            this.lblContent.Name = "lblContent";
-            this.lblContent.Size = new System.Drawing.Size(35, 13);
-            this.lblContent.TabIndex = 1;
-            this.lblContent.Text = "label1";
-            this.lblContent.DoubleClick += new System.EventHandler(this.lblContent_DoubleClick);
-            // 
             // lblSubject
             // 
             this.lblSubject.AutoSize = true;
@@ -165,6 +154,24 @@
             this.lblSubject.Size = new System.Drawing.Size(41, 13);
             this.lblSubject.TabIndex = 0;
             this.lblSubject.Text = "label1";
+            // 
+            // txtBody
+            // 
+            this.txtBody.BackColor = System.Drawing.SystemColors.Control;
+            this.txtBody.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtBody.Location = new System.Drawing.Point(-1, 21);
+            this.txtBody.Name = "txtBody";
+            this.txtBody.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.txtBody.Size = new System.Drawing.Size(309, 76);
+            this.txtBody.TabIndex = 7;
+            this.txtBody.Text = "";
+            // 
+            // ctlToolTip
+            // 
+            this.ctlToolTip.AutoPopDelay = 5000;
+            this.ctlToolTip.InitialDelay = 0;
+            this.ctlToolTip.IsBalloon = true;
+            this.ctlToolTip.ReshowDelay = 100;
             // 
             // ResearchItemSingleCtrl
             // 
@@ -186,7 +193,6 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlContainer;
-        private System.Windows.Forms.Label lblContent;
         private System.Windows.Forms.Label lblSubject;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStrip ctlToolStrip;
@@ -195,5 +201,7 @@
         private System.Windows.Forms.TextBox txtComment;
         private System.Windows.Forms.ToolStripButton btnPintoBoard;
         private System.Windows.Forms.ToolStripButton btnNote;
+        private System.Windows.Forms.RichTextBox txtBody;
+        private System.Windows.Forms.ToolTip ctlToolTip;
     }
 }

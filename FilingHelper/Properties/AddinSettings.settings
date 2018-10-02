@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FilingHelper" GeneratedClassName="AddinSettings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FilingHelper.Properties" GeneratedClassName="AddinSettings">
   <Profiles />
   <Settings>
     <Setting Name="EmailSignatureInternalName" Type="System.String" Scope="User">
@@ -7,6 +7,9 @@
     </Setting>
     <Setting Name="InternalDomainNames" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MaximumEmailSizeBytes" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9437184</Value>
     </Setting>
   </Settings>
 </SettingsFile>

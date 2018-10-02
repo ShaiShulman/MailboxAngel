@@ -160,6 +160,7 @@
   -->
   <ItemGroup>
     <Compile Include="AddinSettings.cs" />
+    <Compile Include="HistoryManagerBase.cs" />
     <Compile Include="MailHistoryManager.cs" />
     <Compile Include="Properties\AddinSettings.cs" />
     <Compile Include="Properties\AddinSettings.Designer.cs">
@@ -415,6 +416,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\numbering %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateList.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

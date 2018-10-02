@@ -32,8 +32,9 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnShowPinned = new System.Windows.Forms.ToolStripButton();
+            this.btnShowAll = new System.Windows.Forms.ToolStripButton();
+            this.btnHideAll = new System.Windows.Forms.ToolStripButton();
             this.pnlItemsList = new HelperUtils.DraggableTableLayoutPanel();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.flowLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -54,11 +55,12 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnShowPinned,
-            this.toolStripButton2});
+            this.btnShowAll,
+            this.btnHideAll});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.MaximumSize = new System.Drawing.Size(1000, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(213, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(280, 25);
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -71,6 +73,24 @@
             this.btnShowPinned.Size = new System.Drawing.Size(90, 22);
             this.btnShowPinned.Text = "Pinned only";
             this.btnShowPinned.Click += new System.EventHandler(this.btnShowPinned_Click);
+            // 
+            // btnShowAll
+            // 
+            this.btnShowAll.Image = ((System.Drawing.Image)(resources.GetObject("btnShowAll.Image")));
+            this.btnShowAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnShowAll.Name = "btnShowAll";
+            this.btnShowAll.Size = new System.Drawing.Size(80, 22);
+            this.btnShowAll.Text = "Display all";
+            this.btnShowAll.Click += new System.EventHandler(this.btnShowAll_Click);
+            // 
+            // btnHideAll
+            // 
+            this.btnHideAll.Image = ((System.Drawing.Image)(resources.GetObject("btnHideAll.Image")));
+            this.btnHideAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnHideAll.Name = "btnHideAll";
+            this.btnHideAll.Size = new System.Drawing.Size(67, 22);
+            this.btnHideAll.Text = "Hide all";
+            this.btnHideAll.Click += new System.EventHandler(this.btnHideAll_Click);
             // 
             // pnlItemsList
             // 
@@ -89,16 +109,8 @@
             this.pnlItemsList.RowCount = 2;
             this.pnlItemsList.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.pnlItemsList.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.pnlItemsList.Size = new System.Drawing.Size(207, 0);
+            this.pnlItemsList.Size = new System.Drawing.Size(274, 0);
             this.pnlItemsList.TabIndex = 3;
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(80, 22);
-            this.toolStripButton2.Text = "Display all";
             // 
             // ResearchPanelCtrl
             // 
@@ -121,6 +133,7 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnShowPinned;
         private HelperUtils.DraggableTableLayoutPanel pnlItemsList;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton btnShowAll;
+        private System.Windows.Forms.ToolStripButton btnHideAll;
     }
 }

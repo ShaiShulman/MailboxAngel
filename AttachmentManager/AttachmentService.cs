@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace AttachmentManager
 {
@@ -74,9 +76,57 @@ namespace AttachmentManager
             return result; 
         }
 
+        public void CreateAttachmentsList(List<AttachmentCommand> attachments)
+        {
+            string listContent;
+            switch (_message.BodyFormat)
+            {
+                case OlBodyFormat.olFormatHTML:
+                    listContent = "<br><table>";
+                    break;
+                case OlBodyFormat.olFormatPlain:
+                case OlBodyFormat.olFormatRichText:
+                    listContent = "\n";
+                    break;
+                default:
+                    listContent = "\n";
+                    break;
+            }
+            for (int i = 0; i < attachments.Count; i++)
+            {
+                switch (_message.BodyFormat)
+                {
+                    case OlBodyFormat.olFormatHTML:
+                        listContent = String.Concat(listContent, string.Format("<tr><td>{1}</td><td>{0}</td><td><a href='{0}'>{0}</a></td></tr>", attachments[i].FullName,i+1));
+                        break;
+                    case OlBodyFormat.olFormatPlain:
+                        listContent = String.Concat(listContent, string.Format("{0}. \t {1}\r\n", i + 1, attachments[i].FullName));
+                        break;
+                    case OlBodyFormat.olFormatRichText:
+                        listContent = String.Concat(listContent, string.Format("{0}. \t {1}\t\r\n", i+1, attachments[i].FullName));
+                        break;
+                }
+            }
+            switch (_message.BodyFormat)
+            {
+                case OlBodyFormat.olFormatHTML:
+                    _message.HTMLBody = string.Concat(listContent, "</table><br>", _message.HTMLBody);
+                    break;
+                case OlBodyFormat.olFormatPlain:
+                    _message.Body = string.Concat(listContent, _message.Body);
+                    break;
+                case OlBodyFormat.olFormatRichText:
+                    List<byte> body = new List<byte>();
+                    body.AddRange(Encoding.ASCII.GetBytes(listContent));
+                    body.AddRange(_message.RTFBody);
+                    _message.RTFBody = body.ToArray();
+                    break;
+            }
+
+        }
         public void ProcessAttachments(List<AttachmentCommand> attachments)
         {
-            int progressMax = attachments.Count * 2 + 1;
+            int progressMax = attachments.Count * 2 + 1 + attachments.OfType<ExistingAttachmentCommand>().Count();
             onAttachmentProcessInitiated(progressMax);
             Queue<string> files = new Queue<string>();
             onAttachmenProgressIncrement();
@@ -87,11 +137,11 @@ namespace AttachmentManager
             _message.HTMLBody = _message.HTMLBody;
             foreach (var item in attachments)
             {
+                onAttachmenProgressIncrement();
                 if (item is ExistingAttachmentCommand)
                 {
                     if (!item.Remove)
                     {
-                        onAttachmenProgressIncrement();
                         string fileName = Files.getUniqueFileName(baseFolder, item.NewName);
                         ((ExistingAttachmentCommand)item).Attachment.SaveAsFile(fileName);
                         if (item.FinalizeChanges)
@@ -114,8 +164,18 @@ namespace AttachmentManager
             {
                 onAttachmenProgressIncrement();
                 string fileName = files.Dequeue();
-                _message.Attachments.Add(fileName);
-                File.Delete(fileName);
+                try
+                {
+                    _message.Attachments.Add(fileName);
+                }
+                catch (System.Runtime.InteropServices.COMException ex)
+                {
+                    MessageBox.Show(ex.Message, "Outlook Helper", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    File.Delete(fileName);
+                }
             }
             if (Directory.GetFiles(baseFolder).Count()==0)
                 Directory.Delete(baseFolder);

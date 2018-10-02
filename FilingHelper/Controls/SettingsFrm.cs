@@ -108,5 +108,15 @@ namespace FilingHelper.Controls
                 lstSignatures.SelectedIndex = lstSignatures.Items.IndexOf(internalSignature);
             lstDomains.Items.AddRange(Properties.AddinSettings.Default.InternalDomainNames.Split(','));
         }
+
+        private void SettingsFrm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTest_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

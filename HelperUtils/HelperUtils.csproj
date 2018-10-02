@@ -79,8 +79,21 @@
     </Compile>
     <Compile Include="MenuButtonExtension.cs" />
     <Compile Include="OutlookWindowStore.cs" />
+    <Compile Include="Persistent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RibbonMenuExtension.cs" />
+    <Compile Include="SideMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SideMenu.Designer.cs">
+      <DependentUpon>SideMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SideMenuItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SideMenuItem.Designer.cs">
+      <DependentUpon>SideMenuItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="SignatureInfo.cs" />
     <Compile Include="TreeNode.cs" />
     <Compile Include="ToolStripImage.cs">
@@ -90,9 +103,18 @@
       <DependentUpon>ToolStripImage.cs</DependentUpon>
     </Compile>
     <Compile Include="WindowManager.cs" />
+    <Compile Include="XMLPersistent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SideMenu.resx">
+      <DependentUpon>SideMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SideMenuItem.resx">
+      <DependentUpon>SideMenuItem.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

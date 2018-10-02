@@ -13,6 +13,7 @@ using FilingHelper;
 using HelperUtils;
 using Microsoft.Office.Interop.Outlook;
 using System.Threading;
+using System.IO;
 
 namespace FilingHelper.Controls
 {
@@ -41,25 +42,34 @@ namespace FilingHelper.Controls
             get { return pnlMaster.Width; }
             set {
                 this.Width = value;
+                pnlContainer.Visible = false;
                 pnlContainer.Width = value;
+                ctlProgress.Width = value;
                 foreach (Control ctrl in pnlContainer.Controls)
                 {
                     ctrl.Width = value;
                 }
+                pnlContainer.Visible = true;
             }
         }
         public int MaxHeight { get { return pnlContainer.MaximumSize.Height + TOP_PADDING; } }
+        private int _maxEmailSize;
+
         public AttachmentsPaneCtrl(AttachmentService manager)
         {
-            InitializeComponent();
+            InitializeComponent(); 
             pnlContainer.AcceptableDragType = typeof(AttachmentSingleCtrl);
+            _maxEmailSize = Properties.AddinSettings.Default.MaximumEmailSizeBytes;
             int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
             pnlContainer.Padding = new Padding(0, 0, vertScrollWidth, 0);
             _manager = manager;
         }
         public void Fill(IEnumerable<AttachmentCommand> attachments)
         {
+            ctlProgress.Style = ProgressBarStyle.Marquee;
+            ctlProgress.Visible = true;
             init(attachments);
+            ctlProgress.Visible = false;
         }
         public void Add(AttachmentCommand attachment)
         {
@@ -102,11 +112,13 @@ namespace FilingHelper.Controls
             }
             _bottonBarHeight =  pnlMaster.Height- pnlContainer.Height;
             pnlContainer.finalizeLayout();
+            updateSize();
             onAttachmentsUpdated();
         }
 
         private void initControl(AttachmentSingleCtrl control, bool isFirst, bool isLast)
         {
+            control.Width = TotalWidth;
             control.FileDropped += Control_FileDropped;
             control.AttachmentOpen += Control_AttachmentOpen;
             control.AttachmentMove += Control_AttachmentMove;
@@ -129,6 +141,7 @@ namespace FilingHelper.Controls
                 Add(new NewAttachmentCommand(e.Files[i]));
                 pnlContainer.Controls.SetChildIndex(pnlContainer.Controls[pnlContainer.Controls.Count - 1], targetIndex + i);
             }
+            updateSize();
         }
 
 
@@ -264,6 +277,12 @@ namespace FilingHelper.Controls
             }
         }
 
+        public void updateSize()
+        {
+            lblSize.Text = SizeString;
+            lblSize.ForeColor = SizeBytes > _maxEmailSize ? Color.Red : Color.Black;
+        }
+
         private void btnApply_Click(object sender, EventArgs e)
         {
             List<AttachmentCommand> attachments = Data;
@@ -295,6 +314,7 @@ namespace FilingHelper.Controls
                 ctlProgress.Visible = true;
                 ctlProgress.Maximum = e.ItemsCount;
                 ctlProgress.Value = 0;
+                ctlProgress.Style = ProgressBarStyle.Blocks;
             }));
         }
 
@@ -302,8 +322,38 @@ namespace FilingHelper.Controls
         {
             this.BeginInvoke((System.Action)(() =>
             {
-                ctlProgress.Value++;
+                ctlProgress.PerformStep();
             }));
+        }
+        public string SizeString
+        {
+            get
+            {
+                double size = SizeBytes;
+                if (size < (1024 * 1024))
+                    return string.Format("{0:0.##}K", (double)size / (1024));
+                else
+                    return string.Format("{0:0.##}M", (double)size / (1024 * 1024));
+            }
+        }
+        public int SizeBytes
+        {
+            get
+            {
+                int total = 0;
+                foreach (AttachmentCommand attach in Data)
+                {
+                    if (attach is ExistingAttachmentCommand && !attach.Remove)
+                        total += ((ExistingAttachmentCommand)attach).Attachment.Size;
+                    else if (attach is NewAttachmentCommand)
+                    {
+                        string sourceFile = (((NewAttachmentCommand)attach).FilePath);
+                        if (File.Exists(sourceFile))
+                            total += (int)(new FileInfo(sourceFile)).Length;
+                    }
+                }
+                return total;
+            }
         }
 
         private void btnNumberize_Click(object sender, EventArgs e)
@@ -342,12 +392,17 @@ namespace FilingHelper.Controls
 
         protected void onAttachmentsUpdated()
         {
+            updateSize();
             if (AttachmentsUpdated != null)
                 AttachmentsUpdated(this, new AttachmentsUpdatedEventArgs(_manager.UIElement));
         }
 
         #endregion
 
+        private void btnCreateList_Click(object sender, EventArgs e)
+        {
+            _manager.CreateAttachmentsList(Data);
+        }
     }
 
     public class AttachmentsUpdatedEventArgs

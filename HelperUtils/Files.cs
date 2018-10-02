@@ -29,9 +29,9 @@ namespace HelperUtils
                 return string.Concat(folder, @"\", OriginalName);
             }
             long counter = 1;
-            while (File.Exists(string.Concat(folder, @"\", OriginalName, " (", counter.ToString(), ")")))
+            while (File.Exists(string.Concat(folder, @"\", Path.GetFileNameWithoutExtension(OriginalName), " (", counter.ToString(), ")",Path.GetExtension(OriginalName))))
                 counter++;
-            return string.Concat(folder, @"\", OriginalName, " (", counter.ToString(), ")");
+            return string.Concat(folder, @"\", Path.GetFileNameWithoutExtension(OriginalName), " (", counter.ToString(), ")", Path.GetExtension(OriginalName));
         }
 
     }

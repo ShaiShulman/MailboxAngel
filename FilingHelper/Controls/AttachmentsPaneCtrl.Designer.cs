@@ -31,8 +31,10 @@
             this.pnlMaster = new System.Windows.Forms.FlowLayoutPanel();
             this.ctlProgress = new System.Windows.Forms.ProgressBar();
             this.pnlContainer = new HelperUtils.DraggableTableLayoutPanel();
+            this.lblSize = new System.Windows.Forms.Label();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnNumberize = new System.Windows.Forms.Button();
+            this.btnCreateList = new System.Windows.Forms.Button();
             this.pnlMaster.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,6 +46,8 @@
             this.pnlMaster.Controls.Add(this.pnlContainer);
             this.pnlMaster.Controls.Add(this.btnApply);
             this.pnlMaster.Controls.Add(this.btnNumberize);
+            this.pnlMaster.Controls.Add(this.btnCreateList);
+            this.pnlMaster.Controls.Add(this.lblSize);
             this.pnlMaster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMaster.Location = new System.Drawing.Point(0, 0);
             this.pnlMaster.MaximumSize = new System.Drawing.Size(1200, 250);
@@ -59,6 +63,7 @@
             this.ctlProgress.Location = new System.Drawing.Point(3, 3);
             this.ctlProgress.Name = "ctlProgress";
             this.ctlProgress.Size = new System.Drawing.Size(598, 10);
+            this.ctlProgress.Step = 1;
             this.ctlProgress.TabIndex = 1;
             this.ctlProgress.Visible = false;
             // 
@@ -80,6 +85,18 @@
             this.pnlContainer.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.pnlContainer.Size = new System.Drawing.Size(600, 50);
             this.pnlContainer.TabIndex = 15;
+            // 
+            // lblSize
+            // 
+            this.lblSize.AutoSize = true;
+            this.lblSize.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSize.Location = new System.Drawing.Point(189, 72);
+            this.lblSize.Name = "lblSize";
+            this.lblSize.Size = new System.Drawing.Size(44, 31);
+            this.lblSize.TabIndex = 16;
+            this.lblSize.Text = "lblSize";
+            this.lblSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnApply
             // 
@@ -107,6 +124,19 @@
             this.btnNumberize.UseVisualStyleBackColor = true;
             this.btnNumberize.Click += new System.EventHandler(this.btnNumberize_Click);
             // 
+            // btnCreateList
+            // 
+            this.btnCreateList.Image = global::FilingHelper.Properties.Resources.CreateList;
+            this.btnCreateList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCreateList.Location = new System.Drawing.Point(96, 75);
+            this.btnCreateList.Name = "btnCreateList";
+            this.btnCreateList.Size = new System.Drawing.Size(87, 25);
+            this.btnCreateList.TabIndex = 17;
+            this.btnCreateList.Text = "Create List";
+            this.btnCreateList.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCreateList.UseVisualStyleBackColor = true;
+            this.btnCreateList.Click += new System.EventHandler(this.btnCreateList_Click);
+            // 
             // AttachmentsPaneCtrl
             // 
             this.AllowDrop = true;
@@ -117,6 +147,7 @@
             this.Size = new System.Drawing.Size(718, 247);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.AttachmentsPaneCtrl_DragDrop);
             this.pnlMaster.ResumeLayout(false);
+            this.pnlMaster.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,5 +159,7 @@
         public System.Windows.Forms.FlowLayoutPanel pnlMaster;
         private HelperUtils.DraggableTableLayoutPanel pnlContainer;
         private System.Windows.Forms.ProgressBar ctlProgress;
+        private System.Windows.Forms.Label lblSize;
+        private System.Windows.Forms.Button btnCreateList;
     }
 }

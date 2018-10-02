@@ -9,15 +9,15 @@ namespace HelperUtils
     public abstract class HistoryListItemBase : ILimitedQueueItem
     {
         public virtual bool Active { get; }
+        public virtual string UniqueID { get; }
 
-        private bool _persist;
-        public bool Persist
+        protected bool _persist;
+        public  bool Persist
         {
             get { return _persist; }
             set { _persist = value; }
         }
-
-        private bool _avoid;
+        protected bool _avoid;
         public bool Avoid
         {
             get { return _avoid; }

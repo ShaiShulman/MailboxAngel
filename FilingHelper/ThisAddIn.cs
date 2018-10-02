@@ -288,10 +288,12 @@ namespace FilingHelper
             if (attachmentPaneCtrls[inspector] == null)
                 attachmentPaneCtrls.Insert(new AttachmentsPaneCtrl(manager), "Attachment Manager", inspector);
             CustomTaskPane pane = attachmentPaneCtrls[inspector];
+            ((AttachmentsPaneCtrl)pane.Control).TotalWidth = pane.Width;
             pane.Visible = true;
             pane.DockPosition = Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionTop;
             manager.UIElement = pane;
             List<AttachmentCommand> attachments = (manager.getAttachments());
+
             Outlook.MailItem message = (Outlook.MailItem)inspector.CurrentItem;
             message.AttachmentAdd += ThisAddIn_AttachmentAdd;
             message.AttachmentRemove += Message_AttachmentRemove;
@@ -305,7 +307,6 @@ namespace FilingHelper
                     ((AttachmentsPaneCtrl)pane.Control).TotalHeight = pane.Height;
             });
             pane.Height = ((AttachmentsPaneCtrl)pane.Control).TotalHeight;
-
         }
 
         private void AttachmentPaneCtrl_AttachmentsUpdated(object sender, AttachmentsUpdatedEventArgs e)
@@ -333,7 +334,6 @@ namespace FilingHelper
         private void ThisAddIn_AttachmentAdd(Outlook.Attachment Attachment)
         {
             if (_updateAttachmentsOnAddRemove)
-
             {
                 Outlook.Inspector inspector = ((Outlook.MailItem)Attachment.Parent).GetInspector;
                 AttachmentService manager = attachmentManagers[inspector];
@@ -431,6 +431,7 @@ namespace FilingHelper
             folderHistory = new FolderHistoryManager(HISTORY_SIZE);
             folderHistory.Load();
             mailHistory = new MailHistoryManager(HISTORY_SIZE);
+            mailHistory.Load();
             ((Outlook.ApplicationEvents_11_Event)Application).Quit += ThisAddIn_Quit;
             _folderSearch = new FolderServices();
             _folderNavigatorService = new FolderNavigator();
@@ -451,12 +452,21 @@ namespace FilingHelper
         private void ThisAddIn_Quit()
         {
             folderHistory.Save();
+            MailHistory.Save();
         }
 
         private void Explorers_NewExplorer(Outlook.Explorer Explorer)
         {
             folderPanelsWrapper.Add(Explorer, new ExplorerWrapper(Explorer, new FolderPromptCtrl(), "Folder Action"));
             Explorer.BeforeFolderSwitch += Explorer_BeforeFolderSwitch;
+            Explorer.SelectionChange += (() =>
+            {
+                if (Explorer.Selection.Count > 0 && Explorer.Selection[1] is Outlook.MailItem)
+                {
+                    Outlook.MailItem mailItem = Explorer.Selection[1] as Outlook.MailItem;
+                    mailHistory.Insert(mailItem);
+                }
+            });
         }
 
         public void ShowFolder(Outlook.MAPIFolder folder, bool isNewWindow=false)
@@ -483,11 +493,11 @@ namespace FilingHelper
 
         private void Inspectors_NewInspector(Outlook.Inspector Inspector)
         {
-            if (Inspector.CurrentItem is Outlook.MailItem)
-            {
-                Outlook.MailItem mailItem = Inspector.CurrentItem as Outlook.MailItem;
-                mailHistory.Insert(mailItem);
-            }
+            //    if (Inspector.CurrentItem is Outlook.MailItem)
+            //    {
+            //        Outlook.MailItem mailItem = Inspector.CurrentItem as Outlook.MailItem;
+            //        mailHistory.Insert(mailItem);
+            //    }
 
         }
 

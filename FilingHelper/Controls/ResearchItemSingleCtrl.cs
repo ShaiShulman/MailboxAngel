@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Outlook;
 using HelperUtils;
+using System.Text.RegularExpressions;
 
 namespace FilingHelper.Controls
 {
@@ -33,13 +34,53 @@ namespace FilingHelper.Controls
             set { txtComment.Visible = value; }
         }
 
-
         public ResearchItemSingleCtrl(MailInfo mailItem)
         {
             InitializeComponent();
             lblSubject.Text = mailItem.Item.Subject;
-            lblContent.Text = mailItem.Item.Body;
+            btnPintoBoard.Checked = mailItem.Persist;
+            switch (mailItem.Item.BodyFormat)
+            {
+                case OlBodyFormat.olFormatUnspecified:
+                    txtBody.Text = mailItem.Item.Body;
+                    break;
+                case OlBodyFormat.olFormatPlain:
+                    txtBody.Text = mailItem.Item.Body;
+                    break;
+                case OlBodyFormat.olFormatHTML:
+                    txtBody.Text= mailItem.Item.Body;
+                    break;
+                case OlBodyFormat.olFormatRichText:
+                    txtBody.Rtf = mailItem.Item.RTFBody;
+                    break;
+            }
+            txtBody.Text = mailItem.Item.Body;
+            ctlToolTip.SetToolTip(txtBody, truncateBody(mailItem.Item.Body));
+            ctlToolTip.ToolTipTitle = mailItem.Item.Subject;
             _mailInfo = mailItem;
+        }
+
+        private string truncateBody(string body)
+        {
+            const int MAX_LINE_LENGTH = 40;
+            const int MAX_LINES = 8;
+            string[] lines = Regex.Split(body, "\r\n|\r|\n");
+            List<string> output = new List<string>();
+            int sourceLine = 0;
+            while (sourceLine<lines.Length && output.Count < MAX_LINES)
+            {
+                if (!string.IsNullOrWhiteSpace(lines[sourceLine]))
+                {
+                    int linePos = 0;
+                    do
+                    {
+                        output.Add(lines[sourceLine].Substring(linePos, Math.Min(lines[sourceLine].Length-linePos,MAX_LINE_LENGTH))); 
+                        linePos += MAX_LINE_LENGTH;
+                    } while (linePos <lines[sourceLine].Length);
+                }
+                sourceLine++;
+            }
+            return String.Join("\n", output);
         }
 
         public void HideToolStrip()
@@ -97,14 +138,13 @@ namespace FilingHelper.Controls
         private void btnNote_Click(object sender, EventArgs e)
         {
             txtComment.Visible = btnNote.Checked;
-            lblContent.Visible = !btnNote.Checked;
+            txtBody.Visible = !btnNote.Checked;
 
         }
-
         private void pnlContainer_Resize(object sender, EventArgs e)
         {
             txtComment.Width = this.Width - ctlToolStrip.Width;
-            lblContent.Width = this.Width - ctlToolStrip.Width;
+            txtBody.Width = this.Width - ctlToolStrip.Width;
         }
 
         private void lblContent_DoubleClick(object sender, EventArgs e)

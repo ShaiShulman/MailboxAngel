@@ -16,66 +16,69 @@ namespace HelperUtils
             set { limit = value; }
         }
 
-        private List<T> list = new List<T>();
+        private List<T> _list = new List<T>();
 
-        public void Enqueue(T item)
+        public bool Enqueue(T item)
         {
-            T existing = list.FirstOrDefault(x => x.ToString() == item.ToString());
+            T existing = _list.FirstOrDefault(x => x.UniqueID == item.UniqueID);
             if (existing != null)
             {
                 if (existing.Persist || existing.Avoid)
-                    return;
-                list.Remove(existing);
+                    return false;
+                _list.Remove(existing);
             }
-            for (int i = list.Count()-1; i >=0 &&  list.Where(x => !x.Avoid).Count()>=limit && list.Exists(x => !x.Persist); i--)
+            for (int i = _list.Count()-1; i >=0 &&  _list.Where(x => !x.Avoid).Count()>=limit && _list.Exists(x => !x.Persist); i--)
             {
-                if (!list[i].Persist)
+                if (!_list[i].Persist)
                 {
-                    list.RemoveAt(i);
+                    _list.RemoveAt(i);
                     i++;
                 }
             }
-            list.Insert(0,item);
+            _list.Insert(0,item);
+            return (existing == null);
         }
 
         public T Dequeue()
         {
-            T item = list.Last();
-            list.Remove(item);
+            T item = _list.Last();
+            _list.Remove(item);
             return item;
         }
 
         public T[] ToArray()
         {
-            return list.ToArray();
+            return _list.ToArray();
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return ((IEnumerable<T>)list).GetEnumerator();
+            return ((IEnumerable<T>)_list).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<T>)list).GetEnumerator();
+            return ((IEnumerable<T>)_list).GetEnumerator();
         }
 
         public T this[int index]
         {
             get
             {
-                if (index >= list.Count)
+                if (index >= _list.Count)
                     throw new IndexOutOfRangeException();
-                return list[index];
+                return _list[index];
             }
         }
-
-       
-
 
         public LimitedUniqueQueue(int limit)
         {
             this.limit = limit;
+        }
+
+        public void Fill(IEnumerable<T> source)
+        {
+            _list = source.ToList();
         }
     }
 
@@ -90,6 +93,10 @@ namespace HelperUtils
         {
             get;
             set;
+        }
+        string UniqueID
+        {
+            get;
         }
     }
 }

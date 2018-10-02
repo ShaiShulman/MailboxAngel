@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,8 +24,12 @@ namespace HelperUtils
             _folder = null;
         }
 
+
         public override bool Active
         { get { return _folder != null; } }
+
+        public override string UniqueID
+        { get { return _folder.EntryID; } }
 
         private MAPIFolder _folder;
         public MAPIFolder Folder
@@ -32,15 +37,13 @@ namespace HelperUtils
             get { return _folder; }
         }
 
-        private bool _persist;
-        public bool Persist
+        public new bool Persist
         {
             get { return _persist; }
             set { _persist = value; }
         }
 
-        private bool _avoid;
-        public bool Avoid
+        public new bool Avoid
         {
             get { return _avoid; }
             set { _avoid = value; }
@@ -58,7 +61,6 @@ namespace HelperUtils
             get { return _storeID; }
         }
 
-        private string _path;
         public string Path
         {
             get
@@ -67,7 +69,7 @@ namespace HelperUtils
                 {
                     return _folder.FullFolderPath;
                 }
-                catch (System.Exception)
+                catch (COMException)
                 {
 
                     return NAME_ERROR;
@@ -79,13 +81,22 @@ namespace HelperUtils
         {
             get
             {
-                int nameStart = _folder.FullFolderPath.LastIndexOf(@"\");
-                if (nameStart > 0)
+                try
                 {
-                    return string.Format("{0} ({1})", _folder.FullFolderPath.Substring(nameStart + 1), TrimPath(_folder.FullFolderPath.Substring(0, nameStart)));
+                    int nameStart = _folder.FullFolderPath.LastIndexOf(@"\");
+                    if (nameStart > 0)
+                    {
+                        return string.Format("{0} ({1})", _folder.FullFolderPath.Substring(nameStart + 1), TrimPath(_folder.FullFolderPath.Substring(0, nameStart)));
+                    }
+                    else
+                        return _folder.FullFolderPath;
+
                 }
-                else
-                    return _folder.FullFolderPath;
+                catch (COMException)
+                {
+
+                    return NAME_ERROR;
+                }
             }
         }
 
