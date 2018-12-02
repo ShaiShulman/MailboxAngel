@@ -34,75 +34,46 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher ribbonDialogLauncherImpl1 = this.Factory.CreateRibbonDialogLauncher();
+            Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher ribbonDialogLauncherImpl2 = this.Factory.CreateRibbonDialogLauncher();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerCustomRibbon));
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.btnCloseAll = this.Factory.CreateRibbonButton();
-            this.group3 = this.Factory.CreateRibbonGroup();
-            this.btnResearchPane = this.Factory.CreateRibbonButton();
             this.tab2 = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
+            this.grpFoldersGroup = this.Factory.CreateRibbonGroup();
+            this.txtSearchFolder = this.Factory.CreateRibbonEditBox();
+            this.grpFilingGroup = this.Factory.CreateRibbonGroup();
+            this.tab3 = this.Factory.CreateRibbonTab();
+            this.group3 = this.Factory.CreateRibbonGroup();
+            this.menu1 = this.Factory.CreateRibbonMenu();
             this.menu2 = this.Factory.CreateRibbonMenu();
             this.btnItemReplyAll = this.Factory.CreateRibbonButton();
             this.btnItemReply = this.Factory.CreateRibbonButton();
-            this.grpFoldersGroup = this.Factory.CreateRibbonGroup();
-            this.txtSearchFolder = this.Factory.CreateRibbonEditBox();
             this.btnPrevFolder = this.Factory.CreateRibbonButton();
             this.btnNextFolder = this.Factory.CreateRibbonButton();
             this.mnuHistory = this.Factory.CreateRibbonMenu();
-            this.grpFilingGroup = this.Factory.CreateRibbonGroup();
             this.mnuConversation = this.Factory.CreateRibbonMenu();
             this.btnMoveSearch = this.Factory.CreateRibbonButton();
             this.btnArchive = this.Factory.CreateRibbonButton();
-            this.menu1 = this.Factory.CreateRibbonMenu();
-            this.btnSettings = this.Factory.CreateRibbonButton();
+            this.btnResearchPane = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.btnCloseAll = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
-            this.group1.SuspendLayout();
-            this.group3.SuspendLayout();
             this.tab2.SuspendLayout();
             this.group2.SuspendLayout();
             this.grpFoldersGroup.SuspendLayout();
             this.grpFilingGroup.SuspendLayout();
+            this.tab3.SuspendLayout();
+            this.group3.SuspendLayout();
+            this.group1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.ControlId.OfficeId = "TabFolder";
-            this.tab1.Groups.Add(this.group1);
-            this.tab1.Groups.Add(this.group3);
             this.tab1.Label = "TabFolder";
             this.tab1.Name = "tab1";
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.btnCloseAll);
-            this.group1.Label = "Window Helper";
-            this.group1.Name = "group1";
-            // 
-            // btnCloseAll
-            // 
-            this.btnCloseAll.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnCloseAll.Label = "Close All";
-            this.btnCloseAll.Name = "btnCloseAll";
-            this.btnCloseAll.OfficeImageId = "ViewDisplayInHighContrast";
-            this.btnCloseAll.ShowImage = true;
-            this.btnCloseAll.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCloseAll_Click);
-            // 
-            // group3
-            // 
-            this.group3.Items.Add(this.btnResearchPane);
-            this.group3.Items.Add(this.btnSettings);
-            this.group3.Label = "group3";
-            this.group3.Name = "group3";
-            // 
-            // btnResearchPane
-            // 
-            this.btnResearchPane.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnResearchPane.Label = "Research";
-            this.btnResearchPane.Name = "btnResearchPane";
-            this.btnResearchPane.ShowImage = true;
-            this.btnResearchPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnResearchPane_Click);
             // 
             // tab2
             // 
@@ -120,6 +91,59 @@
             this.group2.Label = "Repond (Adv)";
             this.group2.Name = "group2";
             this.group2.Position = this.Factory.RibbonPosition.AfterOfficeId("GroupMailRespond");
+            // 
+            // grpFoldersGroup
+            // 
+            this.grpFoldersGroup.DialogLauncher = ribbonDialogLauncherImpl1;
+            this.grpFoldersGroup.Items.Add(this.txtSearchFolder);
+            this.grpFoldersGroup.Items.Add(this.btnPrevFolder);
+            this.grpFoldersGroup.Items.Add(this.btnNextFolder);
+            this.grpFoldersGroup.Items.Add(this.mnuHistory);
+            this.grpFoldersGroup.Label = "Folder Helper";
+            this.grpFoldersGroup.Name = "grpFoldersGroup";
+            this.grpFoldersGroup.Position = this.Factory.RibbonPosition.BeforeOfficeId("GroupCurrentView");
+            this.grpFoldersGroup.DialogLauncherClick += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.grpFoldersGroup_DialogLauncherClick);
+            // 
+            // txtSearchFolder
+            // 
+            this.txtSearchFolder.KeyTip = "L";
+            this.txtSearchFolder.Label = "Search:";
+            this.txtSearchFolder.Name = "txtSearchFolder";
+            this.txtSearchFolder.SizeString = "Search Folder";
+            this.txtSearchFolder.Text = "Name";
+            this.txtSearchFolder.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.txtSearchFolder_TextChanged);
+            // 
+            // grpFilingGroup
+            // 
+            this.grpFilingGroup.DialogLauncher = ribbonDialogLauncherImpl2;
+            this.grpFilingGroup.Items.Add(this.mnuConversation);
+            this.grpFilingGroup.Items.Add(this.btnMoveSearch);
+            this.grpFilingGroup.Items.Add(this.btnArchive);
+            this.grpFilingGroup.Label = "Move Message";
+            this.grpFilingGroup.Name = "grpFilingGroup";
+            this.grpFilingGroup.Position = this.Factory.RibbonPosition.BeforeOfficeId("GroupCurrentView");
+            this.grpFilingGroup.DialogLauncherClick += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.grpFilingGroup_DialogLauncherClick);
+            // 
+            // tab3
+            // 
+            this.tab3.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.tab3.ControlId.OfficeId = "TabView";
+            this.tab3.Groups.Add(this.group3);
+            this.tab3.Groups.Add(this.group1);
+            this.tab3.Label = "TabView";
+            this.tab3.Name = "tab3";
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.btnResearchPane);
+            this.group3.Label = "Research";
+            this.group3.Name = "group3";
+            // 
+            // menu1
+            // 
+            this.menu1.Label = "menu1";
+            this.menu1.Name = "menu1";
+            this.menu1.ShowImage = true;
             // 
             // menu2
             // 
@@ -147,25 +171,6 @@
             this.btnItemReply.ShowImage = true;
             this.btnItemReply.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnItemReply_Click);
             // 
-            // grpFoldersGroup
-            // 
-            this.grpFoldersGroup.Items.Add(this.txtSearchFolder);
-            this.grpFoldersGroup.Items.Add(this.btnPrevFolder);
-            this.grpFoldersGroup.Items.Add(this.btnNextFolder);
-            this.grpFoldersGroup.Items.Add(this.mnuHistory);
-            this.grpFoldersGroup.Label = "Folder Helper";
-            this.grpFoldersGroup.Name = "grpFoldersGroup";
-            this.grpFoldersGroup.Position = this.Factory.RibbonPosition.BeforeOfficeId("GroupCurrentView");
-            // 
-            // txtSearchFolder
-            // 
-            this.txtSearchFolder.KeyTip = "L";
-            this.txtSearchFolder.Label = "Search:";
-            this.txtSearchFolder.Name = "txtSearchFolder";
-            this.txtSearchFolder.SizeString = "Search Folder";
-            this.txtSearchFolder.Text = "Name";
-            this.txtSearchFolder.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.txtSearchFolder_TextChanged);
-            // 
             // btnPrevFolder
             // 
             this.btnPrevFolder.Label = "Previous";
@@ -191,15 +196,6 @@
             this.mnuHistory.OfficeImageId = "StartTimer";
             this.mnuHistory.ShowImage = true;
             this.mnuHistory.ItemsLoading += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.MnuHistory_ItemsLoading);
-            // 
-            // grpFilingGroup
-            // 
-            this.grpFilingGroup.Items.Add(this.mnuConversation);
-            this.grpFilingGroup.Items.Add(this.btnMoveSearch);
-            this.grpFilingGroup.Items.Add(this.btnArchive);
-            this.grpFilingGroup.Label = "Move Message";
-            this.grpFilingGroup.Name = "grpFilingGroup";
-            this.grpFilingGroup.Position = this.Factory.RibbonPosition.BeforeOfficeId("GroupCurrentView");
             // 
             // mnuConversation
             // 
@@ -227,19 +223,29 @@
             this.btnArchive.ShowImage = true;
             this.btnArchive.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnArchive_Click);
             // 
-            // menu1
+            // btnResearchPane
             // 
-            this.menu1.Label = "menu1";
-            this.menu1.Name = "menu1";
-            this.menu1.ShowImage = true;
+            this.btnResearchPane.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnResearchPane.Image = global::FilingHelper.Properties.Resources.if_ilustracoes_04_11_1519786__2_;
+            this.btnResearchPane.Label = "Mail History";
+            this.btnResearchPane.Name = "btnResearchPane";
+            this.btnResearchPane.ShowImage = true;
+            this.btnResearchPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnResearchPane_Click);
             // 
-            // btnSettings
+            // group1
             // 
-            this.btnSettings.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnSettings.Label = "Settings";
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.ShowImage = true;
-            this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSettings_Click);
+            this.group1.Items.Add(this.btnCloseAll);
+            this.group1.Label = "Window Helper";
+            this.group1.Name = "group1";
+            // 
+            // btnCloseAll
+            // 
+            this.btnCloseAll.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnCloseAll.Label = "Close All";
+            this.btnCloseAll.Name = "btnCloseAll";
+            this.btnCloseAll.OfficeImageId = "ViewDisplayInHighContrast";
+            this.btnCloseAll.ShowImage = true;
+            this.btnCloseAll.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCloseAll_Click);
             // 
             // ExplorerCustomRibbon
             // 
@@ -251,13 +257,10 @@
             this.RibbonType = "Microsoft.Outlook.Explorer";
             this.Tabs.Add(this.tab1);
             this.Tabs.Add(this.tab2);
+            this.Tabs.Add(this.tab3);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.ExplorerCustomRibbon_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
-            this.group3.ResumeLayout(false);
-            this.group3.PerformLayout();
             this.tab2.ResumeLayout(false);
             this.tab2.PerformLayout();
             this.group2.ResumeLayout(false);
@@ -266,6 +269,12 @@
             this.grpFoldersGroup.PerformLayout();
             this.grpFilingGroup.ResumeLayout(false);
             this.grpFilingGroup.PerformLayout();
+            this.tab3.ResumeLayout(false);
+            this.tab3.PerformLayout();
+            this.group3.ResumeLayout(false);
+            this.group3.PerformLayout();
+            this.group1.ResumeLayout(false);
+            this.group1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -273,15 +282,11 @@
         #endregion
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
         private Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCloseAll;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab2;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnItemReplyAll;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnItemReply;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnResearchPane;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpFoldersGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPrevFolder;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnNextFolder;
@@ -291,7 +296,11 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMoveSearch;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpFilingGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu mnuConversation;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnResearchPane;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCloseAll;
     }
 
     partial class ThisRibbonCollection

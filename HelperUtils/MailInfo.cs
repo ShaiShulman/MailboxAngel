@@ -19,7 +19,7 @@ namespace HelperUtils
 
         }
         public override string UniqueID
-        { get { return _mail.EntryID; } }
+        { get { if (_mail != null) return _mail.EntryID; else return null; } }
 
         private string _entryID;
         [Persistent]
@@ -48,6 +48,15 @@ namespace HelperUtils
             get { return _avoid; }
             set { _avoid = value; }
         }
+
+        [Persistent]
+        private string _comment;
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
+        }
+
         public override bool Active
         { get { return _mail != null; } }
 

@@ -37,11 +37,22 @@ namespace FilingHelper.Controls
             listManager.NewMailItem += ListManager_NewMailItem;
             foreach (var item in listManager)
             {
-                ResearchItemSingleCtrl ctrl = new ResearchItemSingleCtrl(item);
-                ctrl.ControlRemoved += Ctrl_ControlRemoved;
-                ctrl.Width = pnlItemsList.Width;
-                ctrl.ToolStripShown += Ctrl_ToolStripShown;
-                pnlItemsList.AddControl(ctrl);
+                bool isActive=true;
+                try
+                {
+                    isActive = (item.Item != null && !String.IsNullOrWhiteSpace(item.Item.Subject));
+                }
+                catch (ComException)
+                {
+                }
+                if (isActive)
+                {
+                    ResearchItemSingleCtrl ctrl = new ResearchItemSingleCtrl(item);
+                    ctrl.ControlRemoved += Ctrl_ControlRemoved;
+                    ctrl.Width = pnlItemsList.Width;
+                    ctrl.ToolStripShown += Ctrl_ToolStripShown;
+                    pnlItemsList.AddControl(ctrl);
+                }
             }
         }
 
@@ -56,16 +67,18 @@ namespace FilingHelper.Controls
 
         private void ListManager_NewMailItem(object sender, MailItemEventArgs e)
         {
+            //if (Properties.AddinSettings.Default.MailHistoryAddMode != MailHistoryAddMode.ExplorerSelectionChange)
+            //    return;
             ResearchItemSingleCtrl ctrl = new ResearchItemSingleCtrl(e.ItemInfo);
             ctrl.ControlRemoved += Ctrl_ControlRemoved;
             ctrl.Width = pnlItemsList.Width;
             ctrl.ToolStripShown += Ctrl_ToolStripShown;
             ctrl.Visible = e.ItemInfo.Persist || !btnShowPinned.Checked;
             Control first = firstNonPersistent();
-            if (first==null)
+            if (first == null)
                 pnlItemsList.AddControl(ctrl);
             else
-                pnlItemsList.AddControl(ctrl, MoveDirection.Before,first);
+                pnlItemsList.AddControl(ctrl, MoveDirection.Before, first);
         }
 
         private ResearchItemSingleCtrl firstNonPersistent()
@@ -207,6 +220,15 @@ namespace FilingHelper.Controls
         private void btnShowAll_Click(object sender, EventArgs e)
         {
             showHideItems(false);
+        }
+
+        private void btnShowComments_Click(object sender, EventArgs e)
+        {
+            foreach (var ctrl in pnlItemsList.Controls)
+            {
+                if (ctrl is ResearchItemSingleCtrl)
+                    ((ResearchItemSingleCtrl)ctrl).CommentsMode = btnShowComments.Checked;
+            }
         }
     }
     #region EventArgs

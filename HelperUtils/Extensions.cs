@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,25 +17,50 @@ namespace HelperUtils
                 return false;
             return text.IndexOf(value, stringComparison) >= 0;
         }
+        public static int TryParseInt(this string text, int defaultValue)
+        {
+            int parsedValue = 0;
+            if (int.TryParse(text, out parsedValue))
+                return parsedValue;
+            else
+                return defaultValue;
+        }
+        public static int TryParseInt(this decimal val, int defaultValue)
+        {
+            int parsedValue = 0;
+            if (int.TryParse(val.ToString(), out parsedValue))
+                return parsedValue;
+            else
+                return defaultValue;
+        }
 
-        //public static string ExtractFileName(this string text)
-        //{
-        //    if (text.LastIndexOf(".") > 0)
-        //        return text.Substring(0, text.LastIndexOf("."));
-        //    else
-        //        return text;
-        //}
+        public static string GetDescription<T>(this T e) where T : IConvertible
+        {
+            if (e is Enum)
+            {
+                Type type = e.GetType();
+                Array values = System.Enum.GetValues(type);
 
-        //public static string ExtractExtension(this string text)
-        //{
-        //    if (text.LastIndexOf(".") > 0)
-        //        return text.Substring(text.LastIndexOf("."));
-        //    else
-        //        return "";
+                foreach (int val in values)
+                {
+                    if (val == e.ToInt32(CultureInfo.InvariantCulture))
+                    {
+                        var memInfo = type.GetMember(type.GetEnumName(val));
+                        var descriptionAttribute = memInfo[0]
+                            .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                            .FirstOrDefault() as DescriptionAttribute;
 
-        //}
+                        if (descriptionAttribute != null)
+                        {
+                            return descriptionAttribute.Description;
+                        }
+                    }
+                }
+            }
 
-
-
+            return null; // could also return string.Empty
+        }
     }
 }
+
+

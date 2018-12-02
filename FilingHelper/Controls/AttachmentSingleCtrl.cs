@@ -25,6 +25,8 @@ namespace FilingHelper.Controls
         public event EventHandler<ChildDragEventArgs> ControlDropOver;
         public event EventHandler<FileDroppedEventArgs> FileDropped;
         public event EventHandler<AttachmentEventArgs> AttachmentOpen;
+        public event EventHandler CompressedChanged;
+
         private AttachmentCommand _attachment;
         public AttachmentSingleCtrl(AttachmentCommand attachment)
         {
@@ -34,14 +36,12 @@ namespace FilingHelper.Controls
         }
         private void init(AttachmentCommand attachment)
         {
-            //txtFileName.Text = _attachment.Attachment.FileName;
             txtFileName.FileName = _attachment.NameOnly;
             txtFileName.Extension = _attachment.Extension;
             txtFileName.InvalidFileNameDelegate = new Action(()=>Globals.ThisAddIn.CustomMessageBox("File Name is Invalid", MessageBoxButtons.OK, MessageBoxIcon.Exclamation));
             if (!string.IsNullOrEmpty(attachment.Extension))
             {
                 addIcon(attachment.FullName, attachment.Extension);
-                //picIcon.Image = imgIcons.Images[attachment.Extension];
                 picFileIcon.Image = imgIcons.Images[attachment.Extension];
             }
         }
@@ -71,6 +71,12 @@ namespace FilingHelper.Controls
             txtFileName.Text = name;
         }
 
+        public bool Compressed
+        {
+            get { return btnCompress.Checked; }
+            set { btnCompress.Checked = value; }
+        }
+
         public object ShellIconSize { get; private set; }
 
         private void addIcon(string FileName, string Extension)
@@ -88,18 +94,6 @@ namespace FilingHelper.Controls
                 }
             }
         }
-
-        //private void openAttachment()
-        //{
-        //    if (_attachment is ExistingAttachmentCommand)
-        //    {
-        //        (_attachment as ExistingAttachmentCommand).Attachment.
-        //    }
-        //    else if (_attachment is NewAttachmentCommand)
-        //    {
-
-        //    }
-        //}
 
         private void btnUp_Click(object sender, EventArgs e)
         {
@@ -197,6 +191,11 @@ namespace FilingHelper.Controls
                 AttachmentOpen(this, new AttachmentEventArgs(_attachment));
         }
 
+        protected void onCompressedChanged()
+        {
+            if (CompressedChanged != null)
+                CompressedChanged(this, EventArgs.Empty);
+        }
         #endregion
 
         private void chkRemove_CheckedChanged(object sender, EventArgs e)
@@ -235,9 +234,16 @@ namespace FilingHelper.Controls
             doDrag();
         }
 
-        private void picFileIcon_MouseEnter(object sender, EventArgs e)
+        private void btnRemove_CheckedChanged(object sender, EventArgs e)
         {
+            txtFileName.Enabled = !btnRemove.Checked;
+        }
 
+        private void btnCompress_CheckedChanged(object sender, EventArgs e)
+        {
+            txtFileName.BackColor = btnCompress.Checked ? SystemColors.Info : SystemColors.Window;
+            Data.Compress = btnCompress.Checked;
+            onCompressedChanged();
         }
     }
 
@@ -298,7 +304,6 @@ namespace FilingHelper.Controls
             _attachment = attach;
         }
     }
-
 
     #endregion
 

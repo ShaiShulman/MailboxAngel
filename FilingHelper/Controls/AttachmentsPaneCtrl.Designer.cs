@@ -28,14 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pnlMaster = new System.Windows.Forms.FlowLayoutPanel();
             this.ctlProgress = new System.Windows.Forms.ProgressBar();
             this.pnlContainer = new HelperUtils.DraggableTableLayoutPanel();
-            this.lblSize = new System.Windows.Forms.Label();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnNumberize = new System.Windows.Forms.Button();
             this.btnCreateList = new System.Windows.Forms.Button();
+            this.btnCompress = new HelperUtils.MenuButton();
+            this.mnuCompress = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuNoCompression = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCompressSelected = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCompressAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtArchiveName = new HelperUtils.FileNameTextBox();
+            this.lblSize = new System.Windows.Forms.Label();
             this.pnlMaster.SuspendLayout();
+            this.mnuCompress.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlMaster
@@ -47,6 +55,8 @@
             this.pnlMaster.Controls.Add(this.btnApply);
             this.pnlMaster.Controls.Add(this.btnNumberize);
             this.pnlMaster.Controls.Add(this.btnCreateList);
+            this.pnlMaster.Controls.Add(this.btnCompress);
+            this.pnlMaster.Controls.Add(this.txtArchiveName);
             this.pnlMaster.Controls.Add(this.lblSize);
             this.pnlMaster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMaster.Location = new System.Drawing.Point(0, 0);
@@ -85,18 +95,6 @@
             this.pnlContainer.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.pnlContainer.Size = new System.Drawing.Size(600, 50);
             this.pnlContainer.TabIndex = 15;
-            // 
-            // lblSize
-            // 
-            this.lblSize.AutoSize = true;
-            this.lblSize.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSize.Location = new System.Drawing.Point(189, 72);
-            this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(44, 31);
-            this.lblSize.TabIndex = 16;
-            this.lblSize.Text = "lblSize";
-            this.lblSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnApply
             // 
@@ -137,6 +135,75 @@
             this.btnCreateList.UseVisualStyleBackColor = true;
             this.btnCreateList.Click += new System.EventHandler(this.btnCreateList_Click);
             // 
+            // btnCompress
+            // 
+            this.btnCompress.Image = global::FilingHelper.Properties.Resources.if_compress_358911;
+            this.btnCompress.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCompress.Location = new System.Drawing.Point(189, 75);
+            this.btnCompress.Menu = this.mnuCompress;
+            this.btnCompress.Name = "btnCompress";
+            this.btnCompress.Size = new System.Drawing.Size(80, 25);
+            this.btnCompress.TabIndex = 21;
+            this.btnCompress.Text = "Compress";
+            this.btnCompress.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCompress.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCompress.UseVisualStyleBackColor = true;
+            // 
+            // mnuCompress
+            // 
+            this.mnuCompress.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuNoCompression,
+            this.mnuCompressSelected,
+            this.mnuCompressAll});
+            this.mnuCompress.Name = "mnuCompress";
+            this.mnuCompress.Size = new System.Drawing.Size(174, 70);
+            // 
+            // mnuNoCompression
+            // 
+            this.mnuNoCompression.Checked = true;
+            this.mnuNoCompression.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mnuNoCompression.Name = "mnuNoCompression";
+            this.mnuNoCompression.Size = new System.Drawing.Size(173, 22);
+            this.mnuNoCompression.Text = "Don\'t compress";
+            this.mnuNoCompression.Click += new System.EventHandler(this.mnuNoCompression_Click);
+            // 
+            // mnuCompressSelected
+            // 
+            this.mnuCompressSelected.Name = "mnuCompressSelected";
+            this.mnuCompressSelected.Size = new System.Drawing.Size(173, 22);
+            this.mnuCompressSelected.Text = "Compress selected";
+            this.mnuCompressSelected.Click += new System.EventHandler(this.mnuCompressSelected_Click);
+            // 
+            // mnuCompressAll
+            // 
+            this.mnuCompressAll.Name = "mnuCompressAll";
+            this.mnuCompressAll.Size = new System.Drawing.Size(173, 22);
+            this.mnuCompressAll.Text = "Compress all files";
+            this.mnuCompressAll.Click += new System.EventHandler(this.mnuCompressAll_Click);
+            // 
+            // txtArchiveName
+            // 
+            this.txtArchiveName.Extension = "";
+            this.txtArchiveName.FileName = "";
+            this.txtArchiveName.Location = new System.Drawing.Point(275, 78);
+            this.txtArchiveName.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            this.txtArchiveName.Name = "txtArchiveName";
+            this.txtArchiveName.Size = new System.Drawing.Size(197, 20);
+            this.txtArchiveName.TabIndex = 20;
+            this.txtArchiveName.Visible = false;
+            // 
+            // lblSize
+            // 
+            this.lblSize.AutoSize = true;
+            this.lblSize.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSize.Location = new System.Drawing.Point(478, 72);
+            this.lblSize.Name = "lblSize";
+            this.lblSize.Size = new System.Drawing.Size(44, 31);
+            this.lblSize.TabIndex = 16;
+            this.lblSize.Text = "lblSize";
+            this.lblSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // AttachmentsPaneCtrl
             // 
             this.AllowDrop = true;
@@ -148,6 +215,7 @@
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.AttachmentsPaneCtrl_DragDrop);
             this.pnlMaster.ResumeLayout(false);
             this.pnlMaster.PerformLayout();
+            this.mnuCompress.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,5 +229,11 @@
         private System.Windows.Forms.ProgressBar ctlProgress;
         private System.Windows.Forms.Label lblSize;
         private System.Windows.Forms.Button btnCreateList;
+        private HelperUtils.FileNameTextBox txtArchiveName;
+        private HelperUtils.MenuButton btnCompress;
+        private System.Windows.Forms.ContextMenuStrip mnuCompress;
+        private System.Windows.Forms.ToolStripMenuItem mnuNoCompression;
+        private System.Windows.Forms.ToolStripMenuItem mnuCompressAll;
+        private System.Windows.Forms.ToolStripMenuItem mnuCompressSelected;
     }
 }

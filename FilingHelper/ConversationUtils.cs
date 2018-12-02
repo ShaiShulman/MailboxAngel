@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,14 +22,19 @@ namespace FilingHelper
                     SimpleItems convItems = header.GetItems();
                     foreach (var item in convItems)
                     {
-                        if (item is MailItem
-                            && (item as MailItem).Parent is Folder
-                            && ((item as MailItem).Parent as Folder).EntryID == explorer.CurrentFolder.EntryID)
+                        try
                         {
-                            if (!items.Exists(x => x.EntryID == (item as MailItem).EntryID))
-                                items.Add(item as MailItem);
+                            if (item is MailItem
+                                && (item as MailItem).Parent is Folder
+                                && ((item as MailItem).Parent as Folder).EntryID == explorer.CurrentFolder.EntryID)
+                            {
+                                if (!items.Exists(x => x.EntryID == (item as MailItem).EntryID))
+                                    items.Add(item as MailItem);
+                            }
                         }
-
+                        catch (COMException)
+                        {
+                        }
                     }
                 }
             }
@@ -47,6 +53,18 @@ namespace FilingHelper
             List<FolderResult> folders = new List<FolderResult>();
             Conversation conv = message.GetConversation();
             SimpleItems convItems = conv.GetRootItems();
+
+            if (convItems == null)
+                return new List<MAPIFolder>(); 
+            if (convItems.Count<1)
+                return new List<MAPIFolder>();
+            if ((convItems[1] as MailItem)==null)
+                return new List<MAPIFolder>();
+            if ((convItems[1] as MailItem).GetConversation() == null)
+                return new List<MAPIFolder>();
+            if ((convItems[1] as MailItem).GetConversation().GetTable() == null)
+                return new List<MAPIFolder>();
+
             Table tbl = (convItems[1] as MailItem).GetConversation().GetTable();
             while (!tbl.EndOfTable)
             {
@@ -54,15 +72,21 @@ namespace FilingHelper
                 var item = Globals.ThisAddIn.Application.Session.GetItemFromID(row["EntryID"]);
                 if (item is MailItem && (item as MailItem).Parent is MAPIFolder)
                 {
-                    MAPIFolder folder = (item as MailItem).Parent as MAPIFolder;
-                    if (folder.EntryID != excludedFolder.EntryID
-                        && !utils.isFolderSentMail(folder))
+                    try
                     {
-                        FolderResult match = folders.FirstOrDefault(x => x.Folder.EntryID == folder.EntryID);
-                        if (match != null)
-                            match.Frequency++;
-                        else
-                            folders.Add(new FolderResult(folder));
+                        MAPIFolder folder = (item as MailItem).Parent as MAPIFolder;
+                        if (folder.EntryID != excludedFolder.EntryID
+                            && !utils.isFolderSentMail(folder))
+                        {
+                            FolderResult match = folders.FirstOrDefault(x => x.Folder.EntryID == folder.EntryID);
+                            if (match != null)
+                                match.Frequency++;
+                            else
+                                folders.Add(new FolderResult(folder));
+                        }
+                    }
+                    catch (COMException)
+                    {
                     }
                 }
             }

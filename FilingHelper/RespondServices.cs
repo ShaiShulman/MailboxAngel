@@ -20,7 +20,7 @@ namespace FilingHelper
             if (original.Attachments.Count > 0)
             {
                 Queue<string> files = new Queue<string>();
-                string baseFolder = Files.getUniqueTempFolder();
+                string baseFolder = Files.GetUniqueTempFolder();
                 foreach (Attachment attach in original.Attachments)
                 {
                     if (!attachSrv.isInlineAttachment(attach))
@@ -29,7 +29,7 @@ namespace FilingHelper
                         if (attach.FileName.LastIndexOf(".") > 0)
                             ext = attach.FileName.Substring(attach.FileName.LastIndexOf("."));
 
-                        string fileName = Files.getUniqueFileName(baseFolder, attach.FileName);
+                        string fileName = Files.GetUniqueFileName(baseFolder, attach.FileName);
                         attach.SaveAsFile(fileName);
                         files.Enqueue(fileName);
                         reply.Attachments.Add(fileName);

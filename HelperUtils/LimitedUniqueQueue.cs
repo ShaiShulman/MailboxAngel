@@ -9,11 +9,16 @@ namespace HelperUtils
 {
     public class LimitedUniqueQueue<T>:IEnumerable<T> where T : ILimitedQueueItem
     {
-        private int limit;
+        private int _limit;
         public int Limit
         {
-            get { return limit; }
-            set { limit = value; }
+            get { return _limit; }
+            set {
+                _limit = value;
+                List<T> newList = _list.Where(x => !x.Avoid).OrderByDescending(x => x.Active).OrderByDescending(x => x.Persist).Take(_limit).ToList();
+                newList.AddRange(_list.Where(x => x.Avoid));
+                _list=newList;
+            }
         }
 
         private List<T> _list = new List<T>();
@@ -27,7 +32,7 @@ namespace HelperUtils
                     return false;
                 _list.Remove(existing);
             }
-            for (int i = _list.Count()-1; i >=0 &&  _list.Where(x => !x.Avoid).Count()>=limit && _list.Exists(x => !x.Persist); i--)
+            for (int i = _list.Count()-1; i >=0 &&  _list.Where(x => !x.Avoid).Count()>=_limit && _list.Exists(x => !x.Persist); i--)
             {
                 if (!_list[i].Persist)
                 {
@@ -37,6 +42,11 @@ namespace HelperUtils
             }
             _list.Insert(0,item);
             return (existing == null);
+        }
+
+        public void Clear()
+        {
+            _list.Clear();
         }
 
         public T Dequeue()
@@ -73,7 +83,7 @@ namespace HelperUtils
 
         public LimitedUniqueQueue(int limit)
         {
-            this.limit = limit;
+            this._limit = limit;
         }
 
         public void Fill(IEnumerable<T> source)
@@ -93,6 +103,10 @@ namespace HelperUtils
         {
             get;
             set;
+        }
+        bool Active
+        {
+            get;
         }
         string UniqueID
         {

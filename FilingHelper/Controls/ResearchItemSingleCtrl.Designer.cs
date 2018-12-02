@@ -32,25 +32,25 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ResearchItemSingleCtrl));
             this.pnlContainer = new System.Windows.Forms.Panel();
             this.txtComment = new System.Windows.Forms.TextBox();
+            this.picMailIcon = new System.Windows.Forms.PictureBox();
+            this.lblSubject = new System.Windows.Forms.Label();
+            this.txtBody = new System.Windows.Forms.RichTextBox();
             this.ctlToolStrip = new System.Windows.Forms.ToolStrip();
             this.btnOpenItem = new System.Windows.Forms.ToolStripButton();
             this.btnPintoBoard = new System.Windows.Forms.ToolStripButton();
             this.btnNote = new System.Windows.Forms.ToolStripButton();
             this.btnDeleteItem = new System.Windows.Forms.ToolStripButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblSubject = new System.Windows.Forms.Label();
-            this.txtBody = new System.Windows.Forms.RichTextBox();
             this.ctlToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.pnlContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picMailIcon)).BeginInit();
             this.ctlToolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlContainer
             // 
             this.pnlContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlContainer.Controls.Add(this.txtComment);
-            this.pnlContainer.Controls.Add(this.pictureBox1);
+            this.pnlContainer.Controls.Add(this.picMailIcon);
             this.pnlContainer.Controls.Add(this.lblSubject);
             this.pnlContainer.Controls.Add(this.txtBody);
             this.pnlContainer.Controls.Add(this.ctlToolStrip);
@@ -75,75 +75,20 @@
             this.txtComment.Size = new System.Drawing.Size(277, 78);
             this.txtComment.TabIndex = 5;
             this.txtComment.Visible = false;
+            this.txtComment.TextChanged += new System.EventHandler(this.txtComment_TextChanged);
             this.txtComment.Enter += new System.EventHandler(this.txtComment_Enter);
             this.txtComment.Leave += new System.EventHandler(this.txtComment_Leave);
+            this.txtComment.Validating += new System.ComponentModel.CancelEventHandler(this.txtComment_Validating);
             // 
-            // ctlToolStrip
+            // picMailIcon
             // 
-            this.ctlToolStrip.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ctlToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.ctlToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnOpenItem,
-            this.btnPintoBoard,
-            this.btnNote,
-            this.btnDeleteItem});
-            this.ctlToolStrip.Location = new System.Drawing.Point(275, 0);
-            this.ctlToolStrip.Name = "ctlToolStrip";
-            this.ctlToolStrip.Size = new System.Drawing.Size(32, 96);
-            this.ctlToolStrip.TabIndex = 4;
-            this.ctlToolStrip.Text = "toolStrip1";
-            this.ctlToolStrip.Visible = false;
-            // 
-            // btnOpenItem
-            // 
-            this.btnOpenItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnOpenItem.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenItem.Image")));
-            this.btnOpenItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnOpenItem.Name = "btnOpenItem";
-            this.btnOpenItem.Size = new System.Drawing.Size(21, 20);
-            this.btnOpenItem.Text = "toolStripButton1";
-            this.btnOpenItem.Click += new System.EventHandler(this.btnOpenItem_Click);
-            // 
-            // btnPintoBoard
-            // 
-            this.btnPintoBoard.CheckOnClick = true;
-            this.btnPintoBoard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnPintoBoard.Image = ((System.Drawing.Image)(resources.GetObject("btnPintoBoard.Image")));
-            this.btnPintoBoard.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnPintoBoard.Name = "btnPintoBoard";
-            this.btnPintoBoard.Size = new System.Drawing.Size(21, 20);
-            this.btnPintoBoard.Text = "toolStripButton1";
-            this.btnPintoBoard.Click += new System.EventHandler(this.btnPintoBoard_Click);
-            // 
-            // btnNote
-            // 
-            this.btnNote.CheckOnClick = true;
-            this.btnNote.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnNote.Image = ((System.Drawing.Image)(resources.GetObject("btnNote.Image")));
-            this.btnNote.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnNote.Name = "btnNote";
-            this.btnNote.Size = new System.Drawing.Size(21, 20);
-            this.btnNote.Text = "toolStripButton1";
-            this.btnNote.Click += new System.EventHandler(this.btnNote_Click);
-            // 
-            // btnDeleteItem
-            // 
-            this.btnDeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteItem.Image")));
-            this.btnDeleteItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDeleteItem.Name = "btnDeleteItem";
-            this.btnDeleteItem.Size = new System.Drawing.Size(21, 20);
-            this.btnDeleteItem.Text = "toolStripButton2";
-            this.btnDeleteItem.Click += new System.EventHandler(this.btnDeleteItem_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::FilingHelper.Properties.Resources.icon_msg_unread;
-            this.pictureBox1.Location = new System.Drawing.Point(2, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(17, 19);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.picMailIcon.Image = global::FilingHelper.Properties.Resources.icon_msg_unread;
+            this.picMailIcon.Location = new System.Drawing.Point(2, 3);
+            this.picMailIcon.Name = "picMailIcon";
+            this.picMailIcon.Size = new System.Drawing.Size(17, 19);
+            this.picMailIcon.TabIndex = 2;
+            this.picMailIcon.TabStop = false;
+            this.picMailIcon.Click += new System.EventHandler(this.picMailIcon_Click);
             // 
             // lblSubject
             // 
@@ -154,6 +99,7 @@
             this.lblSubject.Size = new System.Drawing.Size(41, 13);
             this.lblSubject.TabIndex = 0;
             this.lblSubject.Text = "label1";
+            this.lblSubject.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblSubject_MouseDown);
             // 
             // txtBody
             // 
@@ -165,6 +111,67 @@
             this.txtBody.Size = new System.Drawing.Size(309, 76);
             this.txtBody.TabIndex = 7;
             this.txtBody.Text = "";
+            // 
+            // ctlToolStrip
+            // 
+            this.ctlToolStrip.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ctlToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.ctlToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnOpenItem,
+            this.btnPintoBoard,
+            this.btnNote,
+            this.btnDeleteItem});
+            this.ctlToolStrip.Location = new System.Drawing.Point(283, 0);
+            this.ctlToolStrip.Name = "ctlToolStrip";
+            this.ctlToolStrip.Size = new System.Drawing.Size(24, 96);
+            this.ctlToolStrip.TabIndex = 4;
+            this.ctlToolStrip.Text = "toolStrip1";
+            // 
+            // btnOpenItem
+            // 
+            this.btnOpenItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnOpenItem.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenItem.Image")));
+            this.btnOpenItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnOpenItem.Name = "btnOpenItem";
+            this.btnOpenItem.Size = new System.Drawing.Size(21, 20);
+            this.btnOpenItem.Text = "toolStripButton1";
+            this.btnOpenItem.ToolTipText = "Open mail item";
+            this.btnOpenItem.Click += new System.EventHandler(this.btnOpenItem_Click);
+            // 
+            // btnPintoBoard
+            // 
+            this.btnPintoBoard.CheckOnClick = true;
+            this.btnPintoBoard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnPintoBoard.Image = ((System.Drawing.Image)(resources.GetObject("btnPintoBoard.Image")));
+            this.btnPintoBoard.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnPintoBoard.Name = "btnPintoBoard";
+            this.btnPintoBoard.Size = new System.Drawing.Size(21, 20);
+            this.btnPintoBoard.Text = "toolStripButton1";
+            this.btnPintoBoard.ToolTipText = "Pin this mail item to the board";
+            this.btnPintoBoard.Click += new System.EventHandler(this.btnPintoBoard_Click);
+            // 
+            // btnNote
+            // 
+            this.btnNote.CheckOnClick = true;
+            this.btnNote.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnNote.Image = ((System.Drawing.Image)(resources.GetObject("btnNote.Image")));
+            this.btnNote.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnNote.Name = "btnNote";
+            this.btnNote.Size = new System.Drawing.Size(21, 20);
+            this.btnNote.Text = "toolStripButton1";
+            this.btnNote.ToolTipText = "Show note for this item";
+            this.btnNote.Click += new System.EventHandler(this.btnNote_Click);
+            // 
+            // btnDeleteItem
+            // 
+            this.btnDeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteItem.Image")));
+            this.btnDeleteItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDeleteItem.Name = "btnDeleteItem";
+            this.btnDeleteItem.Size = new System.Drawing.Size(21, 20);
+            this.btnDeleteItem.Text = "toolStripButton2";
+            this.btnDeleteItem.ToolTipText = "Remove this mail item from the list";
+            this.btnDeleteItem.Click += new System.EventHandler(this.btnDeleteItem_Click);
             // 
             // ctlToolTip
             // 
@@ -183,9 +190,9 @@
             this.Size = new System.Drawing.Size(309, 98);
             this.pnlContainer.ResumeLayout(false);
             this.pnlContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picMailIcon)).EndInit();
             this.ctlToolStrip.ResumeLayout(false);
             this.ctlToolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -194,7 +201,7 @@
 
         private System.Windows.Forms.Panel pnlContainer;
         private System.Windows.Forms.Label lblSubject;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox picMailIcon;
         private System.Windows.Forms.ToolStrip ctlToolStrip;
         private System.Windows.Forms.ToolStripButton btnOpenItem;
         private System.Windows.Forms.ToolStripButton btnDeleteItem;

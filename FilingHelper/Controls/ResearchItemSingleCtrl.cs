@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.Outlook;
 using HelperUtils;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace FilingHelper.Controls
 {
@@ -28,7 +29,8 @@ namespace FilingHelper.Controls
             get { return _mailInfo; }
             set { _mailInfo = value; }
         }
-        private bool _commentMode
+
+        public bool CommentsMode
         {
             get { return txtComment.Visible; }
             set { txtComment.Visible = value; }
@@ -39,25 +41,31 @@ namespace FilingHelper.Controls
             InitializeComponent();
             lblSubject.Text = mailItem.Item.Subject;
             btnPintoBoard.Checked = mailItem.Persist;
-            switch (mailItem.Item.BodyFormat)
+            txtComment.Text = mailItem.Comment;
+            try
             {
-                case OlBodyFormat.olFormatUnspecified:
-                    txtBody.Text = mailItem.Item.Body;
-                    break;
-                case OlBodyFormat.olFormatPlain:
-                    txtBody.Text = mailItem.Item.Body;
-                    break;
-                case OlBodyFormat.olFormatHTML:
-                    txtBody.Text= mailItem.Item.Body;
-                    break;
-                case OlBodyFormat.olFormatRichText:
-                    txtBody.Rtf = mailItem.Item.RTFBody;
-                    break;
+                switch (mailItem.Item.BodyFormat)
+                {
+                    case OlBodyFormat.olFormatUnspecified:
+                        txtBody.Text = mailItem.Item.Body;
+                        break;
+                    case OlBodyFormat.olFormatPlain:
+                        txtBody.Text = mailItem.Item.Body;
+                        break;
+                    case OlBodyFormat.olFormatHTML:
+                        txtBody.Text = mailItem.Item.Body;
+                        break;
+                    case OlBodyFormat.olFormatRichText:
+                        txtBody.Rtf = System.Text.Encoding.UTF8.GetString(mailItem.Item.RTFBody);
+                        break;
+                }
+                ctlToolTip.SetToolTip(txtBody, truncateBody(mailItem.Item.Body));
+                ctlToolTip.ToolTipTitle = mailItem.Item.Subject;
             }
-            txtBody.Text = mailItem.Item.Body;
-            ctlToolTip.SetToolTip(txtBody, truncateBody(mailItem.Item.Body));
-            ctlToolTip.ToolTipTitle = mailItem.Item.Subject;
-            _mailInfo = mailItem;
+            finally
+            { 
+                _mailInfo = mailItem;
+            }
         }
 
         private string truncateBody(string body)
@@ -83,6 +91,10 @@ namespace FilingHelper.Controls
             return String.Join("\n", output);
         }
 
+        private void doDrag()
+        {
+            DoDragDrop(this, DragDropEffects.Move);
+        }
         public void HideToolStrip()
         {
             ctlToolStrip.Visible = false;
@@ -183,6 +195,26 @@ namespace FilingHelper.Controls
 
         private void pnlContainer_MouseLeave(object sender, EventArgs e)
         {
+        }
+
+        private void picMailIcon_Click(object sender, EventArgs e)
+        {
+            doDrag();
+        }
+
+        private void lblSubject_MouseDown(object sender, MouseEventArgs e)
+        {
+            doDrag();
+        }
+
+        private void txtComment_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void txtComment_Validating(object sender, CancelEventArgs e)
+        {
+            _mailInfo.Comment = txtComment.Text;
+
         }
     }
 }

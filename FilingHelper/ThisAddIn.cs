@@ -34,7 +34,11 @@ namespace FilingHelper
             get { return _folderSearch; }
             set { _folderSearch = value; }
         }
-
+        private FilingSuggester.Suggester _filingSuggester = new FilingSuggester.Suggester();
+        public FilingSuggester.Suggester FilingSuggestor
+        {
+            get { return _filingSuggester; }
+        }
         private FolderHistoryManager folderHistory;
         public FolderHistoryManager FolderHistory
         {
@@ -250,7 +254,7 @@ namespace FilingHelper
             CustomTaskPane pane = researchPaneCtril[explorer];
             pane.Visible = true;
             pane.DockPosition = Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionRight;
-            pane.Width = 200;
+            pane.Width = 400;
             pane.VisibleChanged += ((s, e) => {
                 HideResearchPane(explorer);
             });
@@ -428,9 +432,9 @@ namespace FilingHelper
 
             this.Application.ItemSend += Application_ItemSend;
 
-            folderHistory = new FolderHistoryManager(HISTORY_SIZE);
+            folderHistory = new FolderHistoryManager(Properties.AddinSettings.Default.FolderHistoryMaxItems);
             folderHistory.Load();
-            mailHistory = new MailHistoryManager(HISTORY_SIZE);
+            mailHistory = new MailHistoryManager(Properties.AddinSettings.Default.MailHistoryMaxItems);
             mailHistory.Load();
             ((Outlook.ApplicationEvents_11_Event)Application).Quit += ThisAddIn_Quit;
             _folderSearch = new FolderServices();
@@ -441,7 +445,7 @@ namespace FilingHelper
         {
             MailItem mail = (MailItem)Item;
             if (mail.MessageClass == "IPM.Note")
-                (new SignaturesService()).CheckForInternalSignature(mail);
+                (new SignaturesService()).ApplyCustomSignature(mail);
         }
 
         private void Items_ItemAdd(object Item)
@@ -461,12 +465,23 @@ namespace FilingHelper
             Explorer.BeforeFolderSwitch += Explorer_BeforeFolderSwitch;
             Explorer.SelectionChange += (() =>
             {
-                if (Explorer.Selection.Count > 0 && Explorer.Selection[1] is Outlook.MailItem)
+                if (Properties.AddinSettings.Default.MailHistoryAddMode== MailHistoryAddMode.ExplorerSelectionChange
+                    && Explorer.Selection.Count > 0 && Explorer.Selection[1] is Outlook.MailItem)
                 {
                     Outlook.MailItem mailItem = Explorer.Selection[1] as Outlook.MailItem;
                     mailHistory.Insert(mailItem);
                 }
+                ((Folder)Explorer.CurrentFolder).BeforeItemMove += ThisAddIn_BeforeItemMove;
             });
+        }
+
+        private void ThisAddIn_BeforeItemMove(object Item, MAPIFolder MoveTo, ref bool Cancel)
+        {
+            if (Item is MailItem)
+            {
+                MailItem item = (MailItem)Item;
+                _filingSuggester.Update(item.Sender.Address, (Folder)MoveTo);
+            }
         }
 
         public void ShowFolder(Outlook.MAPIFolder folder, bool isNewWindow=false)
@@ -493,12 +508,12 @@ namespace FilingHelper
 
         private void Inspectors_NewInspector(Outlook.Inspector Inspector)
         {
-            //    if (Inspector.CurrentItem is Outlook.MailItem)
-            //    {
-            //        Outlook.MailItem mailItem = Inspector.CurrentItem as Outlook.MailItem;
-            //        mailHistory.Insert(mailItem);
-            //    }
-
+            if (Properties.AddinSettings.Default.MailHistoryAddMode== MailHistoryAddMode.InspectorOpened
+                && Inspector.CurrentItem is Outlook.MailItem)
+            {
+                Outlook.MailItem mailItem = Inspector.CurrentItem as Outlook.MailItem;
+                mailHistory.Insert(mailItem);
+            }
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

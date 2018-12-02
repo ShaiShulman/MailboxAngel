@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CounterList.cs" />
     <Compile Include="DraggableLayout.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -61,6 +62,7 @@
     <Compile Include="DraggableTableLayoutPanel.Designer.cs">
       <DependentUpon>DraggableTableLayoutPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="EnumMailHistoryAddMode.cs" />
     <Compile Include="EnumMoveDirection.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileNameTextBox.cs">

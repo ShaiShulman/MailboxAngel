@@ -9,13 +9,14 @@ namespace HelperUtils
 {
     public static class RibbonMenuExtension
     {
-        public static void PopulateFoldersList(this RibbonMenu control, IEnumerable<FolderInfo> list, RibbonControlEventHandler clickHandler, RibbonFactory factory)
+        public static void PopulateFoldersList(this RibbonMenu control, IEnumerable<FolderInfo> list, RibbonControlEventHandler clickHandler, RibbonFactory factory, bool keepList = false, string prefix="")
         {
-            control.Items.Clear();
-            foreach (var item in list)
+            if (!keepList)
+                control.Items.Clear();
+            foreach (var item in list.Where(x=>x.Active))
             {
                 RibbonButton button = factory.CreateRibbonButton();
-                button.Label = item.Name;
+                button.Label =  string.Concat(prefix,item.Name);
                 button.Tag = item.EntryID;
                 button.ScreenTip = item.Path;
                 button.Click += clickHandler;
@@ -33,6 +34,13 @@ namespace HelperUtils
             button.Enabled = false;
             button.ShowImage = false;
             control.Items.Add(button);
+        }
+
+        public static void CreateSeperator(this RibbonMenu control, RibbonFactory factory)
+        {
+            RibbonSeparator seperator = factory.CreateRibbonSeparator();
+            seperator.Enabled = false;
+            control.Items.Add(seperator);
         }
     }
 }

@@ -8,14 +8,16 @@ namespace FilingHelper
 {
     public partial class ComposeInspectorCustomRibbon
     {
-        private void ComposeInspectorCustomRibbon_Load(object sender, RibbonUIEventArgs e)
-        {
-
-        }
-
+        Controls.Settings.SettingsFrm _settingsForm;
         private void btnAttachments_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.AttachmentManager(Globals.ThisAddIn.Application.ActiveInspector());
+        }
+
+        private void ComposeGroup_DialogLauncherClick(object sender, RibbonControlEventArgs e)
+        {
+            _settingsForm = new Controls.Settings.SettingsFrm(0);
+            _settingsForm.ShowDialog();
         }
     }
 }

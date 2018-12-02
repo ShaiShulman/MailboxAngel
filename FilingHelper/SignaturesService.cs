@@ -1,6 +1,8 @@
-﻿using Microsoft.Office.Interop.Outlook;
+﻿using FilingHelper.Properties;
+using Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -57,12 +59,16 @@ namespace FilingHelper
             }
             return files.ToArray();
         }
-
-        private string getImagesinHTML(string html,Attachments attachments)
+        private bool isMessageForwardReply(MailItem msg)
+        {
+            StringCollection prefixes = Properties.AddinSettings.Default.EmailSignatureReplyForwardPrefix;
+            return prefixes.Cast<String>().Any(x => msg.Subject.StartsWith(x));
+        }
+        private string getImagesinHTML(string html, Attachments attachments)
         {
             HtmlAgilityPack.HtmlDocument document = new HtmlAgilityPack.HtmlDocument();
             document.LoadHtml(html);
-            List<string> files=new List<string>();
+            List<string> files = new List<string>();
             string baseFolder = getSignaturesFolder();
             foreach (var item in document.DocumentNode.SelectNodes("//img"))
             {
@@ -73,14 +79,14 @@ namespace FilingHelper
                     if (src.IndexOf("/") > -1)
                         item.Attributes["src"].Value = "cid:img567.png@embed";
 
-                    Attachment attach =attachments.Add(path, OlAttachmentType.olByValue,1);
+                    Attachment attach = attachments.Add(path, OlAttachmentType.olByValue, 1);
                     attach.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x370E001F", "image/png");
                     attach.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "img567.png@embed");
                     attachments.Parent.Save();
-                    
+
                 }
-                
-              
+
+
 
                 //item.Attributes["src"].Value = string.Concat("cid:", src.Substring(src.IndexOf("/") + 1) /*,"@123"*/);
                 //item.Attributes["src"].Value = src.Substring(src.IndexOf("/") + 1);
@@ -91,7 +97,7 @@ namespace FilingHelper
             //{
             //    item.Attributes["src"].Value = "cid:img567.png@123";
             //}
-            html = document.DocumentNode.InnerHtml;
+            html = document.DocumentNode.SelectNodes("//body")[0].InnerHtml;
             return html;
         }
 
@@ -144,16 +150,15 @@ namespace FilingHelper
         {
             markHTMLsignaturesinFolder();
         }
-        public void CheckForInternalSignature(Microsoft.Office.Interop.Outlook.MailItem mail)
+        public void ApplyCustomSignature(Microsoft.Office.Interop.Outlook.MailItem mail)
         {
-            string internalSignature = Properties.AddinSettings.Default.EmailSignatureInternalName;
-            if (String.IsNullOrWhiteSpace(internalSignature))
+            if (!Properties.AddinSettings.Default.EmailSignatureEnabled)
                 return;
             string[] internalDomains = Properties.AddinSettings.Default.InternalDomainNames.Split(',');
             int internalRecepients = 0;
             foreach (Recipient recepient in mail.Recipients)
             {
-                bool found=false;
+                bool found = false;
                 int n = 0;
                 do
                 {
@@ -165,41 +170,57 @@ namespace FilingHelper
                     n++;
                 } while (!found && n < internalDomains.Count());
             }
-            if (internalRecepients+1> mail.Recipients.Count/2)
+            bool isInternalMsg = (internalRecepients + 1 > mail.Recipients.Count / 2);
+            SignatureType type = SignatureType.Text;
+            switch (mail.BodyFormat)
             {
-                SignatureType type= SignatureType.Text;
-                switch (mail.BodyFormat)
-                {
-                    case OlBodyFormat.olFormatUnspecified:
-                    case OlBodyFormat.olFormatPlain:
-                        type = SignatureType.Text;
-                        break;
-                    case OlBodyFormat.olFormatHTML:
-                        type = SignatureType.HTML;
-                        break;
-                    case OlBodyFormat.olFormatRichText:
-                        type = SignatureType.RTF;
-                        break;
-                }
-                string SignatureText = loadSignature(internalSignature, type);
-                switch (type)
-                {
-                    case SignatureType.HTML:
-                        int bodyEnds = mail.HTMLBody.LastIndexOf("</body>", StringComparison.CurrentCultureIgnoreCase);
-                        SignatureText = getImagesinHTML(SignatureText, mail.Attachments);
-                        mail.HTMLBody = String.Concat(removeExistingSignature(mail.HTMLBody),
-                            SignatureText);
-                        //mail.HTMLBody = String.Concat(mail.HTMLBody.Substring(0, bodyEnds),
-                        //    SignatureText,
-                        //    mail.HTMLBody.Substring(bodyEnds));
-                        break;
-                    case SignatureType.RTF:
-                        mail.RTFBody = String.Concat(mail.RTFBody, SignatureText);
-                        break;
-                    case SignatureType.Text:
-                        mail.Body = String.Concat(mail.HTMLBody, SignatureText);
-                        break;
-                }
+                case OlBodyFormat.olFormatUnspecified:
+                case OlBodyFormat.olFormatPlain:
+                    type = SignatureType.Text;
+                    break;
+                case OlBodyFormat.olFormatHTML:
+                    type = SignatureType.HTML;
+                    break;
+                case OlBodyFormat.olFormatRichText:
+                    type = SignatureType.RTF;
+                    break;
+            }
+            string signatureName = "";
+            switch (isMessageForwardReply(mail))    
+            {
+                case true:
+                    if (isInternalMsg)
+                        signatureName = Properties.AddinSettings.Default.EmailSignatureInternalReply;
+                    else
+                        signatureName = Properties.AddinSettings.Default.EmailSignatureExternalReply;
+                    break;
+                case false:
+                    if (isInternalMsg)
+                        signatureName = Properties.AddinSettings.Default.EmailSignatureInternalNew;
+                    else
+                        signatureName = Properties.AddinSettings.Default.EmailSignatureExternalNew;
+                    break;
+            }
+            if (string.IsNullOrWhiteSpace(signatureName))
+                return;
+            string SignatureText = loadSignature(signatureName, type);
+            switch (type)
+            {
+                case SignatureType.HTML:
+                    int bodyEnds = mail.HTMLBody.LastIndexOf("</body>", StringComparison.CurrentCultureIgnoreCase);
+                    SignatureText = getImagesinHTML(SignatureText, mail.Attachments);
+                    //mail.HTMLBody = String.Concat(removeExistingSignature(mail.HTMLBody),
+                    //    SignatureText);
+                    mail.HTMLBody = String.Concat(mail.HTMLBody.Substring(0, bodyEnds),
+                        SignatureText,
+                        mail.HTMLBody.Substring(bodyEnds));
+                    break;
+                case SignatureType.RTF:
+                    mail.RTFBody = String.Concat(mail.RTFBody, SignatureText);
+                    break;
+                case SignatureType.Text:
+                    mail.Body = String.Concat(mail.HTMLBody, SignatureText);
+                    break;
             }
         }
 

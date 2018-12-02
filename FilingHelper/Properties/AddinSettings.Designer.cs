@@ -26,12 +26,12 @@ namespace FilingHelper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EmailSignatureInternalName {
+        public string EmailSignatureInternalNew {
             get {
-                return ((string)(this["EmailSignatureInternalName"]));
+                return ((string)(this["EmailSignatureInternalNew"]));
             }
             set {
-                this["EmailSignatureInternalName"] = value;
+                this["EmailSignatureInternalNew"] = value;
             }
         }
         
@@ -56,6 +56,164 @@ namespace FilingHelper.Properties {
             }
             set {
                 this["MaximumEmailSizeBytes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EmailSignatureInternalReply {
+            get {
+                return ((string)(this["EmailSignatureInternalReply"]));
+            }
+            set {
+                this["EmailSignatureInternalReply"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EmailSignatureExternalNew {
+            get {
+                return ((string)(this["EmailSignatureExternalNew"]));
+            }
+            set {
+                this["EmailSignatureExternalNew"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EmailSignatureExternalReply {
+            get {
+                return ((string)(this["EmailSignatureExternalReply"]));
+            }
+            set {
+                this["EmailSignatureExternalReply"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EmailSignatureEnabled {
+            get {
+                return ((bool)(this["EmailSignatureEnabled"]));
+            }
+            set {
+                this["EmailSignatureEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int FolderHistoryMaxItems {
+            get {
+                return ((int)(this["FolderHistoryMaxItems"]));
+            }
+            set {
+                this["FolderHistoryMaxItems"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FolderHistoryPersistVisible {
+            get {
+                return ((bool)(this["FolderHistoryPersistVisible"]));
+            }
+            set {
+                this["FolderHistoryPersistVisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FolderHistoryAvoidVisible {
+            get {
+                return ((bool)(this["FolderHistoryAvoidVisible"]));
+            }
+            set {
+                this["FolderHistoryAvoidVisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int MailHistoryMaxItems {
+            get {
+                return ((int)(this["MailHistoryMaxItems"]));
+            }
+            set {
+                this["MailHistoryMaxItems"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AttachmentHelperAutoShow {
+            get {
+                return ((bool)(this["AttachmentHelperAutoShow"]));
+            }
+            set {
+                this["AttachmentHelperAutoShow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AttachmentHelperAutoHide {
+            get {
+                return ((bool)(this["AttachmentHelperAutoHide"]));
+            }
+            set {
+                this["AttachmentHelperAutoHide"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9000000")]
+        public int AttachmentHelperMaxEmailSize {
+            get {
+                return ((int)(this["AttachmentHelperMaxEmailSize"]));
+            }
+            set {
+                this["AttachmentHelperMaxEmailSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring>FW:</string>\r\n  <string>RE:</string>\r\n</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection EmailSignatureReplyForwardPrefix {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["EmailSignatureReplyForwardPrefix"]));
+            }
+            set {
+                this["EmailSignatureReplyForwardPrefix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ExplorerSelectionChange")]
+        public global::HelperUtils.MailHistoryAddMode MailHistoryAddMode {
+            get {
+                return ((global::HelperUtils.MailHistoryAddMode)(this["MailHistoryAddMode"]));
+            }
+            set {
+                this["MailHistoryAddMode"] = value;
             }
         }
     }

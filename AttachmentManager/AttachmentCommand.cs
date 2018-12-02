@@ -30,6 +30,13 @@ namespace AttachmentManager
             set { _sortOrder = value; }
         }
 
+        private bool _compress;
+        public bool Compress
+        {
+            get { return _compress; }
+            set { _compress = value; }
+        }
+
         private bool _finalizeChanges;
         public bool FinalizeChanges
         {

@@ -34,26 +34,29 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher ribbonDialogLauncherImpl1 = this.Factory.CreateRibbonDialogLauncher();
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
+            this.ComposeGroup = this.Factory.CreateRibbonGroup();
             this.btnAttachments = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
-            this.group1.SuspendLayout();
+            this.ComposeGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.ControlId.OfficeId = "TabNewMailMessage";
-            this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.ComposeGroup);
             this.tab1.Label = "TabNewMailMessage";
             this.tab1.Name = "tab1";
             // 
-            // group1
+            // ComposeGroup
             // 
-            this.group1.Items.Add(this.btnAttachments);
-            this.group1.Label = "Outlook Helper";
-            this.group1.Name = "group1";
+            this.ComposeGroup.DialogLauncher = ribbonDialogLauncherImpl1;
+            this.ComposeGroup.Items.Add(this.btnAttachments);
+            this.ComposeGroup.Label = "Mailbox Angel";
+            this.ComposeGroup.Name = "ComposeGroup";
+            this.ComposeGroup.DialogLauncherClick += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ComposeGroup_DialogLauncherClick);
             // 
             // btnAttachments
             // 
@@ -69,11 +72,10 @@
             this.Name = "ComposeInspectorCustomRibbon";
             this.RibbonType = "Microsoft.Outlook.Mail.Compose";
             this.Tabs.Add(this.tab1);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.ComposeInspectorCustomRibbon_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
+            this.ComposeGroup.ResumeLayout(false);
+            this.ComposeGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -81,7 +83,7 @@
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup ComposeGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAttachments;
     }
 

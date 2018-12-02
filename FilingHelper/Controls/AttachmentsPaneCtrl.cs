@@ -14,6 +14,7 @@ using HelperUtils;
 using Microsoft.Office.Interop.Outlook;
 using System.Threading;
 using System.IO;
+using Action = System.Action;
 
 namespace FilingHelper.Controls
 {
@@ -24,6 +25,18 @@ namespace FilingHelper.Controls
         private AttachmentService _manager;
         private string _lastLine = "";
         private int _bottonBarHeight;
+        private EnumCompressionMode _compressionMode;
+        public EnumCompressionMode CompressionMode
+        {
+            get { return _compressionMode; }
+            set {
+                _compressionMode = value;
+                mnuNoCompression.Checked = _compressionMode == EnumCompressionMode.None;
+                mnuCompressSelected.Checked = _compressionMode == EnumCompressionMode.Selection;
+                mnuCompressAll.Checked = _compressionMode == EnumCompressionMode.All;
+            }
+        }
+
         public int TotalHeight
         {
             get
@@ -57,7 +70,9 @@ namespace FilingHelper.Controls
 
         public AttachmentsPaneCtrl(AttachmentService manager)
         {
-            InitializeComponent(); 
+            InitializeComponent();
+            _compressionMode = EnumCompressionMode.None;
+            this.txtArchiveName.InvalidFileNameDelegate = new Action(() => Globals.ThisAddIn.CustomMessageBox("File Name is Invalid", MessageBoxButtons.OK, MessageBoxIcon.Exclamation));
             pnlContainer.AcceptableDragType = typeof(AttachmentSingleCtrl);
             _maxEmailSize = Properties.AddinSettings.Default.MaximumEmailSizeBytes;
             int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
@@ -122,8 +137,24 @@ namespace FilingHelper.Controls
             control.FileDropped += Control_FileDropped;
             control.AttachmentOpen += Control_AttachmentOpen;
             control.AttachmentMove += Control_AttachmentMove;
+            control.CompressedChanged += Control_CompressedChanged;
             control.First = isFirst;
             control.Last = isLast;
+        }
+
+        private void Control_CompressedChanged(object sender, EventArgs e)
+        {
+            int countCompressed = 0;
+            foreach (AttachmentSingleCtrl ctrl in pnlContainer.Controls)
+            {
+                if (ctrl.Compressed)
+                    countCompressed++;
+            }
+            if (countCompressed == pnlContainer.Controls.Count)
+                CompressionMode = EnumCompressionMode.All;
+            else if (countCompressed > 0)
+                CompressionMode = EnumCompressionMode.Selection;
+            setArchiveName();
         }
 
         private void Control_AttachmentOpen(object sender, AttachmentEventArgs e)
@@ -294,7 +325,7 @@ namespace FilingHelper.Controls
             _manager.AttachmentProgressIncrement += _manager_AttachmentProgressIncrement;
             Thread processThread = new Thread(() =>
             {
-                _manager.ProcessAttachments(attachments);
+                _manager.ProcessAttachments(attachments, CompressionMode!= EnumCompressionMode.None?txtArchiveName.Text:null);
                 this.BeginInvoke((System.Action)(() =>
                 {
                     ctlProgress.Visible = false;
@@ -302,6 +333,7 @@ namespace FilingHelper.Controls
                     pnlContainer.Enabled = true;
                     ctlProgress.Visible = false;
                     Globals.ThisAddIn.UpdateAttachmentsOnAddRemove = true;
+                    CompressionMode = EnumCompressionMode.None;
                 }));
             });
             processThread.Start();
@@ -403,6 +435,49 @@ namespace FilingHelper.Controls
         {
             _manager.CreateAttachmentsList(Data);
         }
+
+        private void mnuNoCompression_Click(object sender, EventArgs e)
+        {
+            foreach (var ctrl in pnlContainer.Controls)
+            {
+                ((AttachmentSingleCtrl)ctrl).Compressed = false;
+            }
+            CompressionMode = EnumCompressionMode.None;
+            setArchiveName();
+        }
+
+        private void mnuCompressSelected_Click(object sender, EventArgs e)
+        {
+            CompressionMode = EnumCompressionMode.Selection;
+            setArchiveName();
+        }
+
+        private void mnuCompressAll_Click(object sender, EventArgs e)
+        {
+            foreach (var ctrl in pnlContainer.Controls)
+            {
+                ((AttachmentSingleCtrl)ctrl).Compressed = true;
+            }
+            CompressionMode = EnumCompressionMode.All;
+            setArchiveName();
+        }
+
+        private void setArchiveName()
+        {
+            switch (CompressionMode)
+            {
+                case EnumCompressionMode.None:
+                    txtArchiveName.Text = "";
+                    txtArchiveName.Visible = false;
+                    break;
+                case EnumCompressionMode.Selection:
+                case EnumCompressionMode.All:
+                    if (string.IsNullOrWhiteSpace(txtArchiveName.Text))
+                        txtArchiveName.Text = _manager.GetDefaultArchiveFileName();
+                    txtArchiveName.Visible = true;
+                    break;
+            }
+        }
     }
 
     public class AttachmentsUpdatedEventArgs
@@ -418,5 +493,12 @@ namespace FilingHelper.Controls
         {
             _uiElement=element;
         }
+    }
+
+    public enum EnumCompressionMode
+    {
+        None,
+        Selection,
+        All
     }
 }

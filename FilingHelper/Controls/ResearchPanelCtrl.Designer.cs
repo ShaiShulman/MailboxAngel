@@ -32,6 +32,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnShowPinned = new System.Windows.Forms.ToolStripButton();
+            this.btnShowComments = new System.Windows.Forms.ToolStripButton();
             this.btnShowAll = new System.Windows.Forms.ToolStripButton();
             this.btnHideAll = new System.Windows.Forms.ToolStripButton();
             this.pnlItemsList = new HelperUtils.DraggableTableLayoutPanel();
@@ -55,12 +56,13 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnShowPinned,
+            this.btnShowComments,
             this.btnShowAll,
             this.btnHideAll});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.MaximumSize = new System.Drawing.Size(1000, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(280, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(400, 25);
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -72,7 +74,19 @@
             this.btnShowPinned.Name = "btnShowPinned";
             this.btnShowPinned.Size = new System.Drawing.Size(90, 22);
             this.btnShowPinned.Text = "Pinned only";
+            this.btnShowPinned.ToolTipText = "Show only pinned items in the list";
             this.btnShowPinned.Click += new System.EventHandler(this.btnShowPinned_Click);
+            // 
+            // btnShowComments
+            // 
+            this.btnShowComments.CheckOnClick = true;
+            this.btnShowComments.Image = ((System.Drawing.Image)(resources.GetObject("btnShowComments.Image")));
+            this.btnShowComments.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnShowComments.Name = "btnShowComments";
+            this.btnShowComments.Size = new System.Drawing.Size(116, 22);
+            this.btnShowComments.Text = "Show comments";
+            this.btnShowComments.ToolTipText = "Show comments for all mail items";
+            this.btnShowComments.Click += new System.EventHandler(this.btnShowComments_Click);
             // 
             // btnShowAll
             // 
@@ -81,6 +95,7 @@
             this.btnShowAll.Name = "btnShowAll";
             this.btnShowAll.Size = new System.Drawing.Size(80, 22);
             this.btnShowAll.Text = "Display all";
+            this.btnShowAll.ToolTipText = "Open all mail items in the list";
             this.btnShowAll.Click += new System.EventHandler(this.btnShowAll_Click);
             // 
             // btnHideAll
@@ -88,8 +103,9 @@
             this.btnHideAll.Image = ((System.Drawing.Image)(resources.GetObject("btnHideAll.Image")));
             this.btnHideAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnHideAll.Name = "btnHideAll";
-            this.btnHideAll.Size = new System.Drawing.Size(67, 22);
-            this.btnHideAll.Text = "Hide all";
+            this.btnHideAll.Size = new System.Drawing.Size(71, 22);
+            this.btnHideAll.Text = "Close all";
+            this.btnHideAll.ToolTipText = "Close all mail items in the list";
             this.btnHideAll.Click += new System.EventHandler(this.btnHideAll_Click);
             // 
             // pnlItemsList
@@ -109,7 +125,7 @@
             this.pnlItemsList.RowCount = 2;
             this.pnlItemsList.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.pnlItemsList.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.pnlItemsList.Size = new System.Drawing.Size(274, 0);
+            this.pnlItemsList.Size = new System.Drawing.Size(394, 0);
             this.pnlItemsList.TabIndex = 3;
             // 
             // ResearchPanelCtrl
@@ -135,5 +151,6 @@
         private HelperUtils.DraggableTableLayoutPanel pnlItemsList;
         private System.Windows.Forms.ToolStripButton btnShowAll;
         private System.Windows.Forms.ToolStripButton btnHideAll;
+        private System.Windows.Forms.ToolStripButton btnShowComments;
     }
 }

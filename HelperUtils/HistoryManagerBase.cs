@@ -17,6 +17,16 @@ namespace HelperUtils
         {
             return _list.Where(x => x.Active).OrderBy(x => x.Persist);
         }
+
+        public void ClearAll()
+        {
+            _list.Clear();
+        }
+
+        public void Resize(int newSize)
+        {
+            _list.Limit = newSize;
+        }
         public T Find(Func<T, bool> predicate)
         {
             return _list.First(predicate);
@@ -31,16 +41,6 @@ namespace HelperUtils
         {
             return ((IEnumerable<T>)_list).GetEnumerator();
         }
-
-        //public IEnumerator<T> GetEnumerator()
-        //{
-        //    return _list.GetEnumerator();
-        //}
-
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return _list.GetEnumerator();
-        //}
 
         public HistoryManagerBase(int size)
         {

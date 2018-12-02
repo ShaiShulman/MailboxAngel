@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FilingHelper.Properties" GeneratedClassName="AddinSettings">
   <Profiles />
   <Settings>
-    <Setting Name="EmailSignatureInternalName" Type="System.String" Scope="User">
+    <Setting Name="EmailSignatureInternalNew" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="InternalDomainNames" Type="System.String" Scope="User">
@@ -10,6 +10,49 @@
     </Setting>
     <Setting Name="MaximumEmailSizeBytes" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9437184</Value>
+    </Setting>
+    <Setting Name="EmailSignatureInternalReply" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EmailSignatureExternalNew" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EmailSignatureExternalReply" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EmailSignatureEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FolderHistoryMaxItems" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="FolderHistoryPersistVisible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FolderHistoryAvoidVisible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MailHistoryMaxItems" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="AttachmentHelperAutoShow" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AttachmentHelperAutoHide" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AttachmentHelperMaxEmailSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9000000</Value>
+    </Setting>
+    <Setting Name="EmailSignatureReplyForwardPrefix" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;FW:&lt;/string&gt;
+  &lt;string&gt;RE:&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="MailHistoryAddMode" Type="HelperUtils.MailHistoryAddMode" Scope="User">
+      <Value Profile="(Default)">ExplorerSelectionChange</Value>
     </Setting>
   </Settings>
 </SettingsFile>

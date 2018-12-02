@@ -14,16 +14,6 @@ namespace FilingHelper
     public class FolderHistoryManager : HistoryManagerBase<FolderInfo>
     {
         const string FILE_NAME = "FolderHistory.xml";
-        //private int _listSize;
-        //LimitedUniqueQueue<FolderInfo> _list;
-        //public IEnumerable<FolderInfo> GetList()
-        //{
-        //    return _list.Where(x => x.Active).OrderBy(x => x.Persist);
-        //}
-        //public FolderInfo Find(Func<FolderInfo, bool> predicate)
-        //{
-        //    return _list.First(predicate);
-        //}
         protected override string BaseNodeName { get { return "MailItems"; } }
         protected override string GetFileName()
         {

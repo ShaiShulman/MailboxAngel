@@ -37,7 +37,7 @@
             // 
             // lblInner
             // 
-            this.lblInner.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.lblInner.BackColor = System.Drawing.SystemColors.Window;
             this.lblInner.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblInner.Location = new System.Drawing.Point(0, 0);
             this.lblInner.Name = "lblInner";
@@ -46,13 +46,13 @@
             this.lblInner.TabIndex = 14;
             this.lblInner.Text = "label1";
             this.lblInner.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblInner.Click += new System.EventHandler(this.onClick);
+            this.lblInner.Click += new System.EventHandler(this.onItemClick);
             this.lblInner.MouseEnter += new System.EventHandler(this.onMouseEnter);
             this.lblInner.MouseLeave += new System.EventHandler(this.onMouseLeave);
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.panel1.BackColor = System.Drawing.SystemColors.Window;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -61,7 +61,7 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.panel2.BackColor = System.Drawing.SystemColors.Window;
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel2.Location = new System.Drawing.Point(112, 0);
             this.panel2.Name = "panel2";
@@ -70,7 +70,7 @@
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.panel3.BackColor = System.Drawing.SystemColors.Window;
             this.panel3.Location = new System.Drawing.Point(3, 28);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(255, 10);
@@ -78,7 +78,7 @@
             // 
             // panel4
             // 
-            this.panel4.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.panel4.BackColor = System.Drawing.SystemColors.Window;
             this.panel4.Location = new System.Drawing.Point(5, -6);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(255, 10);
@@ -93,6 +93,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblInner);
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "SideMenuItem";
             this.Size = new System.Drawing.Size(117, 32);
             this.MouseEnter += new System.EventHandler(this.onMouseEnter);

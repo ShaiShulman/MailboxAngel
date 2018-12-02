@@ -38,6 +38,7 @@ namespace FilingHelper.Controls
             this.txtFileName = new HelperUtils.FileNameToolStripTextBox();
             this.btnOpen = new System.Windows.Forms.ToolStripButton();
             this.btnRemove = new System.Windows.Forms.ToolStripButton();
+            this.btnCompress = new System.Windows.Forms.ToolStripButton();
             this.btnUp = new System.Windows.Forms.ToolStripButton();
             this.btnDown = new System.Windows.Forms.ToolStripButton();
             this.btnFinalize = new System.Windows.Forms.ToolStripButton();
@@ -48,9 +49,9 @@ namespace FilingHelper.Controls
             // 
             // imgIcons
             // 
-            this.imgIcons.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imgIcons.ImageSize = new System.Drawing.Size(16, 16);
+            this.imgIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgIcons.ImageStream")));
             this.imgIcons.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgIcons.Images.SetKeyName(0, ".zip");
             // 
             // ctrlToolStrip
             // 
@@ -60,6 +61,7 @@ namespace FilingHelper.Controls
             this.txtFileName,
             this.btnOpen,
             this.btnRemove,
+            this.btnCompress,
             this.btnUp,
             this.btnDown,
             this.btnFinalize});
@@ -81,7 +83,6 @@ namespace FilingHelper.Controls
             this.picFileIcon.Size = new System.Drawing.Size(23, 24);
             this.picFileIcon.Text = "toolStripButton1";
             this.picFileIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picFileIcon_MouseDown);
-            this.picFileIcon.MouseEnter += new System.EventHandler(this.picFileIcon_MouseEnter);
             // 
             // txtFileName
             // 
@@ -89,7 +90,7 @@ namespace FilingHelper.Controls
             this.txtFileName.Extension = "";
             this.txtFileName.FileName = "fileNameToolStripTextBox1";
             this.txtFileName.Name = "txtFileName";
-            this.txtFileName.Size = new System.Drawing.Size(410, 27);
+            this.txtFileName.Size = new System.Drawing.Size(380, 27);
             this.txtFileName.Text = "fileNameToolStripTextBox1";
             // 
             // btnOpen
@@ -113,6 +114,18 @@ namespace FilingHelper.Controls
             this.btnRemove.Size = new System.Drawing.Size(23, 24);
             this.btnRemove.Text = "toolStripButton1";
             this.btnRemove.ToolTipText = "Remove attachment";
+            this.btnRemove.CheckedChanged += new System.EventHandler(this.btnRemove_CheckedChanged);
+            // 
+            // btnCompress
+            // 
+            this.btnCompress.CheckOnClick = true;
+            this.btnCompress.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCompress.Image = global::FilingHelper.Properties.Resources.if_compress_35891;
+            this.btnCompress.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCompress.Name = "btnCompress";
+            this.btnCompress.Size = new System.Drawing.Size(23, 24);
+            this.btnCompress.Text = "Compress file";
+            this.btnCompress.CheckedChanged += new System.EventHandler(this.btnCompress_CheckedChanged);
             // 
             // btnUp
             // 
@@ -131,7 +144,7 @@ namespace FilingHelper.Controls
             this.btnDown.Image = ((System.Drawing.Image)(resources.GetObject("btnDown.Image")));
             this.btnDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(23, 20);
+            this.btnDown.Size = new System.Drawing.Size(23, 24);
             this.btnDown.Text = "toolStripButton4";
             this.btnDown.ToolTipText = "Move down";
             this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
@@ -182,5 +195,6 @@ namespace FilingHelper.Controls
         private System.Windows.Forms.ToolStripButton btnFinalize;
         private FileNameToolStripTextBox txtFileName;
         private System.Windows.Forms.ToolStripButton picFileIcon;
+        private System.Windows.Forms.ToolStripButton btnCompress;
     }
 }

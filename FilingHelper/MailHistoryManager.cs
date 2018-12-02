@@ -31,8 +31,7 @@ namespace FilingHelper
 
         public void Save()
         {
-            //SaveAll(_list.Where(x => x.Persist).ToArray());
-            SaveAll(_list);
+            SaveAll(_list.Where(x=>x.Persist));
         }
 
         public void Load()

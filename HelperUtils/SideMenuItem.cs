@@ -18,6 +18,21 @@ namespace HelperUtils
             set { lblInner.Text = value; }
         }
 
+        private bool _selected;
+        public bool Selected
+        {
+            get { return _selected; }
+            set {
+                _selected = value;
+                lblInner.BackColor = _selected ? SystemColors.ScrollBar : SystemColors.Window;
+                panel1.BackColor = _selected ? SystemColors.ButtonShadow : SystemColors.Window;
+                panel2.BackColor = _selected ? SystemColors.ButtonShadow : SystemColors.Window;
+                panel3.BackColor = _selected ? SystemColors.ButtonShadow : SystemColors.Window;
+                panel4.BackColor = _selected ? SystemColors.ButtonShadow : SystemColors.Window;
+            }
+        }
+
+
         private Control panel;
         public Control Panel
         {
@@ -34,6 +49,8 @@ namespace HelperUtils
 
         private void onMouseEnter(object sender, EventArgs e)
         {
+            if (_selected)
+                return;
             lblInner.BackColor = SystemColors.ScrollBar;
             panel1.BackColor = SystemColors.ScrollBar;
             panel2.BackColor = SystemColors.ScrollBar;
@@ -43,6 +60,8 @@ namespace HelperUtils
 
         private void onMouseLeave(object sender, EventArgs e)
         {
+            if (_selected)
+                return;
             lblInner.BackColor = SystemColors.Window;
             panel1.BackColor = SystemColors.Window;
             panel2.BackColor = SystemColors.Window;
@@ -50,13 +69,10 @@ namespace HelperUtils
             panel4.BackColor = SystemColors.Window;
         }
 
-        private void onClick(object sender, EventArgs e)
+        private void onItemClick(object sender, EventArgs e)
         {
-            lblInner.BackColor = SystemColors.ScrollBar;
-            panel1.BackColor = SystemColors.ButtonShadow;
-            panel2.BackColor = SystemColors.ButtonShadow;
-            panel3.BackColor = SystemColors.ButtonShadow;
-            panel4.BackColor = SystemColors.ButtonShadow;
+            _selected = true;
+            this.OnClick(EventArgs.Empty);
         }
 
     }

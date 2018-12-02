@@ -12,7 +12,17 @@ namespace HelperUtils
 {
     public partial class SideMenu : UserControl
     {
-        //private List<SideMenuItemDescription> _item;
+        public event EventHandler<MenuItemSelectedEventArgs> MenuItemSelected;
+
+        private int _selectedItem;
+        public int SelectedItem
+        {
+            get { return _selectedItem; }
+            set { _selectedItem = value;
+                onMenuItemSelected(_selectedItem);
+            }
+        }
+
         private string[] _items;
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public string[] Items
@@ -46,27 +56,55 @@ namespace HelperUtils
             if (Items!=null)
                 foreach (var item in Items)
                 {
-                    ctlContainer.Controls.Add(new SideMenuItem(item,null));
+                    Control ctrl=new SideMenuItem(item, null);
+                    ctrl.Click += ((se, ee) => { onMenuItemSelected(ctlContainer.Controls.IndexOf((Control)se)); });
+                    ctlContainer.Controls.Add(ctrl);
                 }
 
         }
+        #region eventhandlers
+        protected void onMenuItemSelected(int item)
+        {
+            _selectedItem = item;
+            foreach (Control ctrl in ctlContainer.Controls)
+                ((SideMenuItem)ctrl).Selected = (ctlContainer.Controls.IndexOf(ctrl) == item);
+            if (MenuItemSelected != null)
+                MenuItemSelected(this, new MenuItemSelectedEventArgs() { SelectedItem = item });
+        }
+        #endregion
     }
-    [Serializable]
-    public class SideMenuItemDescription
+
+
+        #region eventargs
+        public class MenuItemSelectedEventArgs
     {
-        private string _label;
-        public string Label
+        private int _selectedItem;
+        public int SelectedItem
         {
-            get { return _label; }
-            set { _label = value; }
-        }
-
-        private Control _pane;
-        public Control Pane
-        {
-            get { return _pane; }
-            set { _pane = value; }
+            get { return _selectedItem; }
+            set { _selectedItem = value; }
         }
 
     }
+
+    #endregion
+
+    //[Serializable]
+    //public class SideMenuItemDescription
+    //{
+    //    private string _label;
+    //    public string Label
+    //    {
+    //        get { return _label; }
+    //        set { _label = value; }
+    //    }
+
+    //    private Control _pane;
+    //    public Control Pane
+    //    {
+    //        get { return _pane; }
+    //        set { _pane = value; }
+    //    }
+
+    //}
 }

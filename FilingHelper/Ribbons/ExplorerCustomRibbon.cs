@@ -16,7 +16,7 @@ namespace FilingHelper
         const string ITEM_MOVE_DIALOG_CAPTION = "Select Folder To Move To";
         private List<MAPIFolder> _searchResults=null;
         private SelectFolderFrm _selectionForm;
-        SettingsFrm _settingsForm;
+        Controls.Settings.SettingsFrm _settingsForm;
         private void MainRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             mnuHistory.ItemsLoading += MnuHistory_ItemsLoading;
@@ -37,33 +37,39 @@ namespace FilingHelper
                     Globals.ThisAddIn.NavigateFolder(null, folder);
                 }, this.Factory 
                 );
-            bool isPersistent = Globals.ThisAddIn.FolderHistory.isFolderPersistent(currentFolder);
-            RibbonButton buttonP = CreateRibbonButton();
-            buttonP.Label = PERSIST_MENU_ITEM_TEXT;
-            buttonP.Enabled = true;
-            buttonP.ShowImage = isPersistent;
-            if (isPersistent)
-                buttonP.OfficeImageId = "AcceptInvitation";
-            buttonP.Click +=
-            (s, ev) =>
+            if (Properties.AddinSettings.Default.FolderHistoryPersistVisible)
             {
-                Globals.ThisAddIn.FolderHistory.ChangeFolderPersistence(currentFolder, !isPersistent);
-            };
-            mnuHistory.Items.Add(buttonP);
+                bool isPersistent = Globals.ThisAddIn.FolderHistory.isFolderPersistent(currentFolder);
+                RibbonButton buttonP = CreateRibbonButton();
+                buttonP.Label = PERSIST_MENU_ITEM_TEXT;
+                buttonP.Enabled = true;
+                buttonP.ShowImage = isPersistent;
+                if (isPersistent)
+                    buttonP.OfficeImageId = "AcceptInvitation";
+                buttonP.Click +=
+                (s, ev) =>
+                {
+                    Globals.ThisAddIn.FolderHistory.ChangeFolderPersistence(currentFolder, !isPersistent);
+                };
+                mnuHistory.Items.Add(buttonP);
+            }
+            if (Properties.AddinSettings.Default.FolderHistoryPersistVisible)
+            {
 
-            bool isAvoided = Globals.ThisAddIn.FolderHistory.isFolderAvoided(currentFolder);
-            RibbonButton buttonA = CreateRibbonButton();
-            buttonA.Label = AVOID_MENU_ITEM_TEXT;
-            buttonA.Enabled = true;
-            buttonA.ShowImage = isAvoided;
-            if (isAvoided)
-                buttonA.OfficeImageId = "AcceptInvitation";
-            buttonA.Click +=
-            (s, ev) =>
-            {
-                Globals.ThisAddIn.FolderHistory.ChangeFolderAvoidance(currentFolder, !isAvoided);
-            };
-            mnuHistory.Items.Add(buttonA);
+                bool isAvoided = Globals.ThisAddIn.FolderHistory.isFolderAvoided(currentFolder);
+                RibbonButton buttonA = CreateRibbonButton();
+                buttonA.Label = AVOID_MENU_ITEM_TEXT;
+                buttonA.Enabled = true;
+                buttonA.ShowImage = isAvoided;
+                if (isAvoided)
+                    buttonA.OfficeImageId = "AcceptInvitation";
+                buttonA.Click +=
+                (s, ev) =>
+                {
+                    Globals.ThisAddIn.FolderHistory.ChangeFolderAvoidance(currentFolder, !isAvoided);
+                };
+                mnuHistory.Items.Add(buttonA);
+            }
         }
 
         //private void PopulateFoldersList(IEnumerable<FolderInfo> list,RibbonMenu control,RibbonControlEventHandler clickHandler)
@@ -243,15 +249,47 @@ namespace FilingHelper
                     {
                         MAPIFolder folder = Globals.ThisAddIn.Application.Session.GetFolderFromID((s as RibbonButton).Tag.ToString()) as MAPIFolder;
                         Globals.ThisAddIn.MoveMessages(explorer, folder,(new ConversationUtils()).GetConversationItems(explorer).ToArray());
-                    }, this.Factory );
-            else
-                mnuConversation.CreateEmptyList("(No Folders to Display)",this.Factory);
+                    }, this.Factory,false,"Conversation: ");
+
+            Folder[] suggestFolders=null;
+            if (explorer.Selection.Count > 0 && explorer.Selection[1] is MailItem)
+            {
+                MailItem msg = (explorer.Selection[1] as MailItem);
+                suggestFolders = Globals.ThisAddIn.FilingSuggestor.GetSuggestions(msg.Sender.Address, 5);
+                if (suggestFolders!=null && suggestFolders.Count() > 0)
+                {
+                    if (folders.Count > 0)
+                        mnuConversation.CreateSeperator(this.Factory);
+                    mnuConversation.PopulateFoldersList(suggestFolders.Select(x => new FolderInfo(x)),
+                    (s, ev) =>
+                    {
+                        MAPIFolder folder = Globals.ThisAddIn.Application.Session.GetFolderFromID((s as RibbonButton).Tag.ToString()) as MAPIFolder;
+                        Globals.ThisAddIn.MoveMessages(explorer, folder, msg);
+                    }, this.Factory, folders.Count()>0, "Suggestion: "); 
+                }
+            }
+
+            if (folders.Count==0 && suggestFolders==null)
+                mnuConversation.CreateEmptyList("(No Folders to Display)", this.Factory);
+
 
         }
 
         private void btnSettings_Click(object sender, RibbonControlEventArgs e)
         {
-            _settingsForm = new SettingsFrm();
+            _settingsForm = new Controls.Settings.SettingsFrm();
+            _settingsForm.ShowDialog();
+        }
+
+        private void grpFilingGroup_DialogLauncherClick(object sender, RibbonControlEventArgs e)
+        {
+            _settingsForm = new Controls.Settings.SettingsFrm(2);
+            _settingsForm.ShowDialog();
+        }
+
+        private void grpFoldersGroup_DialogLauncherClick(object sender, RibbonControlEventArgs e)
+        {
+            _settingsForm = new Controls.Settings.SettingsFrm(2);
             _settingsForm.ShowDialog();
         }
     }
