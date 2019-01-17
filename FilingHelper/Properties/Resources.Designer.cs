@@ -223,6 +223,16 @@ namespace FilingHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap iconfinder_folder_horizontal_open_26356 {
+            get {
+                object obj = ResourceManager.GetObject("iconfinder_folder-horizontal-open_26356", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap if_Apply_132742 {
             get {
                 object obj = ResourceManager.GetObject("if_Apply_132742", resourceCulture);

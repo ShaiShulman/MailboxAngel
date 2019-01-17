@@ -36,12 +36,11 @@
         {
             this.tab1 = this.Factory.CreateRibbonTab();
             this.grpMailReadArchive = this.Factory.CreateRibbonGroup();
-            this.group2 = this.Factory.CreateRibbonGroup();
-            this.mnuConversation = this.Factory.CreateRibbonMenu();
+            this.mnuSuggestions = this.Factory.CreateRibbonMenu();
             this.btnMoveSearch = this.Factory.CreateRibbonButton();
-            this.archiveBtn = this.Factory.CreateRibbonButton();
             this.btnArchive = this.Factory.CreateRibbonButton();
             this.office = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
             this.menu2 = this.Factory.CreateRibbonMenu();
             this.btnItemReplyAll = this.Factory.CreateRibbonButton();
             this.btnItemReply = this.Factory.CreateRibbonButton();
@@ -61,31 +60,23 @@
             // 
             // grpMailReadArchive
             // 
-            this.grpMailReadArchive.Items.Add(this.mnuConversation);
+            this.grpMailReadArchive.Items.Add(this.mnuSuggestions);
             this.grpMailReadArchive.Items.Add(this.btnMoveSearch);
-            this.grpMailReadArchive.Items.Add(this.archiveBtn);
             this.grpMailReadArchive.Items.Add(this.btnArchive);
             this.grpMailReadArchive.Items.Add(this.office);
             this.grpMailReadArchive.Label = "Move Message";
             this.grpMailReadArchive.Name = "grpMailReadArchive";
             this.grpMailReadArchive.Position = this.Factory.RibbonPosition.BeforeOfficeId("MarkAsUnread");
             // 
-            // group2
+            // mnuSuggestions
             // 
-            this.group2.Items.Add(this.menu2);
-            this.group2.Label = "Repond (Adv)";
-            this.group2.Name = "group2";
-            this.group2.Position = this.Factory.RibbonPosition.AfterOfficeId("GroupMailRespond");
-            // 
-            // mnuConversation
-            // 
-            this.mnuConversation.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.mnuConversation.Dynamic = true;
-            this.mnuConversation.Label = "Conversation";
-            this.mnuConversation.Name = "mnuConversation";
-            this.mnuConversation.OfficeImageId = "ConversationsMenu";
-            this.mnuConversation.ShowImage = true;
-            this.mnuConversation.ItemsLoading += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.mnuConversation_ItemsLoading);
+            this.mnuSuggestions.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.mnuSuggestions.Dynamic = true;
+            this.mnuSuggestions.Label = "Suggestions";
+            this.mnuSuggestions.Name = "mnuSuggestions";
+            this.mnuSuggestions.OfficeImageId = "ConversationsMenu";
+            this.mnuSuggestions.ShowImage = true;
+            this.mnuSuggestions.ItemsLoading += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.mnuConversation_ItemsLoading);
             // 
             // btnMoveSearch
             // 
@@ -94,14 +85,6 @@
             this.btnMoveSearch.OfficeImageId = "ZoomToSelection";
             this.btnMoveSearch.ShowImage = true;
             this.btnMoveSearch.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnMoveSearch_Click);
-            // 
-            // archiveBtn
-            // 
-            this.archiveBtn.Label = "Archive";
-            this.archiveBtn.Name = "archiveBtn";
-            this.archiveBtn.OfficeImageId = "SaveSentItemsMenu";
-            this.archiveBtn.ShowImage = true;
-            this.archiveBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.archiveBtn_Click);
             // 
             // btnArchive
             // 
@@ -112,6 +95,13 @@
             // 
             this.office.Label = "";
             this.office.Name = "office";
+            // 
+            // group2
+            // 
+            this.group2.Items.Add(this.menu2);
+            this.group2.Label = "Repond (Adv)";
+            this.group2.Name = "group2";
+            this.group2.Position = this.Factory.RibbonPosition.AfterOfficeId("GroupMailRespond");
             // 
             // menu2
             // 
@@ -144,7 +134,6 @@
             this.Name = "InspectorCustomRibbon";
             this.RibbonType = "Microsoft.Outlook.Mail.Read";
             this.Tabs.Add(this.tab1);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.InspectorCustomRibbon_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
             this.grpMailReadArchive.ResumeLayout(false);
@@ -161,13 +150,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMailReadArchive;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnArchive;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton office;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton archiveBtn;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnMoveSearch;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnItemReplyAll;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnItemReply;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu mnuConversation;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu mnuSuggestions;
     }
 
     partial class ThisRibbonCollection

@@ -42,10 +42,10 @@
             this.label1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label1.Location = new System.Drawing.Point(8, 6);
+            this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.label1.Size = new System.Drawing.Size(715, 23);
+            this.label1.Size = new System.Drawing.Size(851, 23);
             this.label1.TabIndex = 26;
             this.label1.Text = "Attachment Helper";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -53,7 +53,7 @@
             // chkAutoShowHelper
             // 
             this.chkAutoShowHelper.AutoSize = true;
-            this.chkAutoShowHelper.Location = new System.Drawing.Point(12, 43);
+            this.chkAutoShowHelper.Location = new System.Drawing.Point(6, 35);
             this.chkAutoShowHelper.Name = "chkAutoShowHelper";
             this.chkAutoShowHelper.Size = new System.Drawing.Size(235, 17);
             this.chkAutoShowHelper.TabIndex = 27;
@@ -63,7 +63,7 @@
             // chkAutoCloseHepler
             // 
             this.chkAutoCloseHepler.AutoSize = true;
-            this.chkAutoCloseHepler.Location = new System.Drawing.Point(12, 66);
+            this.chkAutoCloseHepler.Location = new System.Drawing.Point(6, 58);
             this.chkAutoCloseHepler.Name = "chkAutoCloseHepler";
             this.chkAutoCloseHepler.Size = new System.Drawing.Size(244, 17);
             this.chkAutoCloseHepler.TabIndex = 28;
@@ -72,7 +72,7 @@
             // 
             // txtMaxEmailSize
             // 
-            this.txtMaxEmailSize.Location = new System.Drawing.Point(126, 89);
+            this.txtMaxEmailSize.Location = new System.Drawing.Point(120, 81);
             this.txtMaxEmailSize.Name = "txtMaxEmailSize";
             this.txtMaxEmailSize.Size = new System.Drawing.Size(102, 20);
             this.txtMaxEmailSize.TabIndex = 29;
@@ -80,7 +80,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 92);
+            this.label2.Location = new System.Drawing.Point(3, 84);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(102, 13);
             this.label2.TabIndex = 30;
@@ -89,7 +89,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(229, 92);
+            this.label3.Location = new System.Drawing.Point(223, 84);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(32, 13);
             this.label3.TabIndex = 31;
@@ -107,7 +107,7 @@
             this.Controls.Add(this.chkAutoShowHelper);
             this.Controls.Add(this.label1);
             this.Name = "AttachmentHelperSettingsPanel";
-            this.Size = new System.Drawing.Size(732, 365);
+            this.Size = new System.Drawing.Size(854, 413);
             this.ResumeLayout(false);
             this.PerformLayout();
 

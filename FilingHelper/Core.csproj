@@ -196,11 +196,23 @@
     <Compile Include="Controls\Settings\EmailSignaturesPanel.Designer.cs">
       <DependentUpon>EmailSignaturesPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Settings\HistoryManagersSettingsPanel.cs">
+    <Compile Include="Controls\Settings\FilingSuggestionsSettingsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Settings\HistoryManagersSettingsPanel.Designer.cs">
-      <DependentUpon>HistoryManagersSettingsPanel.cs</DependentUpon>
+    <Compile Include="Controls\Settings\FilingSuggestionsSettingsPanel.Designer.cs">
+      <DependentUpon>FilingSuggestionsSettingsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\FolderHistorySettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Settings\FolderHistorySettingsPanel.Designer.cs">
+      <DependentUpon>FolderHistorySettingsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\MailHistorySettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Settings\MailHistorySettingsPanel.Designer.cs">
+      <DependentUpon>MailHistorySettingsPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Settings\ISettingsDialogPanel.cs" />
     <Compile Include="MailHistoryManager.cs" />
@@ -259,13 +271,11 @@
       <DependentUpon>SettingsFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TreeNodeTag.cs" />
-    <Compile Include="ConversationUtils.cs" />
     <Compile Include="ExplorerWrapper.cs" />
     <Compile Include="FolderArchiver.cs" />
     <Compile Include="FolderHistoryManager.cs" />
     <Compile Include="FolderNavigator.cs" />
-    <Compile Include="FolderServices.cs" />
-    <Compile Include="RespondServices.cs" />
+    <Compile Include="ResponseServices.cs" />
     <Compile Include="Ribbons\ComposeInspectorCustomRibbon.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -323,8 +333,14 @@
     <EmbeddedResource Include="Controls\Settings\EmailSignaturesPanel.resx">
       <DependentUpon>EmailSignaturesPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Settings\HistoryManagersSettingsPanel.resx">
-      <DependentUpon>HistoryManagersSettingsPanel.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\Settings\FilingSuggestionsSettingsPanel.resx">
+      <DependentUpon>FilingSuggestionsSettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Settings\FolderHistorySettingsPanel.resx">
+      <DependentUpon>FolderHistorySettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Settings\MailHistorySettingsPanel.resx">
+      <DependentUpon>MailHistorySettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Settings\SettingsFrm.resx">
       <DependentUpon>SettingsFrm.cs</DependentUpon>
@@ -386,6 +402,10 @@
     <ProjectReference Include="..\HelperUtils\HelperUtils.csproj">
       <Project>{589bd1d2-2689-4844-b1be-e571cc0911af}</Project>
       <Name>HelperUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OutlookCommon\OutlookCommon.csproj">
+      <Project>{972dd00c-fd83-415a-9878-9bd76745d78d}</Project>
+      <Name>OutlookCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -486,6 +506,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\if_compress_358911.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iconfinder_folder-horizontal-open_26356.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

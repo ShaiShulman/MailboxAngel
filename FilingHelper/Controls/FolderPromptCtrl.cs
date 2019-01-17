@@ -13,16 +13,18 @@ namespace FilingHelper
     public partial class FolderPromptCtrl : UserControl
     {
         public event EventHandler Undo;
+        public event EventHandler OpenFolder;
         public FolderPromptCtrl()
         {
             InitializeComponent();
         }
 
-        public void SetText(string title,string message)
+        public void SetText(string title, string message, bool showFolderBtn = false)
         {
             lblNormalText.Text = title;
             lblBoldText.Text = message;
             btnUndo.Enabled = true;
+            btnOpenFolder.Visible = showFolderBtn;
         }
 
 
@@ -32,6 +34,12 @@ namespace FilingHelper
         {
             if (Undo != null)
                 Undo(this,EventArgs.Empty);
+        }
+
+        protected void onOpenFolder()
+        {
+            if (OpenFolder != null)
+                OpenFolder(this, EventArgs.Empty);
         }
 
         #endregion
@@ -45,6 +53,11 @@ namespace FilingHelper
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnOpenFolder_Click(object sender, EventArgs e)
+        {
+            onOpenFolder();
         }
     }
 }

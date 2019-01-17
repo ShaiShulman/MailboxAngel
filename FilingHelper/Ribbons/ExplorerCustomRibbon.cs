@@ -5,6 +5,8 @@ using Microsoft.Office.Tools.Ribbon;
 using HelperUtils;
 using Microsoft.Office.Interop.Outlook;
 using FilingHelper.Controls;
+using MailboxAngel.OutlookCommon;
+using System.Windows.Forms;
 
 namespace FilingHelper
 {
@@ -30,13 +32,13 @@ namespace FilingHelper
         private void MnuHistory_ItemsLoading(object sender, RibbonControlEventArgs e)
         {
             string currentFolder = Globals.ThisAddIn.Application.ActiveExplorer().CurrentFolder.EntryID;
+            mnuHistory.Clear();
             mnuHistory.PopulateFoldersList(Globals.ThisAddIn.FolderHistory.GetList().Where(x=>x.EntryID!= currentFolder && !x.Avoid),
                 (s,ev)=>
                 {
                     MAPIFolder folder = Globals.ThisAddIn.FolderHistory.Find(x => x.EntryID == (s as RibbonButton).Tag.ToString()).Folder;
                     Globals.ThisAddIn.NavigateFolder(null, folder);
-                }, this.Factory 
-                );
+                }, this.Factory ,fi=>"Folder");
             if (Properties.AddinSettings.Default.FolderHistoryPersistVisible)
             {
                 bool isPersistent = Globals.ThisAddIn.FolderHistory.isFolderPersistent(currentFolder);
@@ -71,32 +73,6 @@ namespace FilingHelper
                 mnuHistory.Items.Add(buttonA);
             }
         }
-
-        //private void PopulateFoldersList(IEnumerable<FolderInfo> list,RibbonMenu control,RibbonControlEventHandler clickHandler)
-        //{
-        //    control.Items.Clear();
-        //    foreach (var item in list)
-        //    {
-        //        RibbonButton button = CreateRibbonButton();
-        //        button.Label = item.Name;
-        //        button.Tag = item.EntryID;
-        //        button.ScreenTip = item.Path;
-        //        button.Click += clickHandler;
-        //        button.OfficeImageId = "Folder";
-        //        button.ShowImage = true;
-        //        control.Items.Add(button);
-        //    }
-        //}
-
-        //public void CreateEmptyList(RibbonMenu control, string text)
-        //{
-        //    control.Items.Clear();
-        //    RibbonButton button = CreateRibbonButton();
-        //    button.Label = text;
-        //    button.Enabled = false;
-        //    button.ShowImage = false;
-        //    control.Items.Add(button);
-        //}
 
         private void Conversation_Button_Click(object sender, RibbonControlEventArgs e)
         {
@@ -158,14 +134,13 @@ namespace FilingHelper
             Explorer explorer = Globals.ThisAddIn.Application.ActiveExplorer();
             if (explorer == null)
                 return;
-            //List<MailItem> items = new List<MailItem>();
-            List<MailItem> items = (new ConversationUtils()).GetConversationItems(explorer);
+            MailItem[] items = (new ConversationUtils()).GetConversationItems(explorer);
             //foreach (var item in explorer.Selection)
             //{
             //    if (item is MailItem)
             //        items.Add(item as MailItem);
             //}
-            if (items.Count == 0)
+            if (items.Count() == 0)
                 return;
             _selectionForm = new SelectFolderFrm(null, "",ITEM_MOVE_DIALOG_CAPTION,true);
             //_selectionForm.FolderSelected += new EventHandler<FolderSelectedEventArgs>((s, ev) => 
@@ -198,7 +173,7 @@ namespace FilingHelper
             if (explorer.Selection.Count>0 && explorer.Selection[1] is MailItem)
             {
                 MailItem original = explorer.Selection[1] as MailItem;
-                (new RespondServices()).ReplyAttachments(original, true);
+                (new ResponseServices()).ReplyAttachments(original, true);
             }
         }
 
@@ -208,7 +183,7 @@ namespace FilingHelper
             if (explorer.Selection.Count > 0 && explorer.Selection[1] is MailItem)
             {
                 MailItem original = explorer.Selection[1] as MailItem;
-                (new RespondServices()).ReplyAttachments(original, true);
+                (new ResponseServices()).ReplyAttachments(original, true);
             }
 
         }
@@ -219,7 +194,7 @@ namespace FilingHelper
             if (explorer.Selection.Count > 0 && explorer.Selection[1] is MailItem)
             {
                 MailItem original = explorer.Selection[1] as MailItem;
-                (new RespondServices()).ReplyAttachments(original, false);
+                (new ResponseServices()).ReplyAttachments(original, false);
             }
 
         }
@@ -242,37 +217,76 @@ namespace FilingHelper
         private void mnuConversation_ItemsLoading(object sender, RibbonControlEventArgs e)
         {
             Explorer explorer = Globals.ThisAddIn.Application.ActiveExplorer();
-            List<MAPIFolder> folders = (new ConversationUtils()).GetConversationFolders(explorer,explorer.CurrentFolder);
-            if (folders.Count > 0)
-                mnuConversation.PopulateFoldersList(folders.Select(x => new FolderInfo(x)).Reverse(), 
-                (s, ev) =>
-                    {
-                        MAPIFolder folder = Globals.ThisAddIn.Application.Session.GetFolderFromID((s as RibbonButton).Tag.ToString()) as MAPIFolder;
-                        Globals.ThisAddIn.MoveMessages(explorer, folder,(new ConversationUtils()).GetConversationItems(explorer).ToArray());
-                    }, this.Factory,false,"Conversation: ");
+            string currentFolder = Globals.ThisAddIn.Application.ActiveExplorer().CurrentFolder.EntryID;
+            FolderInfo[] history = Globals.ThisAddIn.FolderHistory.GetList().Where(x => x.EntryID != currentFolder && !x.Avoid).ToArray();
+            string[] excludedFolders = Properties.AddinSettings.Default.SuggestionExcludedFolders == null ? null : Properties.AddinSettings.Default.SuggestionExcludedFolders.Cast<string>().ToArray<string>();
+            MailItem[] mailItems=Globals.ThisAddIn.FilingSuggestor.CreateSuggestionMenu(explorer, null, mnuSuggestions, this.Factory,
+                Properties.AddinSettings.Default.SuggestionMenuSender,
+                Properties.AddinSettings.Default.SuggestionMenuConversation,
+                Properties.AddinSettings.Default.SuggestionMenuHistory ? history : null);
 
-            Folder[] suggestFolders=null;
-            if (explorer.Selection.Count > 0 && explorer.Selection[1] is MailItem)
+            if (mailItems.Count() == 0)
+                mnuSuggestions.CreateEmptyList("(No items to display)",this.Factory);
+            else
             {
-                MailItem msg = (explorer.Selection[1] as MailItem);
-                suggestFolders = Globals.ThisAddIn.FilingSuggestor.GetSuggestions(msg.Sender.Address, 5);
-                if (suggestFolders!=null && suggestFolders.Count() > 0)
+                if (mnuSuggestions.Items.Count() == 0)
+                    mnuSuggestions.CreateSeperator(this.Factory);
+                mnuSuggestions.CreateSearchButton((s, ea) =>
                 {
-                    if (folders.Count > 0)
-                        mnuConversation.CreateSeperator(this.Factory);
-                    mnuConversation.PopulateFoldersList(suggestFolders.Select(x => new FolderInfo(x)),
-                    (s, ev) =>
-                    {
-                        MAPIFolder folder = Globals.ThisAddIn.Application.Session.GetFolderFromID((s as RibbonButton).Tag.ToString()) as MAPIFolder;
-                        Globals.ThisAddIn.MoveMessages(explorer, folder, msg);
-                    }, this.Factory, folders.Count()>0, "Suggestion: "); 
-                }
+                    _selectionForm = new SelectFolderFrm(null, "", ITEM_MOVE_DIALOG_CAPTION, true);
+                    _selectionForm.FolderSelected += new EventHandler<FolderSelectedEventArgs>((s2, ev2) =>
+                        _selectionForm_MoveTargetSelected(s2, ev2, mailItems));
+                    _selectionForm.ShowDialog();
+                }, this.Factory, "Search others");
             }
 
-            if (folders.Count==0 && suggestFolders==null)
-                mnuConversation.CreateEmptyList("(No Folders to Display)", this.Factory);
+            //if (mnuConversation.Items.Count() == 0)
+            //    mnuConversation.CreateEmptyList("(No folders to display)",this.Factory);
 
 
+            //MAPIFolder[] Convfolders = (new ConversationUtils()).GetConversationFolders(explorer,explorer.CurrentFolder);
+            //if (Convfolders.Count() > 0)
+            //    mnuConversation.PopulateFoldersList(Convfolders.Select(x => new FolderInfo(x)).Reverse(), 
+            //    (s, ev) =>
+            //        {
+            //            MAPIFolder folder = Globals.ThisAddIn.Application.Session.GetFolderFromID((s as RibbonButton).Tag.ToString()) as MAPIFolder;
+            //            Globals.ThisAddIn.MoveMessages(explorer, folder,(new ConversationUtils()).GetConversationItems(explorer).ToArray());
+            //        }, this.Factory,false,"Conversation: ");
+
+            //Folder[] suggestFolders=null;
+            //if (explorer.Selection.Count > 0 && explorer.Selection[1] is MailItem)
+            //{
+            //    MailItem msg = (explorer.Selection[1] as MailItem);
+            //    suggestFolders = Globals.ThisAddIn.FilingSuggestor.GetSuggestions(msg.Sender.Address, 5)
+            //        .Where(x => x.EntryID != explorer.CurrentFolder.EntryID && !Convfolders.Select(y=>y.EntryID).Contains(x.EntryID)).ToArray();
+            //    if (suggestFolders.Count() > 0)
+            //    {
+            //        if (Convfolders.Count() > 0)
+            //            mnuConversation.CreateSeperator(this.Factory);
+            //        mnuConversation.PopulateFoldersList(suggestFolders.Select(x => new FolderInfo(x)),
+            //        (s, ev) =>
+            //        {
+            //            MAPIFolder folder = Globals.ThisAddIn.Application.Session.GetFolderFromID((s as RibbonButton).Tag.ToString()) as MAPIFolder;
+            //            Globals.ThisAddIn.MoveMessages(explorer, folder, msg);
+            //        }, this.Factory, Convfolders.Count()>0, "Suggestion: "); 
+            //    }
+            //}
+
+            //if (Convfolders.Count()==0 && suggestFolders.Count()==0)
+            //    mnuConversation.CreateEmptyList("(No Folders to Display)", this.Factory);
+
+
+        }
+        private void _selectionForm_MoveTargetSelected(object sender, FolderSelectedEventArgs e, params MailItem[] items)
+        {
+            foreach (var item in items)
+            {
+                item.Move(e.Folder);
+            }
+            _selectionForm.Close();
+            _selectionForm = null;
+            if (e.OpenFolder)
+                Globals.ThisAddIn.ShowFolder(e.Folder);
         }
 
         private void btnSettings_Click(object sender, RibbonControlEventArgs e)

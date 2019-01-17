@@ -62,6 +62,13 @@ namespace FilingHelper
             }
         }
 
+        public void Remove(string entryID)
+        {
+            FolderInfo item = _list.FirstOrDefault(x => x.EntryID == entryID);
+            if (item != null)
+                _list.Remove(item);
+        }
+
         private string getFileName()
         {
             return String.Concat(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"\", FILE_NAME);

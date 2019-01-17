@@ -17,7 +17,7 @@ namespace FilingHelper.Controls.Settings
         public SettingsFrm()
         {
             InitializeComponent();
-            _panels =new ISettingsDialogPanel[]{ctrlSignauresPanel,ctrlAttachmentsPanel,ctrlHistoryPanel};
+            _panels =new ISettingsDialogPanel[]{ctrlAttachments,ctrlFolders,ctrlMail,ctrlSuggestions,ctrlSignatures};
             loadSettings();
         }
         public SettingsFrm(int selectedItem) 
@@ -44,11 +44,13 @@ namespace FilingHelper.Controls.Settings
 
         private void ctrlMenu_MenuItemSelected(object sender, HelperUtils.MenuItemSelectedEventArgs e)
         {
-  
 
-            ctrlAttachmentsPanel.Visible = e.SelectedItem == 0;
-            ctrlSignauresPanel.Visible = e.SelectedItem == 1;
-            ctrlHistoryPanel.Visible = e.SelectedItem == 2;
+
+            ctrlAttachments.Visible = e.SelectedItem == 0;
+            ctrlFolders.Visible = e.SelectedItem == 1;
+            ctrlMail.Visible = e.SelectedItem == 2;
+            ctrlSuggestions.Visible = e.SelectedItem == 3;
+            ctrlSignatures.Visible = e.SelectedItem == 4;
         }
 
         private void btnSaveSetting_Click(object sender, EventArgs e)

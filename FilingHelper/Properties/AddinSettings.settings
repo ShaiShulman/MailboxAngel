@@ -54,5 +54,17 @@
     <Setting Name="MailHistoryAddMode" Type="HelperUtils.MailHistoryAddMode" Scope="User">
       <Value Profile="(Default)">ExplorerSelectionChange</Value>
     </Setting>
+    <Setting Name="SuggestionExcludedFolders" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SuggestionMenuSender" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SuggestionMenuConversation" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SuggestionMenuHistory" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

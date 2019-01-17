@@ -10,6 +10,7 @@ using FilingHelper.Controls;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Office.Interop.Outlook;
+using MailboxAngel.OutlookCommon;
 
 namespace FilingHelper
 {
@@ -34,7 +35,7 @@ namespace FilingHelper
             get { return _folderSearch; }
             set { _folderSearch = value; }
         }
-        private FilingSuggester.Suggester _filingSuggester = new FilingSuggester.Suggester();
+        private FilingSuggester.Suggester _filingSuggester;
         public FilingSuggester.Suggester FilingSuggestor
         {
             get { return _filingSuggester; }
@@ -122,11 +123,17 @@ namespace FilingHelper
                 {
                     prevFolders.Enqueue((Outlook.MAPIFolder)item.Parent);
                     movedItems.Enqueue(item.Move(target));
+                    try
+                    {
+                        _filingSuggester.Update((new MailItemUtils()).GetSenderEmailAddress(item), (Folder)target);
+
+                    }
+                    catch (System.Exception) { }
                 }
 
                 taskPane.Control.BeginInvoke((System.Action)(() =>
                 {
-                    ((FolderPromptCtrl)taskPane.Control).SetText(items.Count().ToString() + " " + ITEM_MOVED_MESSAGE,target.FullFolderPath);
+                    ((FolderPromptCtrl)taskPane.Control).SetText(items.Count().ToString() + " " + ITEM_MOVED_MESSAGE,target.FullFolderPath,true);
                 }));
                 EventHandler undoDelegate= (s, e) =>
                 {
@@ -140,11 +147,23 @@ namespace FilingHelper
                     if (counter > 0)
                         CustomMessageBox(string.Format("{0} messages returned to original folder(s)", counter), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 };
+                EventHandler openFolderDelegate = (s, e) =>
+                {
+                    if (explorer != null)
+                    {
+                        Thread.Sleep(500);
+                        explorer.CurrentFolder = target;
+                    }
+                };
+
                 ((FolderPromptCtrl)taskPane.Control).Undo += undoDelegate;
+                ((FolderPromptCtrl)taskPane.Control).OpenFolder += openFolderDelegate;
 
                 taskPane.Visible = true;
                 Thread.Sleep(4000);
                 ((FolderPromptCtrl)taskPane.Control).Undo -= undoDelegate;
+                ((FolderPromptCtrl)taskPane.Control).OpenFolder -= openFolderDelegate;
+
                 taskPane.Visible = false;
             });
             FolderChangeThread.Start();
@@ -414,13 +433,24 @@ namespace FilingHelper
             }));
         }
 
-        public void CustomMessageBox(string message,MessageBoxButtons buttons,MessageBoxIcon icon)
+        public DialogResult CustomMessageBox(string message,MessageBoxButtons buttons,MessageBoxIcon icon)
         {
-            MessageBox.Show(message, APPLICATION_CAPTION, buttons, icon);
+            return MessageBox.Show(message, APPLICATION_CAPTION, buttons, icon);
         }
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            if (Properties.AddinSettings.Default.SuggestionExcludedFolders!=null)
+                _filingSuggester= new FilingSuggester.Suggester(Globals.ThisAddIn.Application.Session,Properties.AddinSettings.Default.SuggestionExcludedFolders.Cast<string>().ToArray());
+            else
+                _filingSuggester = new FilingSuggester.Suggester(Globals.ThisAddIn.Application.Session,new string[0]);
+            _filingSuggester.MessagesMove += _filingSuggester_MessagesMove;
+
+            if (!_filingSuggester.Load()) {
+                if (CustomMessageBox("Error loading folder suggestions. Reset suggestions?", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
+                    _filingSuggester.SupressSaving = true;
+
+            }
             inspectors = this.Application.Inspectors;
             inspectors.NewInspector += Inspectors_NewInspector;
             explorers = this.Application.Explorers;
@@ -437,8 +467,13 @@ namespace FilingHelper
             mailHistory = new MailHistoryManager(Properties.AddinSettings.Default.MailHistoryMaxItems);
             mailHistory.Load();
             ((Outlook.ApplicationEvents_11_Event)Application).Quit += ThisAddIn_Quit;
-            _folderSearch = new FolderServices();
+            _folderSearch = new FolderServices(Globals.ThisAddIn.Application.Session);
             _folderNavigatorService = new FolderNavigator();
+        }
+
+        private void _filingSuggester_MessagesMove(object sender, FilingSuggester.MessagesMoveEventArgs e)
+        {
+            MoveMessages(e.Explorer, e.Target, e.Items);
         }
 
         private void Application_ItemSend(object Item, ref bool Cancel)
@@ -456,6 +491,7 @@ namespace FilingHelper
         private void ThisAddIn_Quit()
         {
             folderHistory.Save();
+            _filingSuggester.Save();
             MailHistory.Save();
         }
 
@@ -480,7 +516,7 @@ namespace FilingHelper
             if (Item is MailItem)
             {
                 MailItem item = (MailItem)Item;
-                _filingSuggester.Update(item.Sender.Address, (Folder)MoveTo);
+                _filingSuggester.Update((new MailItemUtils()).GetSenderEmailAddress(item), (Folder)MoveTo);
             }
         }
 

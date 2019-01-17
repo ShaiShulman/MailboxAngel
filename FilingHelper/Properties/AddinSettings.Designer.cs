@@ -216,5 +216,52 @@ namespace FilingHelper.Properties {
                 this["MailHistoryAddMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection SuggestionExcludedFolders {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["SuggestionExcludedFolders"]));
+            }
+            set {
+                this["SuggestionExcludedFolders"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SuggestionMenuSender {
+            get {
+                return ((bool)(this["SuggestionMenuSender"]));
+            }
+            set {
+                this["SuggestionMenuSender"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SuggestionMenuConversation {
+            get {
+                return ((bool)(this["SuggestionMenuConversation"]));
+            }
+            set {
+                this["SuggestionMenuConversation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SuggestionMenuHistory {
+            get {
+                return ((bool)(this["SuggestionMenuHistory"]));
+            }
+            set {
+                this["SuggestionMenuHistory"] = value;
+            }
+        }
     }
 }

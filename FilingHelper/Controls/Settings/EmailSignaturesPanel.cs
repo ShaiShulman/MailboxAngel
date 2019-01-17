@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace FilingHelper.Controls.Settings
 {
-    public partial class AttachmentHelperPanel : UserControl, ISettingsDialogPanel
+    public partial class EmailSignatureSettingsPanel : UserControl, ISettingsDialogPanel
     {
         Control[] signatureComboBoxes;
 
-        public AttachmentHelperPanel()
+        public EmailSignatureSettingsPanel()
         {
             InitializeComponent();
             signatureComboBoxes = new ComboBox[]{ lstExternalNew, lstExternalReply, lstInternalNew, lstInternalReply };

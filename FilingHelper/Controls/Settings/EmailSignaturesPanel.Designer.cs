@@ -1,6 +1,6 @@
 ﻿namespace FilingHelper.Controls.Settings
 {
-    partial class AttachmentHelperPanel
+    partial class EmailSignatureSettingsPanel
     {
         /// <summary> 
         /// Required designer variable.
@@ -81,10 +81,10 @@
             this.label1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label1.Location = new System.Drawing.Point(6, 30);
+            this.label1.Location = new System.Drawing.Point(3, 29);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.label1.Size = new System.Drawing.Size(715, 23);
+            this.label1.Size = new System.Drawing.Size(845, 23);
             this.label1.TabIndex = 25;
             this.label1.Text = "External emails signature";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -131,10 +131,10 @@
             this.label3.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label3.Location = new System.Drawing.Point(9, 117);
+            this.label3.Location = new System.Drawing.Point(3, 108);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.label3.Size = new System.Drawing.Size(715, 23);
+            this.label3.Size = new System.Drawing.Size(845, 23);
             this.label3.TabIndex = 31;
             this.label3.Text = "Internal emails signature";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -201,10 +201,10 @@
             this.label8.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label8.Location = new System.Drawing.Point(9, 272);
+            this.label8.Location = new System.Drawing.Point(6, 269);
             this.label8.Name = "label8";
             this.label8.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.label8.Size = new System.Drawing.Size(715, 2);
+            this.label8.Size = new System.Drawing.Size(845, 2);
             this.label8.TabIndex = 37;
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -244,7 +244,7 @@
             this.Controls.Add(this.btnRemoveDomain);
             this.Controls.Add(this.lstDomains);
             this.Name = "AttachmentHelperPanel";
-            this.Size = new System.Drawing.Size(732, 365);
+            this.Size = new System.Drawing.Size(854, 413);
             this.ResumeLayout(false);
             this.PerformLayout();
 

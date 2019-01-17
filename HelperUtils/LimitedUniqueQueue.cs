@@ -49,6 +49,11 @@ namespace HelperUtils
             _list.Clear();
         }
 
+        public void Remove(T item)
+        {
+            _list.Remove(item);
+        }
+
         public T Dequeue()
         {
             T item = _list.Last();

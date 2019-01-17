@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachmentManager", "Attach
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilingSuggester", "FilingSuggester\FilingSuggester.csproj", "{CFE00AF6-0A0C-4C32-9734-5F468DF3D602}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookCommon", "OutlookCommon\OutlookCommon.csproj", "{972DD00C-FD83-415A-9878-9BD76745D78D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CFE00AF6-0A0C-4C32-9734-5F468DF3D602}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFE00AF6-0A0C-4C32-9734-5F468DF3D602}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFE00AF6-0A0C-4C32-9734-5F468DF3D602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{972DD00C-FD83-415A-9878-9BD76745D78D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{972DD00C-FD83-415A-9878-9BD76745D78D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{972DD00C-FD83-415A-9878-9BD76745D78D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{972DD00C-FD83-415A-9878-9BD76745D78D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

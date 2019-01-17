@@ -9,10 +9,14 @@ namespace HelperUtils
 {
     public static class RibbonMenuExtension
     {
-        public static void PopulateFoldersList(this RibbonMenu control, IEnumerable<FolderInfo> list, RibbonControlEventHandler clickHandler, RibbonFactory factory, bool keepList = false, string prefix="")
+        public static void Clear(this RibbonMenu control)
         {
-            if (!keepList)
-                control.Items.Clear();
+            control.Items.Clear();
+
+        }
+
+        public static void PopulateFoldersList(this RibbonMenu control, IEnumerable<FolderInfo> list, RibbonControlEventHandler clickHandler, RibbonFactory factory, Func<FolderInfo, string> officeImageIdDelegate, string prefix = "")
+        {
             foreach (var item in list.Where(x=>x.Active))
             {
                 RibbonButton button = factory.CreateRibbonButton();
@@ -20,7 +24,8 @@ namespace HelperUtils
                 button.Tag = item.EntryID;
                 button.ScreenTip = item.Path;
                 button.Click += clickHandler;
-                button.OfficeImageId = item.Persist?"CreateMailRule":"Folder";
+                //button.OfficeImageId = item.Persist?"CreateMailRule":"Folder";
+                button.OfficeImageId = officeImageIdDelegate(item);
                 button.ShowImage = true;
                 control.Items.Add(button);
             }
@@ -41,6 +46,16 @@ namespace HelperUtils
             RibbonSeparator seperator = factory.CreateRibbonSeparator();
             seperator.Enabled = false;
             control.Items.Add(seperator);
+        }
+
+        public static void CreateSearchButton(this RibbonMenu control, RibbonControlEventHandler clickHandler, RibbonFactory factory, string label)
+        {
+            RibbonButton button = factory.CreateRibbonButton();
+            button.Label = label;
+            button.Click += clickHandler;
+            button.OfficeImageId = "Search";
+            button.ShowImage = true;
+            control.Items.Add(button);
         }
     }
 }
