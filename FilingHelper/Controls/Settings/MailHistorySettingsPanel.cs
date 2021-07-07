@@ -11,7 +11,7 @@ using HelperUtils;
 
 namespace FilingHelper.Controls.Settings
 {
-    public partial class MailHistorySettingsPanel : UserControl,ISettingsDialogPanel
+    public partial class MailHistorySettingsPanel : SettingsPanelBase
     {
         public MailHistorySettingsPanel()
         {
@@ -26,7 +26,7 @@ namespace FilingHelper.Controls.Settings
                 lstAddMode.Items.Add(((MailHistoryAddMode)values.GetValue(i)).GetDescription());
             }
         }
-        public void LoadSettings()
+        protected override void loadSettings()
         {
             Properties.AddinSettings.Default.Upgrade();
 
@@ -35,7 +35,7 @@ namespace FilingHelper.Controls.Settings
             lstAddMode.SelectedIndex = (int)Properties.AddinSettings.Default.MailHistoryAddMode;
         }
 
-        public void SaveSettings()
+        protected override void saveSettings()
         {
 
             if (Properties.AddinSettings.Default.MailHistoryMaxItems != txtMaxMailItems.Value.TryParseInt(10))

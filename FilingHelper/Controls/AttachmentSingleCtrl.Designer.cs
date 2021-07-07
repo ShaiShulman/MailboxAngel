@@ -55,7 +55,8 @@ namespace FilingHelper.Controls
             // 
             // ctrlToolStrip
             // 
-            this.ctrlToolStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ctrlToolStrip.AutoSize = false;
+            this.ctrlToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.ctrlToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.picFileIcon,
             this.txtFileName,
@@ -67,7 +68,7 @@ namespace FilingHelper.Controls
             this.btnFinalize});
             this.ctrlToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ctrlToolStrip.Name = "ctrlToolStrip";
-            this.ctrlToolStrip.Size = new System.Drawing.Size(553, 27);
+            this.ctrlToolStrip.Size = new System.Drawing.Size(586, 27);
             this.ctrlToolStrip.TabIndex = 8;
             this.ctrlToolStrip.Text = "toolStrip1";
             this.ctrlToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
@@ -156,7 +157,7 @@ namespace FilingHelper.Controls
             this.btnFinalize.Image = ((System.Drawing.Image)(resources.GetObject("btnFinalize.Image")));
             this.btnFinalize.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnFinalize.Name = "btnFinalize";
-            this.btnFinalize.Size = new System.Drawing.Size(23, 20);
+            this.btnFinalize.Size = new System.Drawing.Size(23, 24);
             this.btnFinalize.Text = "toolStripButton5";
             this.btnFinalize.ToolTipText = "Finalize tracked changes";
             // 
@@ -180,7 +181,6 @@ namespace FilingHelper.Controls
             this.ctrlToolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.srcBinding)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

@@ -15,14 +15,19 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace AttachmentManager
 {
-    public class AttachmentService
+    /// <summary>
+    /// 
+    /// Service for  creating a list of AttachmentCommand objects from existing MailItem, making changes to attachments and updating the attachments back to the mail item
+    /// 
+    /// </summary>
+    public class AttachmentManager
     {
-        public event EventHandler<AttachmentsProgressInitiatedEventArgs> AttachmentsProgressInitiated;
+        private const string ZIP_FILE_EXT = ".zip";
+        private const string ZIP_FILE_DEFAULT_NAME = "Files"; public event EventHandler<AttachmentsProgressInitiatedEventArgs> AttachmentsProgressInitiated;
         public event EventHandler<EventArgs> AttachmentProgressIncrement;
         public event EventHandler<AttachmentsFinishedEventArgs> AttachmentsFinished;
-        private const string ZIP_FILE_EXT = ".zip";
-        private const string ZIP_FILE_DEFAULT_NAME = "Files";
 
+        /// Outlook pane where attachments will be displayed
         private object _uiElement;
         public object UIElement
         {
@@ -33,13 +38,17 @@ namespace AttachmentManager
         private MailItem _message;
         private Queue<string> _usedFiles;
 
-        public AttachmentService(MailItem message)
+        /// <summary>
+        /// Initialize the service for a specific MailItem
+        /// </summary>
+        /// <param name="message">MailItem containing the attachments to be processed</param>
+        public AttachmentManager(MailItem message)
         {
             _message = message;
             _usedFiles = new Queue<string>();
         }
 
-        ~AttachmentService()
+        ~AttachmentManager()
         {
             while (_usedFiles.Count > 0)
             {
@@ -51,6 +60,10 @@ namespace AttachmentManager
             }
         }
 
+        /// <summary>
+        /// Create list of AttachmentCommands from existing atttachments in mail item
+        /// </summary>
+        /// <returns>List of attachments as AttachmentCommand</returns>
         public List<AttachmentCommand> getAttachments()
         {
             List<AttachmentCommand> items = new List<AttachmentCommand>();
@@ -62,6 +75,11 @@ namespace AttachmentManager
             return items;
         }
 
+        /// <summary>
+        /// Check if existing attachment in a mail item is an inline attachment
+        /// </summary>
+        /// <param name="attach">Attachment object to be checked</param>
+        /// <returns>True if inline</returns>
         public bool isInlineAttachment(Attachment attach)
         {
             const string PR_ATTACH_METHOD = @"http://schemas.microsoft.com/mapi/proptag/0x37050003";
@@ -79,6 +97,10 @@ namespace AttachmentManager
             return result;
         }
 
+        /// <summary>
+        /// Create textual list of attachments in existing email and insert it into body of email
+        /// </summary>
+        /// <param name="attachments">List of AttachmentCommands in existing email</param>
         public void CreateAttachmentsList(List<AttachmentCommand> attachments)
         {
             string listContent;
@@ -128,12 +150,24 @@ namespace AttachmentManager
 
         }
 
+        /// <summary>
+        /// Create file name for zip
+        /// </summary>
+        /// <returns>Strign containg valid file name</returns>
         public string GetDefaultArchiveFileName()
         {
 
             return string.Concat(string.IsNullOrWhiteSpace(_message.Subject) ? ZIP_FILE_DEFAULT_NAME : Files.ValidateFileName(_message.Subject),
                 ZIP_FILE_EXT);
         }
+
+        /// <summary>
+        /// Create compressed Zip file for existing filed saved on the disk
+        /// </summary>
+        /// <param name="archiveName">Name of Zip file (will be checked for uniqueness if foverwrite is False)</param>
+        /// <param name="files">list of filed paths</param>
+        /// <param name="foverwrite">Should file be overwritten if ArchiveName exists</param>
+        /// <returns></returns>
         private string createCompressedArchive(string archiveName, string[] files, bool foverwrite = false)
         {
             string finalArchiveName = archiveName;
@@ -165,6 +199,11 @@ namespace AttachmentManager
                 ZIP_FILE_EXT);
         }
 
+        /// <summary>
+        /// Update all changes made in the AttachmentCommands and update the mail item
+        /// </summary>
+        /// <param name="attachments">List of A</param>
+        /// <param name="archiveName"></param>
         public void ProcessAttachments(List<AttachmentCommand> attachments,string archiveName=null)
         {
             int progressMax = attachments.Count * 2 + 1 + attachments.OfType<ExistingAttachmentCommand>().Count();
@@ -251,6 +290,10 @@ namespace AttachmentManager
             onAttachmentsFinished();
         }
 
+        /// <summary>
+        /// Save locally and open an atachment 
+        /// </summary>
+        /// <param name="attachment">AttachmentCCommand object that include the file</param>
         public void OpenAttachmente(AttachmentCommand attachment)
         {
             string fileName;
@@ -277,6 +320,11 @@ namespace AttachmentManager
             }
         }
  
+        /// <summary>
+        /// Accept all changes in an attachment
+        /// </summary>
+        /// <param name="filename">File name of type Word doc</param>
+        /// <param name="wordApp">Work application object</param>        
         private void finalizeWordDoc(string filename, Microsoft.Office.Interop.Word.Application wordApp)
         {
             if (!File.Exists(filename))

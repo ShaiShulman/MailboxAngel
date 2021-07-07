@@ -12,26 +12,17 @@ namespace FilingHelper.Controls.Settings
 {
     public partial class SettingsFrm : Form
     {
-        private ISettingsDialogPanel[] _panels;
+        private SettingsPanelBase[] _panels;
         private int _initialItem=0;
         public SettingsFrm()
         {
             InitializeComponent();
-            _panels =new ISettingsDialogPanel[]{ctrlAttachments,ctrlFolders,ctrlMail,ctrlSuggestions,ctrlSignatures};
-            loadSettings();
+            _panels =new SettingsPanelBase[]{ctrlAttachments,ctrlFolders,ctrlMail,ctrlSuggestions,ctrlSignatures};
         }
         public SettingsFrm(int selectedItem) 
             : this()
         {
             _initialItem = selectedItem;
-        }
-
-        private void loadSettings()
-        {
-            foreach (var panel in _panels)
-            {
-                panel.LoadSettings();
-            }
         }
 
         private void saveSettings()
@@ -51,6 +42,7 @@ namespace FilingHelper.Controls.Settings
             ctrlMail.Visible = e.SelectedItem == 2;
             ctrlSuggestions.Visible = e.SelectedItem == 3;
             ctrlSignatures.Visible = e.SelectedItem == 4;
+            _panels[e.SelectedItem].LoadSettings();
         }
 
         private void btnSaveSetting_Click(object sender, EventArgs e)
@@ -67,6 +59,7 @@ namespace FilingHelper.Controls.Settings
         private void SettingsFrm_Load(object sender, EventArgs e)
         {
             ctrlMenu.SelectedItem = _initialItem;
+            _panels[_initialItem].LoadSettings();
         }
     }
 }

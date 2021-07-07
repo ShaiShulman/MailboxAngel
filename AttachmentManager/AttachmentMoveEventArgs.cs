@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace AttachmentManager
 {
+    /// <summary>
+    /// 
+    /// Arguments for an event when an attachment is dragged up to down in the list
+    /// 
+    /// </summary>
     public class AttachmentMoveEventArgs:EventArgs
     {
         private AttachmentCommand _attach;

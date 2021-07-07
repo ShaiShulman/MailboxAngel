@@ -9,6 +9,11 @@ namespace HelperUtils
 {
     public class MailItemUtils
     {
+        /// <summary>
+        /// Extract sender SMTP email address from mail item
+        /// </summary>
+        /// <param name="msg">Mail item</param>
+        /// <returns></returns>
         public string GetSenderEmailAddress(MailItem msg)
         {
             AddressEntry sender = msg.Sender;

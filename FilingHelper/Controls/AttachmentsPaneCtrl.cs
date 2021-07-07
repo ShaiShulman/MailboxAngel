@@ -22,7 +22,7 @@ namespace FilingHelper.Controls
     {
         const int TOP_PADDING = 90;
         public event EventHandler<AttachmentsUpdatedEventArgs> AttachmentsUpdated;
-        private AttachmentService _manager;
+        private AttachmentManager.AttachmentManager _manager;
         private string _lastLine = "";
         private int _bottonBarHeight;
         private EnumCompressionMode _compressionMode;
@@ -68,7 +68,7 @@ namespace FilingHelper.Controls
         public int MaxHeight { get { return pnlContainer.MaximumSize.Height + TOP_PADDING; } }
         private int _maxEmailSize;
 
-        public AttachmentsPaneCtrl(AttachmentService manager)
+        public AttachmentsPaneCtrl(AttachmentManager.AttachmentManager manager)
         {
             InitializeComponent();
             _compressionMode = EnumCompressionMode.None;
@@ -133,7 +133,7 @@ namespace FilingHelper.Controls
 
         private void initControl(AttachmentSingleCtrl control, bool isFirst, bool isLast)
         {
-            control.Width = TotalWidth;
+            control.SetWidth(this.Width);
             control.FileDropped += Control_FileDropped;
             control.AttachmentOpen += Control_AttachmentOpen;
             control.AttachmentMove += Control_AttachmentMove;
@@ -476,6 +476,14 @@ namespace FilingHelper.Controls
                         txtArchiveName.Text = _manager.GetDefaultArchiveFileName();
                     txtArchiveName.Visible = true;
                     break;
+            }
+        }
+
+        private void AttachmentsPaneCtrl_Resize(object sender, EventArgs e)
+        {
+            foreach (var control in pnlContainer.Controls)
+            {
+                ((AttachmentSingleCtrl)control).SetWidth(this.Width);
             }
         }
     }

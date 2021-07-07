@@ -14,7 +14,7 @@ namespace FilingHelper
     {
         public void ReplyAttachments(MailItem original, bool replyAll)
         {
-            AttachmentService attachSrv = new AttachmentService(original);
+            AttachmentManager.AttachmentManager attachSrv = new AttachmentManager.AttachmentManager(original);
             MailItem reply = replyAll?original.ReplyAll():original.Reply();
             reply.Display();
             if (original.Attachments.Count > 0)

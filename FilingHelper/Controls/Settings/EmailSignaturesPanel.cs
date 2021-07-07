@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace FilingHelper.Controls.Settings
 {
-    public partial class EmailSignatureSettingsPanel : UserControl, ISettingsDialogPanel
+    public partial class EmailSignatureSettingsPanel : SettingsPanelBase
     {
         Control[] signatureComboBoxes;
 
@@ -54,7 +54,7 @@ namespace FilingHelper.Controls.Settings
                     btnRemoveDomain.Enabled = false;
             }
         }
-        public void LoadSettings()
+        protected override void loadSettings()
         {
             loadSignatures();
             Properties.Settings.Default.Upgrade();
@@ -87,7 +87,7 @@ namespace FilingHelper.Controls.Settings
             //lstDomains.Enabled = prop.EmailSignatureEnabled;
         }
 
-        public void SaveSettings()
+        protected override void saveSettings()
         {
             Properties.Settings.Default.Upgrade();
             Properties.AddinSettings.Default.InternalDomainNames = String.Join(",", lstDomains.Items.Cast<string>());

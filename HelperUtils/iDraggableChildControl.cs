@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HelperUtils
 {
+    /// <summary>
+    /// Interface and events for a child control that can be dragged in the containre
+    /// </summary>
     public interface iDraggableChildControl
     {
         event EventHandler<ChildDragEventArgs> ControlDragOver;

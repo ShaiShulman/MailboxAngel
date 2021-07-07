@@ -39,7 +39,7 @@ namespace FilingHelper
                     MAPIFolder folder = Globals.ThisAddIn.FolderHistory.Find(x => x.EntryID == (s as RibbonButton).Tag.ToString()).Folder;
                     Globals.ThisAddIn.NavigateFolder(null, folder);
                 }, this.Factory ,fi=>"Folder");
-            if (Properties.AddinSettings.Default.FolderHistoryPersistVisible)
+            if (Properties.AddinSettings.Default.FolderHistoryPersistVisible && mnuHistory.Items.Count()>0)
             {
                 bool isPersistent = Globals.ThisAddIn.FolderHistory.isFolderPersistent(currentFolder);
                 RibbonButton buttonP = CreateRibbonButton();
@@ -55,7 +55,7 @@ namespace FilingHelper
                 };
                 mnuHistory.Items.Add(buttonP);
             }
-            if (Properties.AddinSettings.Default.FolderHistoryPersistVisible)
+            if (Properties.AddinSettings.Default.FolderHistoryPersistVisible && mnuHistory.Items.Count() > 0)
             {
 
                 bool isAvoided = Globals.ThisAddIn.FolderHistory.isFolderAvoided(currentFolder);

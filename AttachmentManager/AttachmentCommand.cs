@@ -9,6 +9,11 @@ using HelperUtils;
 
 namespace AttachmentManager
 {
+    /// <summary>
+    ///
+    /// Base class for ExistingAttachmentCommand and NewAttachmentCommand classes, representing a file attachment in the attachment manager
+    /// 
+    /// </summary>
     [Serializable]
     public abstract class AttachmentCommand
     {

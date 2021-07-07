@@ -8,15 +8,28 @@ using System.Threading.Tasks;
 
 namespace HelperUtils
 {
+    /// <summary>
+    /// Class  representing a node in a TreeView control that contain and present another object
+    /// </summary>
+    /// <typeparam name="T">Type of object being reprresented by each TreeView node</typeparam>
     public class TreeNode<T>:IEnumerable<TreeNode<T>>
     {
         private readonly T _value;
         private readonly List<TreeNode<T>> _children = new List<TreeNode<T>>();
 
+        /// <summary>
+        /// Constructor for initiating a node without children
+        /// </summary>
+        /// <param name="value">object being represented in the node</param>
         public TreeNode(T value)
         {
             _value = value;
         }
+        /// <summary>
+        /// Constructor for initiating a node with object and children
+        /// </summary>
+        /// <param name="value">object being represented in the node</param>
+        /// <param name="children">List of TreeNode children</param>
         public TreeNode(T value, List<TreeNode<T>> children)
         {
             _value = value;
@@ -32,11 +45,19 @@ namespace HelperUtils
 
         public T Value { get { return _value; } }
 
+        /// <summary>
+        /// Get children of a specific node
+        /// </summary>
         public ReadOnlyCollection<TreeNode<T>> Children
         {
             get { return _children.AsReadOnly(); }
         }
 
+        /// <summary>
+        /// Create child for a specific nide
+        /// </summary>
+        /// <param name="value">Object represented by the new node</param>
+        /// <returns></returns>
         public TreeNode<T> AddChild(T value)
         {
             var node = new TreeNode<T>(value) { Parent = this };
@@ -44,6 +65,11 @@ namespace HelperUtils
             return node;
         }
 
+        /// <summary>
+        /// Add list of objects as child nodes to a specific node
+        /// </summary>
+        /// <param name="Values">Objects to be added as new children</param>
+        /// <returns></returns>
         public TreeNode<T>[] AddChildren(params T[] Values)
         {
             return Values.Select(AddChild).ToArray();
@@ -54,6 +80,10 @@ namespace HelperUtils
             return _children.Remove(node);
         }
 
+        /// <summary>
+        /// Perform a function on a node and all child nodes recursively
+        /// </summary>
+        /// <param name="action">Function accepting the data type for the object contained in the nodes as parameter</param>
         public void Traverse(Action<T> action)
         {
             action(Value);

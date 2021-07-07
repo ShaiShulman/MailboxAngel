@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace MailboxAngel.OutlookCommon
 {
+    /// <summary>
+    /// Util class for handling mail items
+    /// </summary>
     class MailItemUtils
     {
+        /// <summary>
+        /// Extract sender SMTP address from mail item
+        /// </summary>
+        /// <param name="msg">mail item</param>
+        /// <returns>sender address</returns>
         public string GetSenderEmailAddress(MailItem msg)
         {
             AddressEntry sender = msg.Sender;

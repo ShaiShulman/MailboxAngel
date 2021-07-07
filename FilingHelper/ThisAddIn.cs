@@ -24,7 +24,7 @@ namespace FilingHelper
         Outlook.Explorers explorers;
         private Dictionary<Outlook.Explorer, ExplorerWrapper> folderPanelsWrapper = new Dictionary<Outlook.Explorer, ExplorerWrapper>();
         private OutlookWindowStore<FolderArchiver> folderArchivers = new OutlookWindowStore<FolderArchiver>();
-        private OutlookWindowStore<AttachmentService> attachmentManagers = new OutlookWindowStore<AttachmentService>();
+        private OutlookWindowStore<AttachmentManager.AttachmentManager> attachmentManagers = new OutlookWindowStore<AttachmentManager.AttachmentManager>();
         private UserControlStore<FolderArchiverCtrl> folderArchiverCtrls = new UserControlStore<FolderArchiverCtrl>();
         private UserControlStore<Controls.AttachmentsPaneCtrl> attachmentPaneCtrls = new UserControlStore<Controls.AttachmentsPaneCtrl>();
         private UserControlStore<ResearchPanelCtrl> researchPaneCtril = new UserControlStore<ResearchPanelCtrl>();
@@ -305,7 +305,7 @@ namespace FilingHelper
                 HideAttachmentManager(inspector,false);
                 return;
             }
-            AttachmentService manager = new AttachmentService(inspector.CurrentItem);
+            AttachmentManager.AttachmentManager manager = new AttachmentManager.AttachmentManager(inspector.CurrentItem);
             manager.AttachmentsFinished += Manager_AttachmentsFinished;
             attachmentManagers[inspector] = manager;
             if (attachmentPaneCtrls[inspector] == null)
@@ -322,7 +322,8 @@ namespace FilingHelper
             message.AttachmentRemove += Message_AttachmentRemove;
             ((AttachmentsPaneCtrl)pane.Control).Fill(attachments);
             ((AttachmentsPaneCtrl)pane.Control).AttachmentsUpdated += AttachmentPaneCtrl_AttachmentsUpdated;
-            ((AttachmentsPaneCtrl)pane.Control).Resize += ((s, e) => {
+            ((AttachmentsPaneCtrl)pane.Control).Resize += ((s, e) =>
+            {
                 ((AttachmentsPaneCtrl)pane.Control).TotalWidth = pane.Width;
                 if (pane.Height > ((AttachmentsPaneCtrl)pane.Control).MaxHeight)
                     pane.Height = ((AttachmentsPaneCtrl)pane.Control).MaxHeight;
@@ -359,7 +360,7 @@ namespace FilingHelper
             if (_updateAttachmentsOnAddRemove)
             {
                 Outlook.Inspector inspector = ((Outlook.MailItem)Attachment.Parent).GetInspector;
-                AttachmentService manager = attachmentManagers[inspector];
+                AttachmentManager.AttachmentManager manager = attachmentManagers[inspector];
                 ((AttachmentsPaneCtrl)((CustomTaskPane)manager.UIElement).Control).Add(new ExistingAttachmentCommand(Attachment));
             }
         }
@@ -368,7 +369,7 @@ namespace FilingHelper
             if (_updateAttachmentsOnAddRemove)
             {
                 Outlook.Inspector inspector = ((Outlook.MailItem)Attachment.Parent).GetInspector;
-                AttachmentService manager = attachmentManagers[inspector];
+                AttachmentManager.AttachmentManager manager = attachmentManagers[inspector];
                 ((AttachmentsPaneCtrl)((CustomTaskPane)manager.UIElement).Control).Remove(Attachment);
             }
         }
@@ -440,13 +441,14 @@ namespace FilingHelper
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            if (Properties.AddinSettings.Default.SuggestionExcludedFolders!=null)
-                _filingSuggester= new FilingSuggester.Suggester(Globals.ThisAddIn.Application.Session,Properties.AddinSettings.Default.SuggestionExcludedFolders.Cast<string>().ToArray());
+            if (Properties.AddinSettings.Default.SuggestionExcludedFolders != null)
+                _filingSuggester = new FilingSuggester.Suggester(Globals.ThisAddIn.Application.Session, Properties.AddinSettings.Default.SuggestionExcludedFolders.Cast<string>().ToArray());
             else
-                _filingSuggester = new FilingSuggester.Suggester(Globals.ThisAddIn.Application.Session,new string[0]);
+                _filingSuggester = new FilingSuggester.Suggester(Globals.ThisAddIn.Application.Session, new string[0]);
             _filingSuggester.MessagesMove += _filingSuggester_MessagesMove;
 
-            if (!_filingSuggester.Load()) {
+            if (!_filingSuggester.Load())
+            {
                 if (CustomMessageBox("Error loading folder suggestions. Reset suggestions?", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                     _filingSuggester.SupressSaving = true;
 

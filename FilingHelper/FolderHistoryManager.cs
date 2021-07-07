@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace FilingHelper
@@ -40,9 +41,7 @@ namespace FilingHelper
         public void ChangeFolderPersistence(string entryID, bool value)
         {
             FolderInfo item = _list.FirstOrDefault(x => x.EntryID == entryID);
-            if (item == null)
-                throw new System.Exception("Folder not found in history");
-            else
+            if (item != null)
             {
                 item.Persist = value;
                 if (value)
@@ -52,9 +51,7 @@ namespace FilingHelper
         public void ChangeFolderAvoidance(string entryID, bool value)
         {
             FolderInfo item = _list.FirstOrDefault(x => x.EntryID == entryID);
-            if (item == null)
-                throw new System.Exception("Folder not found in history");
-            else
+            if (item != null)
             {
                 item.Avoid = value;
                 if (value)
@@ -111,8 +108,17 @@ namespace FilingHelper
             string fname = getFileName();
             if (!File.Exists(fname))
                 return;
-            document.Load(getFileName()); ;
             _list = new LimitedUniqueQueue<FolderInfo>(_listSize);
+            try
+            {
+                document.Load(getFileName());
+
+            }
+            catch (System.Exception)
+            {
+                Globals.ThisAddIn.CustomMessageBox("File Name is Invalid", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             foreach (XmlNode node in document.SelectNodes("/History/Folder").Cast<XmlNode>().Reverse())
             {
                 string entryId = node["EntryID"].InnerText;

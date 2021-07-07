@@ -10,8 +10,16 @@ using System.Threading.Tasks;
 
 namespace MailboxAngel.OutlookCommon
 {
+    /// <summary>
+    /// Util class for reading items from an email conversation in conversation view 
+    /// </summary>
     public class ConversationUtils
     {
+        /// <summary>
+        /// Read mail items in selected conversation in a specific explorer pane
+        /// </summary>
+        /// <param name="explorer">Outlook Explorer pane</param>
+        /// <returns>Array of MailItem objects representing all items in the conversation</returns>
         public MailItem[] GetConversationItems(Explorer explorer)
         {
             List<MailItem> items = new List<MailItem>();
@@ -47,13 +55,26 @@ namespace MailboxAngel.OutlookCommon
             }
             return items.ToArray();
         }
-
+        /// <summary>
+        /// Get list of folders where mail items in a conversation, use MailItem to find the conversation (called from GetConversationFolders for explorer)
+        /// </summary>
+        /// <param name="message">Mail item that is part of the conversation</param>
+        /// <param name="excludedFolder">MAPIFolder to exclude from the search and list</param>
+        /// <returns>Array of MAPIFolders that represent the list of folders</returns>
         public MAPIFolder[] GetConversationFolders(MailItem message, MAPIFolder excludedFolder = null)
         {
             FolderServices utils = new FolderServices(message.Session);
             List<FolderResult> folders = new List<FolderResult>();
-            Conversation conv = message.GetConversation();
-            SimpleItems convItems = conv.GetRootItems();
+            SimpleItems convItems = null;
+            try
+            {
+                Conversation conv = message.GetConversation();
+                convItems = conv.GetRootItems();
+            }
+            catch (COMException)
+            {
+            }
+
 
             if (convItems == null)
                 return new MAPIFolder[0]; 
@@ -93,6 +114,12 @@ namespace MailboxAngel.OutlookCommon
             }
             return folders.OrderByDescending(x => x.Frequency).OrderBy(x => x.isInbox).Select(y => y.Folder).ToArray();
         }
+        /// <summary>
+        /// Get list of folders where mail items in a conversation, use selected items in Outlook Explorer to find the conversations
+        /// </summary>
+        /// <param name="explorer">Outlook Explorer to look for selected items</param>
+        /// <param name="excludedFolder">Folder to be excluded from search and list</param>
+        /// <returns>List of MAPIFolders</returns>
         public MAPIFolder[] GetConversationFolders(Explorer explorer, MAPIFolder excludedFolder=null)
         {
             if (!explorer.CurrentFolder.Store.IsConversationEnabled)
@@ -111,7 +138,9 @@ namespace MailboxAngel.OutlookCommon
             return GetConversationFolders(msg, excludedFolder);
         }
     }
-
+    /// <summary>
+    /// Util class to store results from the folders earch
+    /// </summary>
     class FolderResult
     {
         private MAPIFolder _folder;

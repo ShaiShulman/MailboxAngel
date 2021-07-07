@@ -10,6 +10,13 @@ namespace HelperUtils
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Check if string contains a value with case insensitive match
+        /// </summary>
+        /// <param name="text">String to check</param>
+        /// <param name="value">Value to search</param>
+        /// <param name="stringComparison">String comparison type</param>
+        /// <returns></returns>
         public static bool CaseInsensitiveContains(this string text, string value,
             StringComparison stringComparison = StringComparison.CurrentCultureIgnoreCase)
         {
@@ -17,6 +24,12 @@ namespace HelperUtils
                 return false;
             return text.IndexOf(value, stringComparison) >= 0;
         }
+        /// <summary>
+        /// Try to parse string/decimal as int, return 0 if failed
+        /// </summary>
+        /// <param name="text">String to parse</param>
+        /// <param name="defaultValue">value to be used in parsing failed (0 if ommited)</param>
+        /// <returns></returns>
         public static int TryParseInt(this string text, int defaultValue)
         {
             int parsedValue = 0;
@@ -33,7 +46,12 @@ namespace HelperUtils
             else
                 return defaultValue;
         }
-
+        /// <summary>
+        /// Get description from enum value
+        /// </summary>
+        /// <typeparam name="T">Enum yupe to be used</typeparam>
+        /// <param name="e">enum value</param>
+        /// <returns></returns>
         public static string GetDescription<T>(this T e) where T : IConvertible
         {
             if (e is Enum)

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HelperUtils
 {
+    /// <summary>
+    /// Abstract class for item in history list
+    /// </summary>
     public abstract class HistoryListItemBase : ILimitedQueueItem
     {
         public virtual bool Active { get; }

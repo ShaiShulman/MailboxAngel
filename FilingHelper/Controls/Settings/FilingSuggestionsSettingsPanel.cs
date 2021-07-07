@@ -11,7 +11,7 @@ using FilingSuggester;
 
 namespace FilingHelper.Controls.Settings
 {
-    public partial class FilingSuggestionsSettingsPanel : UserControl, ISettingsDialogPanel
+    public partial class FilingSuggestionsSettingsPanel : SettingsPanelBase
     {
         private List<SuggestNode> _deletedNodes = null;
         private bool _clearAllSuggestions = false;
@@ -20,7 +20,7 @@ namespace FilingHelper.Controls.Settings
             InitializeComponent();
         }
 
-        public void LoadSettings()
+        protected override void loadSettings()
         {
             PopulateSuggestionsList();
             chkSuggestSender.Checked = Properties.AddinSettings.Default.SuggestionMenuSender;
@@ -46,7 +46,7 @@ namespace FilingHelper.Controls.Settings
             }
             _deletedNodes = new List<SuggestNode>();
         }
-        public void SaveSettings()
+        protected override void saveSettings()
         {
             Properties.AddinSettings.Default.SuggestionMenuSender = chkSuggestSender.Checked;
             Properties.AddinSettings.Default.SuggestionMenuConversation = chkConversation.Checked;
@@ -115,8 +115,11 @@ namespace FilingHelper.Controls.Settings
 
         private void btnClearAll_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.CustomMessageBox("Are you sure you want to clear all suggestions?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)== DialogResult.Yes)
+            if (Globals.ThisAddIn.CustomMessageBox("Are you sure you want to clear all suggestions?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+            {
                 _clearAllSuggestions = true;
+                ctlSuggestTree.Nodes.Clear();
+            }
         }
     }
 }

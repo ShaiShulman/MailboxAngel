@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 namespace HelperUtils
 {
 
-    
+    /// <summary>
+    /// Util class for handling file icons
+    /// </summary>
     public static class IconUtil
     {
 

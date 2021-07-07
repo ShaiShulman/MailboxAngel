@@ -114,6 +114,15 @@ namespace FilingHelper.Controls
         {
             DoDragDrop(this, DragDropEffects.Move);
         }
+
+        public void SetWidth(int width)
+        {
+            if (width > 0 && width != ctrlToolStrip.Width)
+            {
+                txtFileName.Width = width - VERTICAL_SPACE;
+                ctrlToolStrip.Width = width;
+            }
+        }
         private void AttachmentSingleCtrl_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
@@ -215,8 +224,8 @@ namespace FilingHelper.Controls
 
         private void AttachmentSingleCtrl_Resize(object sender, EventArgs e)
         {
-            //ctrlToolStrip.Width = this.Width - 30;
-            txtFileName.Width = ctrlToolStrip.Width - VERTICAL_SPACE;
+            //ctrlToolStrip.Width = this.Width - 200;
+            //txtFileName.Width = ctrlToolStrip.Width - VERTICAL_SPACE;
 
         }
 

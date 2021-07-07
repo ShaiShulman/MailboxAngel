@@ -87,7 +87,7 @@
             this.pnlContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.pnlContainer.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlContainer.Location = new System.Drawing.Point(3, 19);
-            this.pnlContainer.MaximumSize = new System.Drawing.Size(1200, 170);
+            this.pnlContainer.MaximumSize = new System.Drawing.Size(8000, 170);
             this.pnlContainer.MinimumSize = new System.Drawing.Size(600, 50);
             this.pnlContainer.Name = "pnlContainer";
             this.pnlContainer.RowCount = 2;
@@ -213,6 +213,7 @@
             this.Name = "AttachmentsPaneCtrl";
             this.Size = new System.Drawing.Size(718, 247);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.AttachmentsPaneCtrl_DragDrop);
+            this.Resize += new System.EventHandler(this.AttachmentsPaneCtrl_Resize);
             this.pnlMaster.ResumeLayout(false);
             this.pnlMaster.PerformLayout();
             this.mnuCompress.ResumeLayout(false);
@@ -225,7 +226,6 @@
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnNumberize;
         public System.Windows.Forms.FlowLayoutPanel pnlMaster;
-        private HelperUtils.DraggableTableLayoutPanel pnlContainer;
         private System.Windows.Forms.ProgressBar ctlProgress;
         private System.Windows.Forms.Label lblSize;
         private System.Windows.Forms.Button btnCreateList;
@@ -235,5 +235,6 @@
         private System.Windows.Forms.ToolStripMenuItem mnuNoCompression;
         private System.Windows.Forms.ToolStripMenuItem mnuCompressAll;
         private System.Windows.Forms.ToolStripMenuItem mnuCompressSelected;
+        private HelperUtils.DraggableTableLayoutPanel pnlContainer;
     }
 }

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace HelperUtils
 { 
+    /// <summary>
+    /// User-selected display modes for history item (whether to never display, display when it is opened or also when previewed
+    /// </summary>
     public enum MailHistoryAddMode
     {
         [Description("Never")]

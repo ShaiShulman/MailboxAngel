@@ -11,14 +11,14 @@ using HelperUtils;
 
 namespace FilingHelper.Controls.Settings
 {
-    public partial class AttachmentHelperSettingsPanel : UserControl,ISettingsDialogPanel
+    public partial class AttachmentHelperSettingsPanel : SettingsPanelBase
     {
         public AttachmentHelperSettingsPanel()
         {
             InitializeComponent();
         }
 
-        public void LoadSettings()
+        protected override void loadSettings()
         {
             Properties.AddinSettings.Default.Upgrade();
             chkAutoShowHelper.Checked = Properties.AddinSettings.Default.AttachmentHelperAutoShow;
@@ -26,7 +26,7 @@ namespace FilingHelper.Controls.Settings
             txtMaxEmailSize.Text=Properties.AddinSettings.Default.AttachmentHelperMaxEmailSize.ToString();
         }
 
-        public void SaveSettings()
+        protected override void saveSettings()
         {
             Properties.AddinSettings.Default.AttachmentHelperAutoShow = chkAutoShowHelper.Checked;
             Properties.AddinSettings.Default.AttachmentHelperAutoHide = chkAutoCloseHepler.Checked;

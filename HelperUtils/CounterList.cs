@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace HelperUtils
 {
+    /// <summary>
+    /// Disctionary allowing to store unique values and count the number of their occurances. The entire disctionary can be written as json.
+    /// </summary>
+    /// <typeparam name="T">Data type to be used as index</typeparam>
     public class CounterList<T>
         where T:ICounterListItem
     {

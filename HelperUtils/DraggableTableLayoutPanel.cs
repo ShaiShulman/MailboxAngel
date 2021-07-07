@@ -86,6 +86,12 @@ namespace HelperUtils
             _containerGraphics = this.CreateGraphics();
         }
 
+        //public void finalizeLayout(Control parent)
+        //{
+        //    finalizeLayout();
+        //    _containerGraphics = parent.CreateGraphics();
+        //}
+
         private void Child_DragDrop(object sender, DragEventArgs e)
         {
            if (e.Data.GetDataPresent(_acceptableDragType) || _allowExternalDrop)
@@ -120,7 +126,7 @@ namespace HelperUtils
                 if (direction == MoveDirection.After)
                 {
                     if (this.Controls.IndexOf(ctrl) < this.Controls.Count - 1)
-                        lineY = this.Controls[this.Controls.IndexOf(ctrl) + 1].Location.Y - DRAG_MARKER_WIDTH; 
+                        lineY = this.Controls[this.Controls.IndexOf(ctrl) + 1].Location.Y - DRAG_MARKER_WIDTH+3; 
                     else
                         lineY = ctrl.Location.Y + ctrl.Height + ctrl.Margin.Bottom + DRAG_MARKER_WIDTH;
                 } else
@@ -128,6 +134,7 @@ namespace HelperUtils
 
                 _containerGraphics.Clear(this.BackColor);
                 _containerGraphics.DrawLine(new Pen(Color.Black, DRAG_MARKER_WIDTH), 0, lineY, ctrl.Width, lineY);
+                _containerGraphics.DrawLine(new Pen(Color.Black, DRAG_MARKER_WIDTH), 4000, lineY+3, 500, lineY);
                 _lastLine = this.Controls.IndexOf(ctrl).ToString() + direction.ToString();
             }
         }

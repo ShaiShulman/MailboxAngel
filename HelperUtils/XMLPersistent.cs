@@ -9,11 +9,19 @@ using System.Xml;
 
 namespace HelperUtils
 {
+    /// <summary>
+    /// abstract class providing the ability to persist a list of objects  in XML 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class XMLPersistent<T>
         where T:class
     {
         protected abstract string BaseNodeName { get; }
         protected abstract string GetFileName();
+        /// <summary>
+        /// Save all object in the class to an XML file
+        /// </summary>
+        /// <param name="list">collection of objects</param>
         protected void SaveAll(IEnumerable<object> list)
         {
             XmlDocument document = new XmlDocument();
@@ -24,6 +32,11 @@ namespace HelperUtils
             }
             document.Save(GetFileName());
         }
+        /// <summary>
+        /// Save object into a specific XML node
+        /// </summary>
+        /// <param name="data">object to be convered into XML and saves</param>
+        /// <param name="baseNode">Node into which the object will be saved</param>
         private void saveObject(object data, XmlNode baseNode)
         {
             Type type = data.GetType();
@@ -41,6 +54,10 @@ namespace HelperUtils
             }
             baseNode.AppendChild(objectNode);
         }
+        /// <summary>
+        /// Loads objects from the XML file
+        /// </summary>
+        /// <returns>List of the loaded objects</returns>
         protected List<T> loadAll()
         {
             XmlDocument document = new XmlDocument();
@@ -59,6 +76,11 @@ namespace HelperUtils
             return list;
 
         }
+        /// <summary>
+        /// Load object from an existing XML node
+        /// </summary>
+        /// <param name="objectNode">XML node containing the object</param>
+        /// <returns>object loaded</returns>
         protected T loadObject(XmlNode objectNode)
         {
             if (objectNode.ChildNodes.Count == 0)

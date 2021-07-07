@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace AttachmentManager
 {
+    /// <summary>
+    /// Class representing an existing attachment (attachment that was already in the mail item when the AttachmentManager was opened.
+    /// Acts as a wrapper for the existing Outlook Attachment object and allow certain actions until the Attachment is updated by calling ProcessAttachments method
+    /// </summary>
     public class ExistingAttachmentCommand:AttachmentCommand
     {
         private Attachment _attachment;
@@ -33,7 +37,10 @@ namespace AttachmentManager
             get
             { return _attachment.FileName; }
         }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="attachment">Outlook Attachment object from the mail item</param>
         public ExistingAttachmentCommand(Attachment attachment)
         {
             _attachment = attachment;

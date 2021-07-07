@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace HelperUtils
 {
+    /// <summary>
+    /// Class for holding folder information as part of a list of folder history
+    /// Implements the ILimitedQueueItem interface
+    /// </summary>
     public class FolderInfo : HistoryListItemBase
     {
         const string NAME_ERROR = "<Name Error>";

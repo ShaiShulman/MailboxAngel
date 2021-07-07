@@ -27,7 +27,7 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>FilingHelper</RootNamespace>
     <AssemblyName>MailboxAngel</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -45,6 +45,7 @@
     <FriendlyName>Mailbox Angel [Beta]</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -135,6 +136,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -215,6 +217,12 @@
       <DependentUpon>MailHistorySettingsPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Settings\ISettingsDialogPanel.cs" />
+    <Compile Include="Controls\Settings\SettingsPanelBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Settings\SettingsPanelBase.Designer.cs">
+      <DependentUpon>SettingsPanelBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="MailHistoryManager.cs" />
     <Compile Include="Properties\AddinSettings.cs" />
     <Compile Include="Properties\AddinSettings.Designer.cs">
@@ -378,6 +386,7 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>

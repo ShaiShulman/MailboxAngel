@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace HelperUtils
 {
+    /// <summary>
+    /// Class to store mail item together with defined meta-data (used for storing mail history list)
+    /// </summary>
     public class MailInfo : HistoryListItemBase
     {
         MailItem _mail;

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace AttachmentManager
 {
+    /// <summary>
+    /// Class representing a new attachment (one that did not already exist when the AttachmentManager was opened)
+    /// Stores details of the file until the attachment is actually added to the mail item by the ProcessAttachments method
+    /// </summary>
     public class NewAttachmentCommand : AttachmentCommand
     {
         private string _filePath;
@@ -40,7 +44,10 @@ namespace AttachmentManager
                 return Path.GetFileName(_filePath);
             }
         }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="FilePath">Path of the file on the local computer</param>
         public NewAttachmentCommand(string FilePath)
         {
             _filePath = FilePath;

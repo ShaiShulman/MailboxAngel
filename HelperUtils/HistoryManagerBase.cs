@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace HelperUtils
 {
+    /// <summary>
+    /// Management class for holding a persistent, enumerable list of history items
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class HistoryManagerBase<T>: XMLPersistent<T>, IEnumerable<T>
         where T:HelperUtils.HistoryListItemBase
     {

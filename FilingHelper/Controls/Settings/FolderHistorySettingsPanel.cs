@@ -11,7 +11,7 @@ using HelperUtils;
 
 namespace FilingHelper.Controls.Settings
 {
-    public partial class FolderHistorySettingsPanel : UserControl, ISettingsDialogPanel
+    public partial class FolderHistorySettingsPanel : SettingsPanelBase
     {
         private List<FolderInfoUI> _changes = null;
         private bool _clearAll = false;
@@ -21,7 +21,7 @@ namespace FilingHelper.Controls.Settings
         }
 
 
-        public void LoadSettings()
+        protected override void loadSettings()
         {
             txtMaxFolders.Value = Properties.AddinSettings.Default.FolderHistoryMaxItems;
             chkShowNeverOption.Checked = Properties.AddinSettings.Default.FolderHistoryAvoidVisible;
@@ -40,12 +40,12 @@ namespace FilingHelper.Controls.Settings
                 {
                     Text = finfo.Name,
                     Tag = element,
-                    SubItems = { element.AvoidToString(), element.PersistToString() }
+                    SubItems = { element.PersistToString(), element.AvoidToString() }
                 });
             }
         }
 
-        public void SaveSettings()
+        protected override void saveSettings()
         {
             if (Properties.AddinSettings.Default.FolderHistoryMaxItems != txtMaxFolders.Value.TryParseInt(10))
             {
@@ -75,8 +75,11 @@ namespace FilingHelper.Controls.Settings
 
         private void btnResetFolderHistory_Click(object sender, EventArgs e)
         {
-            _clearAll = true;
-            lstFolders.Items.Clear();
+            if (Globals.ThisAddIn.CustomMessageBox("Are you sure you want to clear the entire filing history?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+            {
+                _clearAll = true;
+                lstFolders.Items.Clear();
+            }
         }
 
         private void lstFolders_SelectedIndexChanged(object sender, EventArgs e)
@@ -108,8 +111,8 @@ namespace FilingHelper.Controls.Settings
                 element.Remove = true;
                 lstFolders.FocusedItem.Remove();
                 _changes.Add(element);
-           }
-        }
+            }
+                    }
 
         private void mnuPersist_Click(object sender, EventArgs e)
         {
@@ -118,8 +121,9 @@ namespace FilingHelper.Controls.Settings
             {
                 element.Persist = !element.Persist;
                 _changes.Add(element);
-                lstFolders.FocusedItem.SubItems[0].Text = element.PersistToString();
+                lstFolders.FocusedItem.SubItems[1].Text = element.PersistToString();
             }
+            _changes.Add(element);
         }
         private void mnuAvoid_Click(object sender, EventArgs e)
         {
@@ -128,10 +132,12 @@ namespace FilingHelper.Controls.Settings
             {
                 element.Avoid = !element.Avoid;
                 _changes.Add(element);
-                lstFolders.FocusedItem.SubItems[1].Text = element.AvoidToString();
+                lstFolders.FocusedItem.SubItems[2].Text = element.AvoidToString();
             }
+            _changes.Add(element);
+
         }
-      public class FolderInfoUI
+        public class FolderInfoUI
         {
             public string EntryID { get; set; }
             public bool Remove { get; set; }
