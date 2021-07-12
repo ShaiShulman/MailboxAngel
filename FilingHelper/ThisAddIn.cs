@@ -324,11 +324,11 @@ namespace FilingHelper
             ((AttachmentsPaneCtrl)pane.Control).AttachmentsUpdated += AttachmentPaneCtrl_AttachmentsUpdated;
             ((AttachmentsPaneCtrl)pane.Control).Resize += ((s, e) =>
             {
-                ((AttachmentsPaneCtrl)pane.Control).TotalWidth = pane.Width;
-                if (pane.Height > ((AttachmentsPaneCtrl)pane.Control).MaxHeight)
-                    pane.Height = ((AttachmentsPaneCtrl)pane.Control).MaxHeight;
-                else
-                    ((AttachmentsPaneCtrl)pane.Control).TotalHeight = pane.Height;
+                //((AttachmentsPaneCtrl)pane.Control).TotalWidth = pane.Width;
+                //if (pane.Height > ((AttachmentsPaneCtrl)pane.Control).MaxHeight)
+                //    pane.Height = ((AttachmentsPaneCtrl)pane.Control).MaxHeight;
+                //else
+                //    ((AttachmentsPaneCtrl)pane.Control).TotalHeight = pane.Height;
             });
             pane.Height = ((AttachmentsPaneCtrl)pane.Control).TotalHeight;
         }

@@ -181,17 +181,6 @@ namespace FilingHelper.Controls
             if (!(sender is AttachmentSingleCtrl))
                 return;
             AttachmentSingleCtrl ctrl = (AttachmentSingleCtrl)sender;
-            bool nextCtrl = false;
-            //if (e.Direction==ChildDragDirection.After && !ctrl.Last)
-            //{
-            //    ctrl = (AttachmentSingleCtrl)pnlContainer.Controls[pnlContainer.Controls.IndexOf(ctrl) + 1];
-            //    nextCtrl = true;
-            //}
-            //foreach (AttachmentSingleCtrl itrCtrl in pnlContainer.Controls)
-            //{
-            //    itrCtrl.ShowTopLine(itrCtrl == ctrl && (e.Direction == ChildDragDirection.Before || nextCtrl));
-            //    itrCtrl.ShowBottomLine(itrCtrl == ctrl && e.Direction == ChildDragDirection.After && !nextCtrl);
-            //}
             if (_lastLine != pnlContainer.Controls.IndexOf(ctrl).ToString() + e.Direction.ToString())
             {
                 Pen pen = new Pen(Color.Black);
@@ -203,10 +192,6 @@ namespace FilingHelper.Controls
                     else
                         lineY = lineY + ctrl.Height;
                 }
-
-                //_ContainerGraphics.Clear(this.BackColor);
-                //_ContainerGraphics.DrawLine(new Pen(Color.Black, 2), 0, lineY, pnlContainer.Width, lineY);
-                //_lastLine = pnlContainer.Controls.IndexOf(ctrl).ToString() + e.Direction.ToString();
             }
         }
 
@@ -318,7 +303,6 @@ namespace FilingHelper.Controls
         {
             List<AttachmentCommand> attachments = Data;
             ctlProgress.Visible = true;
-            //pnlContainer.ChildrenVisible = false;
             pnlContainer.Enabled=false;
             Globals.ThisAddIn.UpdateAttachmentsOnAddRemove = false;
             _manager.AttachmentsProgressInitiated += _manager_AttachmentsProgressInitiated;
@@ -329,7 +313,6 @@ namespace FilingHelper.Controls
                 this.BeginInvoke((System.Action)(() =>
                 {
                     ctlProgress.Visible = false;
-                    //pnlContainer.ChildrenVisible = true;
                     pnlContainer.Enabled = true;
                     ctlProgress.Visible = false;
                     Globals.ThisAddIn.UpdateAttachmentsOnAddRemove = true;
@@ -485,6 +468,11 @@ namespace FilingHelper.Controls
             {
                 ((AttachmentSingleCtrl)control).SetWidth(this.Width);
             }
+        }
+
+        private void pnlMaster_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 

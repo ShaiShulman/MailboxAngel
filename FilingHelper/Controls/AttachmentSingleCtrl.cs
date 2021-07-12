@@ -18,7 +18,7 @@ namespace FilingHelper.Controls
 {
     public partial class AttachmentSingleCtrl : UserControl,iDraggableChildControl
     {
-        const int VERTICAL_SPACE = 165;
+        const int VERTICAL_SPACE = 250;
         public event EventHandler<AttachmentMoveEventArgs> AttachmentMove;
         public event EventHandler<ChildDragEventArgs> ControlDragOver;
         public event EventHandler ControlDragLeave;
