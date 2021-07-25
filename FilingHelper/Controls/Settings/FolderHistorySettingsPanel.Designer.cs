@@ -44,6 +44,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuPersist = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAvoid = new System.Windows.Forms.ToolStripMenuItem();
+            this.chkShowNextPrevButtos = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaxFolders)).BeginInit();
             this.mnuFolderActions.SuspendLayout();
             this.SuspendLayout();
@@ -70,7 +71,7 @@
             // 
             // btnResetFolderHistory
             // 
-            this.btnResetFolderHistory.Location = new System.Drawing.Point(764, 87);
+            this.btnResetFolderHistory.Location = new System.Drawing.Point(764, 109);
             this.btnResetFolderHistory.Name = "btnResetFolderHistory";
             this.btnResetFolderHistory.Size = new System.Drawing.Size(87, 27);
             this.btnResetFolderHistory.TabIndex = 41;
@@ -116,9 +117,10 @@
             this.Presist,
             this.Never});
             this.lstFolders.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lstFolders.Location = new System.Drawing.Point(6, 120);
+            this.lstFolders.HideSelection = false;
+            this.lstFolders.Location = new System.Drawing.Point(6, 141);
             this.lstFolders.Name = "lstFolders";
-            this.lstFolders.Size = new System.Drawing.Size(845, 290);
+            this.lstFolders.Size = new System.Drawing.Size(845, 269);
             this.lstFolders.TabIndex = 45;
             this.lstFolders.UseCompatibleStateImageBehavior = false;
             this.lstFolders.View = System.Windows.Forms.View.Details;
@@ -182,11 +184,23 @@
             this.mnuAvoid.Text = "Never show";
             this.mnuAvoid.Click += new System.EventHandler(this.mnuAvoid_Click);
             // 
+            // chkShowNextPrevButtos
+            // 
+            this.chkShowNextPrevButtos.AutoSize = true;
+            this.chkShowNextPrevButtos.Location = new System.Drawing.Point(6, 110);
+            this.chkShowNextPrevButtos.Name = "chkShowNextPrevButtos";
+            this.chkShowNextPrevButtos.Size = new System.Drawing.Size(426, 17);
+            this.chkShowNextPrevButtos.TabIndex = 44;
+            this.chkShowNextPrevButtos.Text = "Show Next and Previous buttons in ribbon (need to restart for changes to take eff" +
+    "ect)";
+            this.chkShowNextPrevButtos.UseVisualStyleBackColor = true;
+            // 
             // FolderHistorySettingsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
+            this.Controls.Add(this.chkShowNextPrevButtos);
             this.Controls.Add(this.lstFolders);
             this.Controls.Add(this.chkShowNeverOption);
             this.Controls.Add(this.chkShowPersistentOption);
@@ -219,5 +233,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem mnuPersist;
         private System.Windows.Forms.ToolStripMenuItem mnuAvoid;
+        private System.Windows.Forms.CheckBox chkShowNextPrevButtos;
     }
 }

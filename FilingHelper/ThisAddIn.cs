@@ -14,10 +14,26 @@ using MailboxAngel.OutlookCommon;
 
 namespace FilingHelper
 {
+    /// <summary>
+    /// Mailbox Angel
+    /// ----------------------------------------------------------
+    /// (c) Shai Shulman, 2021
+    /// ----------------------------------------------------------
+    /// The addin provides additional functionalities for handling multiple mail folders, moving mail items into folders and handling attachments
+    /// - Find folder by typing the first letter of its name
+    /// - Move between folders with same no on different PSTs (next/previous)
+    /// - Display list of recenty used folders
+    /// - Show suggestion one where to file a mail items based on recent folders, other items in the conversation, and otehr items with the same sender
+    /// - Attachment helper, allowing attachments manipulations directly from the composing windows:
+    ///     - Change file name of attachments
+    ///     - Change order of attachments
+    ///     - Accept all changes in an attachment (for Word documents)
+    ///     - Create zip file with the attachments and attach to the mail item
+    /// </summary>
     public partial class ThisAddIn
     {
         const int HISTORY_SIZE = 15;
-        const string APPLICATION_CAPTION = "Outlook's Little Helper";
+        const string APPLICATION_CAPTION = "Mailbox Angel";
         const string FOLDER_CHANGED_MESSAGE = "Folder Changed to";
         const string ITEM_MOVED_MESSAGE = "Mail Item(s) Moved to";
         Outlook.Inspectors inspectors;
@@ -73,6 +89,11 @@ namespace FilingHelper
             set { _updateAttachmentsOnAddRemove = value; }
         }
 
+        /// <summary>
+        /// Change current folder in an Outlook explorer, and show notice to user with the oppotunity to undo operation
+        /// </summary>
+        /// <param name="explorer">Explorer where to change the folder</param>
+        /// <param name="folder">Target folder</param>
         public void NavigateFolder(Outlook.Explorer explorer, Outlook.MAPIFolder folder)
         {
             if (folder != null)
@@ -107,6 +128,12 @@ namespace FilingHelper
             }
         }
 
+        /// <summary>
+        /// Move mail items in an Outlook explorer to a specific folder, and show notice to user with the oppotunity to undo operation
+        /// </summary>
+        /// <param name="explorer">Outlook explorer</param>
+        /// <param name="target">Target folder</param>
+        /// <param name="items">Array of mail items to move</param>
         public void MoveMessages(Outlook.Explorer explorer, Outlook.MAPIFolder target, params Outlook.MailItem[] items)
         {
             if (explorer == null)
@@ -170,6 +197,10 @@ namespace FilingHelper
             FolderHistory.Insert(target);
         }
 
+        /// <summary>
+        /// Open message archive pane in current Outlook explorer
+        /// </summary>
+        /// <param name="explorer">Outlook explorer</param>
         public void ArchiveMessage(Outlook.Explorer explorer)
         {
             if (explorer == null)
@@ -194,6 +225,10 @@ namespace FilingHelper
             });
             searchThread.Start();
         }
+        /// <summary>
+        /// Open message archive pane for current message displayed in an inspector
+        /// </summary>
+        /// <param name="inspector">Inspector containing the current message</param>
         public void ArchiveMessage(Outlook.Inspector inspector)
         {
             if (!(inspector.CurrentItem is Outlook.MailItem))
@@ -210,13 +245,20 @@ namespace FilingHelper
             folderArchivers[inspector] = archiver;
             CustomTaskPane customPane = initializeArchivePane(null,inspector, archiver);
             archiver.UIElement = customPane;
-            //customPane.Visible = true;
             System.Threading.Thread searchThread = new System.Threading.Thread(() =>
             {
                 archiver.MatchNext();
             });
             searchThread.Start();
         }
+
+        /// <summary>
+        /// Initialize the FolderArchiver search object with the neccesary events
+        /// </summary>
+        /// <param name="baseFolder">Base object for searching</param>
+        /// <param name="items">Items to be included in search</param>
+        /// <param name="excludeFolder">Folders to be exluded</param>
+        /// <returns></returns>
         private FolderArchiver initializeArchiver(Outlook.MAPIFolder baseFolder, List<Outlook.MailItem> items, Outlook.MAPIFolder excludeFolder)
         {
             FolderArchiver archiver = new FolderArchiver(Globals.ThisAddIn.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox), items);
@@ -227,6 +269,14 @@ namespace FilingHelper
             archiver.SearchQueueEmpty += Archiver_SearchQueueEmpty;
             return archiver;
         }
+
+        /// <summary>
+        /// Initiate archiver pane in either an explorer or inspector
+        /// </summary>
+        /// <param name="explorer">Explorer to display pane in (can be Null if inspector is available)</param>
+        /// <param name="inspector">Inspector to display pane in (can be Null if explorer is available)</param>
+        /// <param name="archiver">FolderArchiver object</param>
+        /// <returns></returns>
         private CustomTaskPane initializeArchivePane(Outlook.Explorer explorer, Outlook.Inspector inspector,FolderArchiver archiver)
         {
             FolderArchiverCtrl panel = new FolderArchiverCtrl();
@@ -260,6 +310,10 @@ namespace FilingHelper
             }
         }
 
+        /// <summary>
+        /// Initialize research pane showing tagged mail items
+        /// </summary>
+        /// <param name="explorer"></param>
         public void ResearchPane(Outlook.Explorer explorer)
         {
             if (explorer == null)
@@ -296,6 +350,10 @@ namespace FilingHelper
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Initialize attachment manager for a mail item
+        /// </summary>
+        /// <param name="inspector">Inspector containing the mail item</param>
         public void AttachmentManager(Outlook.Inspector inspector)
         {
             if (!(inspector.CurrentItem is Outlook.MailItem))
@@ -339,6 +397,11 @@ namespace FilingHelper
             pane.Height = ((AttachmentsPaneCtrl)pane.Control).TotalHeight;
         }
 
+        /// <summary>
+        /// Hide the attachment manager for a specific mail item
+        /// </summary>
+        /// <param name="inspector">Inspector containing the mail items</param>
+        /// <param name="fRemove">Terminate pane if True, otherwise only hide pane</param>
         private void HideAttachmentManager(Outlook.Inspector inspector, bool fRemove=false)
         {
 
@@ -355,6 +418,11 @@ namespace FilingHelper
                     attachmentPaneCtrls[inspector].Visible=false;
             }
         }
+
+        /// <summary>
+        /// Listener for adding an attachment to a mail item (will add to relevant attachment manager if open)
+        /// </summary>
+        /// <param name="Attachment">Attachment object added</param>
         private void ThisAddIn_AttachmentAdd(Outlook.Attachment Attachment)
         {
             if (_updateAttachmentsOnAddRemove)
@@ -364,6 +432,10 @@ namespace FilingHelper
                 ((AttachmentsPaneCtrl)((CustomTaskPane)manager.UIElement).Control).Add(new ExistingAttachmentCommand(Attachment));
             }
         }
+        /// <summary>
+        /// Listener for removing an attachment to a mail item (will remove from relevant attachment manager if open)
+        /// </summary>
+        /// <param name="Attachment">Attachment object added</param>
         private void Message_AttachmentRemove(Outlook.Attachment Attachment)
         {
             if (_updateAttachmentsOnAddRemove)
@@ -417,8 +489,6 @@ namespace FilingHelper
                 taskPane.Control.BeginInvoke((System.Action)(() =>
                 {
                     ((FolderArchiverCtrl)taskPane.Control).Terminate();
-                    //if (!e.HasResults && !((FolderArchiver)sender).HasItems)
-                    //    taskPane.Visible = false;
                 }));
             } else
                 (sender as FolderArchiver).MatchNext();
@@ -439,6 +509,11 @@ namespace FilingHelper
             return MessageBox.Show(message, APPLICATION_CAPTION, buttons, icon);
         }
 
+        /// <summary>
+        /// Load data and initialize all objects on addin startup
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             if (Properties.AddinSettings.Default.SuggestionExcludedFolders != null)
@@ -490,6 +565,9 @@ namespace FilingHelper
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Save settings when addin (and Outlook) is terminated
+        /// </summary>
         private void ThisAddIn_Quit()
         {
             folderHistory.Save();
@@ -497,6 +575,10 @@ namespace FilingHelper
             MailHistory.Save();
         }
 
+        /// <summary>
+        /// Add necessary objects to a newly created explorer
+        /// </summary>
+        /// <param name="Explorer">Newly created explorer</param>
         private void Explorers_NewExplorer(Outlook.Explorer Explorer)
         {
             folderPanelsWrapper.Add(Explorer, new ExplorerWrapper(Explorer, new FolderPromptCtrl(), "Folder Action"));

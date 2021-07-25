@@ -192,12 +192,6 @@
     <Compile Include="Controls\Settings\AttachmentHelperSettingsPanel.Designer.cs">
       <DependentUpon>AttachmentHelperSettingsPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Settings\EmailSignaturesPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Settings\EmailSignaturesPanel.Designer.cs">
-      <DependentUpon>EmailSignaturesPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Settings\FilingSuggestionsSettingsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -337,9 +331,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Settings\AttachmentHelperSettingsPanel.resx">
       <DependentUpon>AttachmentHelperSettingsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Settings\EmailSignaturesPanel.resx">
-      <DependentUpon>EmailSignaturesPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Settings\FilingSuggestionsSettingsPanel.resx">
       <DependentUpon>FilingSuggestionsSettingsPanel.cs</DependentUpon>

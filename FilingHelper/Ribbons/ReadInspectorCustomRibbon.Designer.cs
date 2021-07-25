@@ -99,7 +99,7 @@
             // group2
             // 
             this.group2.Items.Add(this.menu2);
-            this.group2.Label = "Repond (Adv)";
+            this.group2.Label = "Respond (Adv)";
             this.group2.Name = "group2";
             this.group2.Position = this.Factory.RibbonPosition.AfterOfficeId("GroupMailRespond");
             // 

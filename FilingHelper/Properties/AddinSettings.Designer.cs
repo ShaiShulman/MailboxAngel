@@ -263,5 +263,17 @@ namespace FilingHelper.Properties {
                 this["SuggestionMenuHistory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FolderShowNextPrevButtons {
+            get {
+                return ((bool)(this["FolderShowNextPrevButtons"]));
+            }
+            set {
+                this["FolderShowNextPrevButtons"] = value;
+            }
+        }
     }
 }

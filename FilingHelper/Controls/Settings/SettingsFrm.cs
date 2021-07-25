@@ -17,7 +17,7 @@ namespace FilingHelper.Controls.Settings
         public SettingsFrm()
         {
             InitializeComponent();
-            _panels =new SettingsPanelBase[]{ctrlAttachments,ctrlFolders,ctrlMail,ctrlSuggestions,ctrlSignatures};
+            _panels =new SettingsPanelBase[]{ctrlAttachments,ctrlFolders, ctrlSuggestions, ctrlMail};
         }
         public SettingsFrm(int selectedItem) 
             : this()
@@ -41,7 +41,7 @@ namespace FilingHelper.Controls.Settings
             ctrlFolders.Visible = e.SelectedItem == 1;
             ctrlMail.Visible = e.SelectedItem == 2;
             ctrlSuggestions.Visible = e.SelectedItem == 3;
-            ctrlSignatures.Visible = e.SelectedItem == 4;
+            //ctrlSignatures.Visible = e.SelectedItem == 4;
             _panels[e.SelectedItem].LoadSettings();
         }
 
@@ -60,6 +60,11 @@ namespace FilingHelper.Controls.Settings
         {
             ctrlMenu.SelectedItem = _initialItem;
             _panels[_initialItem].LoadSettings();
+        }
+
+        private void ctrlMenu_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

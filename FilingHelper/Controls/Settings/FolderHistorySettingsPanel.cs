@@ -26,6 +26,7 @@ namespace FilingHelper.Controls.Settings
             txtMaxFolders.Value = Properties.AddinSettings.Default.FolderHistoryMaxItems;
             chkShowNeverOption.Checked = Properties.AddinSettings.Default.FolderHistoryAvoidVisible;
             chkShowPersistentOption.Checked = Properties.AddinSettings.Default.FolderHistoryPersistVisible;
+            chkShowNextPrevButtos.Checked = Properties.AddinSettings.Default.FolderShowNextPrevButtons;
             populateFoldersList();
             _changes = new List<FolderInfoUI>();
         }
@@ -55,6 +56,7 @@ namespace FilingHelper.Controls.Settings
             Properties.AddinSettings.Default.FolderHistoryMaxItems = txtMaxFolders.Value.TryParseInt(10);
             Properties.AddinSettings.Default.FolderHistoryAvoidVisible = chkShowNeverOption.Checked;
             Properties.AddinSettings.Default.FolderHistoryPersistVisible = chkShowPersistentOption.Checked;
+            Properties.AddinSettings.Default.FolderShowNextPrevButtons = chkShowNextPrevButtos.Checked;
             if (_clearAll)
                 Globals.ThisAddIn.FolderHistory.ClearAll();
             else

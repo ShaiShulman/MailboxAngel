@@ -9,6 +9,10 @@ namespace HelperUtils
 {
     public class WindowManager
     {
+        /// <summary>
+        /// Close all open windows in an Outlook application
+        /// </summary>
+        /// <param name="app">Appliction object for an open Outlook app</param>
         public void CloseAll(Application app)
         {
             while (app.Explorers.Count > 1)

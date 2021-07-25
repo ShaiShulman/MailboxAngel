@@ -117,6 +117,7 @@ namespace FilingHelper
             _selectionForm = new SelectFolderFrm(results,target, FOLDER_SEARCH_DIALOG_CAPTION);
             _selectionForm.FolderSelected += SelectFolderForm_Selected;
             _selectionForm.ShowDialog();
+            target = ((RibbonEditBox)sender).Text = "";
         }
 
         private void SelectFolderForm_Selected(object sender, FolderSelectedEventArgs e)
@@ -135,23 +136,12 @@ namespace FilingHelper
             if (explorer == null)
                 return;
             MailItem[] items = (new ConversationUtils()).GetConversationItems(explorer);
-            //foreach (var item in explorer.Selection)
-            //{
-            //    if (item is MailItem)
-            //        items.Add(item as MailItem);
-            //}
             if (items.Count() == 0)
                 return;
             _selectionForm = new SelectFolderFrm(null, "",ITEM_MOVE_DIALOG_CAPTION,true);
-            //_selectionForm.FolderSelected += new EventHandler<FolderSelectedEventArgs>((s, ev) => 
-            //    _selectionForm_MoveTargetSelected(s, ev, items));
             _selectionForm.FolderSelected += (s, ev) =>
             {
                 Globals.ThisAddIn.MoveMessages(null, ev.Folder, items.ToArray());
-                //foreach (var item in items)
-                //{
-                //    item.Move(ev.Folder);
-                //}
                 _selectionForm.Close();
                 _selectionForm = null;
                 if (ev.OpenFolder)
@@ -164,7 +154,8 @@ namespace FilingHelper
 
         private void ExplorerCustomRibbon_Load(object sender, RibbonUIEventArgs e)
         {
-
+            btnNextFolder.Visible = Properties.AddinSettings.Default.FolderShowNextPrevButtons;
+            btnPrevFolder.Visible = Properties.AddinSettings.Default.FolderShowNextPrevButtons;
         }
 
         private void btnReplyAttch_Click(object sender, RibbonControlEventArgs e)
@@ -303,7 +294,7 @@ namespace FilingHelper
 
         private void grpFoldersGroup_DialogLauncherClick(object sender, RibbonControlEventArgs e)
         {
-            _settingsForm = new Controls.Settings.SettingsFrm(2);
+            _settingsForm = new Controls.Settings.SettingsFrm(1);
             _settingsForm.ShowDialog();
         }
     }
