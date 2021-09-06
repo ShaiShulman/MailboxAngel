@@ -103,7 +103,7 @@ As the solution was built with MS .Net, it will require .Net Runtime to be insta
 
 1. Open MailboxAngel.sln with MS Visual Studio and build the entire solution. 
 
-2. MailBox Angel will be added to the list of available Outlook addins. Select the addin to activate it.
+2. Mailbox Angel will be added to the list of available Outlook addins. Select the addin to activate it.
 
 <!-- FUNCTIONALITY -->
 
@@ -117,6 +117,8 @@ As the solution was built with MS .Net, it will require .Net Runtime to be insta
 * You can go back to the previous folder by clicking <u>Undo</u>.
 
 ### Folder History
+
+<img src="Graphics/History_screenshot.png" alt="Logo">
 
 * The addin tracks the last folders you are using (either by exploring or moving items to them).
 * You can view the list of last used folders by clicking <u>History</u> on the ribbon and go to any of these folders.
@@ -138,6 +140,8 @@ As the solution was built with MS .Net, it will require .Net Runtime to be insta
 * If the conversation header rather than a specific email in teh conversation are selected, all emails in the specific conversation located in the current folder will be moved.
 
 ### Attachments Manager
+
+<img src="Graphics/Attachment_manager_screenshot.png" alt="Logo">
 
 * The Attachment Manager allows the user complete control of an email's attachment, directly from the new email composition window.
 * To start, click <u>Attachment Manager</u> from the Compose window, and the Attachment window will loan the existing attachment.
