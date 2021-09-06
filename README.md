@@ -21,7 +21,7 @@
     <img src="Graphics/logo.png" alt="Logo">
   </a>
 
-  <h3 align="center">Mailbox Angel/h3>
+  <h3 align="center">Mailbox Angel</h3>
 
   <p align="center">
     MS Outlook add-in with functionalities for handling multiple mail folders, suggestions for moving mail items into folders and reorganizing attachments from the compose window.
