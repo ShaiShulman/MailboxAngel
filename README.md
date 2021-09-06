@@ -18,7 +18,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/github_shaishulman/MailboxAngel">
-    <img src="Graphics/logo.gif" alt="Logo">
+    <img src="Graphics/logo.png" alt="Logo">
   </a>
 
   <h3 align="center">TrendTrackr App</h3>
