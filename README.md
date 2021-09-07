@@ -2,7 +2,7 @@
 <!--
 *** I'm usiang markdown "reference style" links for readability.
 *** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
+*** `the bottom of this document for the declaration of the reference variables
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
@@ -132,6 +132,8 @@ As the solution was built with MS .Net, it will require .Net Runtime to be insta
 
 ### Mail Filing Suggestions
 
+<img src="Graphics/suggestions_screenshot.png" alt="Logo">
+
 * The addin tracks where evey email from each sender is moved from the inbox. 
 * By clicking <u>Suggestions</u> it can provide suggested folders to move the specific email, based on:
   - Suggestion: previous emails with the same sender
@@ -157,7 +159,7 @@ As the solution was built with MS .Net, it will require .Net Runtime to be insta
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License subject to "Commons Clause” License Condition v1.0. See `LICENSE` for more information.
 
 
 

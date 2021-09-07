@@ -18,6 +18,7 @@ namespace FilingHelper
     /// Mailbox Angel
     /// ----------------------------------------------------------
     /// (c) Shai Shulman, 2021
+    /// MIT License subject to "Commons Clause” License Condition v1.0
     /// ----------------------------------------------------------
     /// The addin provides additional functionalities for handling multiple mail folders, moving mail items into folders and handling attachments
     /// - Find folder by typing the first letter of its name
