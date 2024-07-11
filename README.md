@@ -101,9 +101,23 @@ As the solution was built with MS .Net, it will require .Net Runtime to be insta
 
 ### Installation
 
+#### Using MS ClickOnce installer:
+
+1. Download the installer from [https://recommend.roboguide.xyz/static/Mailbox-Angel.zip](https://recommend.roboguide.xyz/static/Mailbox-Angel.zip).
+
+2. Extract the zip file to a temporary folder. 
+
+3. In the temporary folder, run setup.exe. If asked by Windows Defender to confirm the installation, click "More Info" and "Run Anyway".
+
+4. Once the package has been installed, run Outlook. On first run, you might be asked if you want to reset your suggestions - click "ok".
+
+#### By building the source code using MS Visual Studio:
+
 1. Open MailboxAngel.sln with MS Visual Studio and build the entire solution. 
 
 2. Mailbox Angel will be added to the list of available Outlook addins. Select the addin to activate it.
+
+3. Run Outlook. On first run, you might be asked if you want to reset your suggestions - click "ok".
 
 <!-- FUNCTIONALITY -->
 
